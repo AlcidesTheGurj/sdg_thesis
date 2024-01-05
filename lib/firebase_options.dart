@@ -49,6 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '150621159290',
     projectId: 'sdg-thesis',
     authDomain: 'sdg-thesis.firebaseapp.com',
+    databaseURL: 'https://sdg-thesis-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'sdg-thesis.appspot.com',
     measurementId: 'G-ZYK4GS0G5W',
   );
@@ -58,6 +59,7 @@ class DefaultFirebaseOptions {
     appId: '1:150621159290:android:a1b4c2deb09b1d569960c3',
     messagingSenderId: '150621159290',
     projectId: 'sdg-thesis',
+    databaseURL: 'https://sdg-thesis-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'sdg-thesis.appspot.com',
   );
 
@@ -66,6 +68,7 @@ class DefaultFirebaseOptions {
     appId: '1:150621159290:ios:3219897ceb18847b9960c3',
     messagingSenderId: '150621159290',
     projectId: 'sdg-thesis',
+    databaseURL: 'https://sdg-thesis-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'sdg-thesis.appspot.com',
     iosBundleId: 'com.example.sdgThesis',
   );
@@ -75,6 +78,7 @@ class DefaultFirebaseOptions {
     appId: '1:150621159290:ios:3219897ceb18847b9960c3',
     messagingSenderId: '150621159290',
     projectId: 'sdg-thesis',
+    databaseURL: 'https://sdg-thesis-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'sdg-thesis.appspot.com',
     iosBundleId: 'com.example.sdgThesis',
   );

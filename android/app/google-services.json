@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "150621159290",
+    "firebase_url": "https://sdg-thesis-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "sdg-thesis",
     "storage_bucket": "sdg-thesis.appspot.com"
   },
