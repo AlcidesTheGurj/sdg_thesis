@@ -1,9 +1,16 @@
 import 'package:animated_background/animated_background.dart';
 import 'package:animated_background/particles.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sdg_thesis/test_page.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart' as firedatabase;
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -15,102 +22,89 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final firestore.FirebaseFirestore _firestore = firestore.FirebaseFirestore.instance;
+  firedatabase.Query dbRef = firedatabase.FirebaseDatabase.instance.ref().child('Gamemodes');
+  firedatabase.DatabaseReference reference = firedatabase.FirebaseDatabase.instance.ref().child('Gamemodes');
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: NavigationDrawer(children: [
-        SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Wrap(
-              runSpacing: 16,
-              children: [
-                ListTile(
-                  leading: Icon(Icons.home),
-                  title: Text('Option 1'),
-                  onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyHomePage())),
-                ),
-                ListTile(
-                  leading: Icon(Icons.update),
-                  title: Text('Option 1'),
-                  onTap: () { Navigator.pop(context);Navigator.of(context).push(MaterialPageRoute(builder: (context) => TestPage()));},
-                ),
-                ListTile(
-                  leading: Icon(Icons.update),
-                  title: Text('Option 1'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.update),
-                  title: Text('Option 1'),
-                )
-              ],
-            ),
-          ),
-        )
-      ],),
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: Text(widget.title),
-        ),
-        body: AnimatedBackground(
-          behaviour: RandomParticleBehaviour(
-            options: const ParticleOptions(
-              spawnMaxRadius: 25,
-              spawnMinSpeed: 10.00,
-              particleCount: 20,
-              spawnMaxSpeed: 100,
-              minOpacity: 0.4,
-              spawnOpacity: 0.9,
-              baseColor: Colors.blue,
-              image: Image(image: AssetImage('images/test.png')),
+  final List<Icon> modeIcons = [
+    const Icon(Icons.quiz,size: 40),
+    const Icon(Icons.stars,size: 40),
+    const Icon(Icons.auto_mode,size: 40),
+  ];
 
+  Widget myWidget({required Map competition}) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(10, 30, 10, 0),
+      padding: const EdgeInsets.all(10),
+      height: 95,
+      decoration: BoxDecoration(
+        color: Colors.amber.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: ListView(
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          ListTile(
+            title: Text(
+              competition['name'],
+              style: GoogleFonts.roboto(
+                  fontSize: 28.0,
+              color: Colors.white),
             ),
-          ),
-          vsync: this,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  'TEST',
-                ),
-                Expanded(child: StreamBuilder(
-                  stream: _firestore.collection("Test").snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-
-                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return Text('No data available');
-                    }
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return CircularProgressIndicator();
-                      default:
-                        return buildListView(snapshot);
-                    }
-                  },
-                ))
-              ],
+            subtitle: Text(
+              "${competition['description'] ?? 'None'}",
+              style: GoogleFonts.roboto(
+                fontSize: 16.0,
+                color: Colors.white70
+              )
             ),
+            trailing: modeIcons[competition['index']],
+            onTap: () {
+              // on tap enter to the competition if questions list it's not null
+              if (competition['questions'] != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        TestPage(
+                        ),
+                  ),
+                );
+              } else {
+                // show msg when competition is not open
+                showDialog(
+                  context: context,
+                  builder: (context) =>
+                  const AlertDialog(
+                    title: Center(
+                      child: Text(
+                        'Please selected the competition that have status open, touch unfocused area to dismiss.',
+                      ),
+                    ),
+                  ),
+                );
+              }
+            },
           ),
-        )
+        ],
+      ),
     );
   }
-
-  Widget buildListView(AsyncSnapshot<QuerySnapshot> snapshot) {
-    return ListView(
-      children: snapshot.data!.docs.map((DocumentSnapshot document) {
-        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-        return ListTile(
-          title: Text(data['data'] ?? 'No name'),
-          subtitle: Text(data['data2'] ?? 'No description'),
+    @override
+    Widget build(BuildContext context) {
+      return
+        Container(
+          height: double.infinity,
+          child: FirebaseAnimatedList(
+            query: dbRef,
+            itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index) { // itemBuilder must return something
+              Map competition = snapshot.value as Map;
+              competition['key'] = snapshot.key;
+              return myWidget(competition:competition);
+            },
+          ),
         );
-      }).toList(),
-    );
+
+    }
   }
-}
 
