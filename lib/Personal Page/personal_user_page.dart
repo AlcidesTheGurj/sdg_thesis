@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import '../auth.dart';
 import '../main.dart';
 
-class TestPage extends StatefulWidget {
+class UserPage extends StatefulWidget {
   //final User? user;
-   TestPage({Key? key}) : super(key: key);
+   UserPage({Key? key}) : super(key: key);
 
   @override
-  State<TestPage> createState() => _TestPageState();
+  State<UserPage> createState() => _UserPageState();
 }
 
-class _TestPageState extends State<TestPage> {
+class _UserPageState extends State<UserPage> {
 
   String errorMsg = '';
   bool isLogin = true;
