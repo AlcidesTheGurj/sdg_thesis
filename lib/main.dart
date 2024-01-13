@@ -1,11 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sdg_thesis/home_page.dart';
-import 'package:sdg_thesis/test_page.dart';
+import 'package:sdg_thesis/Personal%20Page/test_page.dart';
+import 'auth.dart';
 import 'firebase_options.dart';
+import 'Personal Page/personal_widget_tree.dart';
 
 //name at the top right
 String name = "Guest";
@@ -22,11 +25,13 @@ Future<void> main() async {
   //firebase stores locally on the device
   FirebaseDatabase.instance.setPersistenceEnabled(true);
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+   MyApp({Key? key}) : super(key: key);
+
+  //final User? user = Auth().currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +57,9 @@ class _HomeState extends State<Home> {
   //list used to iterate through views
   final List<Widget> views = [
     const MyHomePage(),
-    const TestPage(),
-    const TestPage(),
-    const TestPage()
+     TestPage(),
+     TestPage(),
+     WidgetTree()
   ];
 
   int _selectedIndex = 0;
