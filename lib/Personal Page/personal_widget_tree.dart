@@ -1,7 +1,7 @@
 import 'package:sdg_thesis/auth.dart';
 import 'package:flutter/material.dart';
 import 'personal_guest_page.dart';
-import 'test_page.dart';
+import 'personal_user_page.dart';
 
 class WidgetTree extends StatefulWidget {
   const WidgetTree({Key? key}) : super(key: key);
@@ -19,7 +19,7 @@ class _WidgetTreeState extends State<WidgetTree> {
         return GuestPage();
       }
       else {
-        return TestPage();
+        return UserPage();
       }
     },
     );

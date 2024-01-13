@@ -7,7 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sdg_thesis/Personal%20Page/test_page.dart';
+import 'package:sdg_thesis/Personal%20Page/personal_user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart' as firedatabase;
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        TestPage(
+                        UserPage(
                         ),
                   ),
                 );

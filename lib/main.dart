@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sdg_thesis/home_page.dart';
-import 'package:sdg_thesis/Personal%20Page/test_page.dart';
+import 'package:sdg_thesis/Personal%20Page/personal_user_page.dart';
 import 'auth.dart';
 import 'firebase_options.dart';
 import 'Personal Page/personal_widget_tree.dart';
@@ -57,8 +57,8 @@ class _HomeState extends State<Home> {
   //list used to iterate through views
   final List<Widget> views = [
     const MyHomePage(),
-     TestPage(),
-     TestPage(),
+     UserPage(),
+     UserPage(),
      WidgetTree()
   ];
 
