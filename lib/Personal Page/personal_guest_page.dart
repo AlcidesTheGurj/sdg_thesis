@@ -9,16 +9,12 @@ class GuestPage extends StatelessWidget {
 
   final User? user = Auth().currentUser;
 
-  Widget _title(){
-    return const Text("Firebase Auth");
-  }
-
   Widget _userUid(){
     return Text(user?.email ?? 'user email');
   }
 
   Widget _signOutButton(){
-    return ElevatedButton(onPressed: signOut, child: const Text("Sign Out"));
+    return Center(child: ElevatedButton(onPressed: signOut, child: const Text("Sign Out")));
   }
 
   Future<void> signOut() async{
