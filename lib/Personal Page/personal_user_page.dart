@@ -41,10 +41,6 @@ class _UserPageState extends State<UserPage> {
     }
   }
 
-  Widget _title(){
-    return const Text("Title");
-  }
-
   Widget _entryField(String title,
       TextEditingController controller,){
     return TextField(
@@ -74,13 +70,17 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: double.infinity,
-      width: double.infinity,
       padding: const EdgeInsets.all(20.0),
         child: Column(
         children: <Widget>[
           _entryField('email', _controllerEmail),
-          _entryField('password', _controllerPassword),
+        TextField(
+          controller: _controllerPassword,
+          obscureText: true,
+          decoration: InputDecoration(
+            labelText: 'password',
+          ),
+        ),
           _errorMsg(),
           _submitButton(),
           _loginOrRegisterButton()

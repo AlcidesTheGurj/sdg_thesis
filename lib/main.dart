@@ -4,11 +4,13 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sdg_thesis/blank_page.dart';
 import 'package:sdg_thesis/home_page.dart';
 import 'package:sdg_thesis/Personal%20Page/personal_user_page.dart';
 import 'auth.dart';
 import 'firebase_options.dart';
 import 'Personal Page/personal_widget_tree.dart';
+import 'login_page.dart';
 
 //name at the top right
 String name = "Guest";
@@ -57,14 +59,15 @@ class _HomeState extends State<Home> {
   //list used to iterate through views
   final List<Widget> views = [
     const MyHomePage(),
-     UserPage(),
-     UserPage(),
-     WidgetTree()
+     const BlankPage(),
+    const LoginScreen(),
+     const WidgetTree()
   ];
 
   int _selectedIndex = 0;
 
-  List<Color> colors = [Colors.amber, Colors.blue, Colors.green, Colors.red];
+ // List<Color> colors = [Colors.amber, Colors.blue, Colors.green, Colors.red];
+  List<Color> colors = [Colors.amber, Colors.amber, Colors.amber, Colors.amber];
   List<String> titles = ["Home","Points Shop","Leaderboard","Account"];
 
   @override
