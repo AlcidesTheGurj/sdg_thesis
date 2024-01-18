@@ -10,16 +10,52 @@ class WidgetTree extends StatefulWidget {
   State<WidgetTree> createState() => _WidgetTreeState();
 }
 
+
+// * Future<void> UserSignedIn()async{
+//   FirebaseAuth.instance
+//       .authStateChanges()
+//       .listen((User? user) {
+//     if (user == null) {
+//       print('User is currently signed out!');
+//     } else {
+//       print('User is signed in!');
+//       print(user);
+//     }
+//   });
+// }
+
+
 class _WidgetTreeState extends State<WidgetTree> {
+
+  final List<Widget> views = [
+    GuestPage(),
+    UserPage()
+  ];
+
+  final _loggedIn = Auth().authStateChanges;
+  
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(stream: Auth().authStateChanges,
+    return StreamBuilder(stream: _loggedIn,
     builder: (context,snapshot){
-      if (snapshot.hasData){
-        return GuestPage();
-      }
-      else {
-        return UserPage();
+      switch (snapshot.connectionState){
+        case ConnectionState.none:
+        case ConnectionState.waiting:
+          return const Center(child: CircularProgressIndicator(),);
+        case ConnectionState.active:
+          if (snapshot.hasData){
+            return GuestPage();
+          }
+          else {
+            return UserPage();
+          }
+        case ConnectionState.done:
+          if (snapshot.hasData){
+            return GuestPage();
+          }
+          else {
+            return UserPage();
+          }
       }
     },
     );

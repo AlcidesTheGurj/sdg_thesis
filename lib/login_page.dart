@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:sdg_thesis/home_page.dart';
 
+import 'main.dart';
+
 const users =  {
   'dribbble@gmail.com': '12345',
   'hunter@gmail.com': 'hunter',
@@ -45,14 +47,11 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
-      title: 'ECORP',
-      logo: const AssetImage('assets/images/ecorp-lightblue.png'),
+      title: 'Sign In',
       onLogin: _authUser,
       onSignup: _signupUser,
       onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const MyHomePage(),
-        ));
+        print("object");
       },
       onRecoverPassword: _recoverPassword,
     );
