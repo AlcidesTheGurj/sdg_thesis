@@ -61,7 +61,8 @@ class _HomeState extends State<Home> {
     const MyHomePage(),
      const BlankPage(),
     const LoginScreen(),
-     const WidgetTree()
+    //const LoginScreen(),
+    const WidgetTree()
   ];
 
   int _selectedIndex = 0;
