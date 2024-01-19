@@ -11,6 +11,7 @@ import 'package:sdg_thesis/Personal%20Page/personal_user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart' as firedatabase;
 import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:sdg_thesis/Quiz/questions.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -24,7 +25,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
   final firestore.FirebaseFirestore _firestore = firestore.FirebaseFirestore.instance;
   firedatabase.Query dbRef = firedatabase.FirebaseDatabase.instance.ref().child('Gamemodes');
-  firedatabase.DatabaseReference reference = firedatabase.FirebaseDatabase.instance.ref().child('Gamemodes');
+  //firedatabase.DatabaseReference reference = firedatabase.FirebaseDatabase.instance.ref().child('Gamemodes');
 
   final List<Icon> modeIcons = [
     const Icon(Icons.quiz,size: 40),
@@ -66,19 +67,20 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        UserPage(
+                        Questions(
+                          competitionId: competition['key'],
+                          listOfQuestions: competition['questions'],
                         ),
                   ),
                 );
               } else {
-                // show msg when competition is not open
                 showDialog(
                   context: context,
                   builder: (context) =>
                   const AlertDialog(
                     title: Center(
                       child: Text(
-                        'Please selected the competition that have status open, touch unfocused area to dismiss.',
+                        'This Game mode is not ready yet, check back later!',
                       ),
                     ),
                   ),
