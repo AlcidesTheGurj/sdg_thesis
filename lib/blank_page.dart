@@ -33,6 +33,10 @@ class _BlankPageState extends State<BlankPage> {
       var userObject = dataSnapshot.value!;
       print(userObject);
       print(user?.uid as String);
+
+      setState(() {
+        avatarData = value;
+      });
     }
   }
 
@@ -65,19 +69,19 @@ class _BlankPageState extends State<BlankPage> {
   Widget circleAvatarWidget() {
     return
       CircleAvatar(
-        radius: 100,
-        backgroundColor: Colors.white,
+        radius: 90,
+        backgroundColor: Colors.white70.withOpacity(0.9),
         child:
         ClipRRect(
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(
-              100,
+              90,
             ),
           ),
           child: SvgPicture.string(
             FluttermojiFunctions()
                 .decodeFluttermojifromString(avatarData),
-            height: 100,
+            height: 150,
             width: 100,
           ),
         ),
@@ -96,7 +100,17 @@ class _BlankPageState extends State<BlankPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-        circleAvatarWidget(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FluttermojiCircleAvatar(
+                  backgroundColor: Colors.white70.withOpacity(0.25),
+                  radius: 70,
+                ),
+                const Icon(Icons.arrow_right,size: 25),
+                circleAvatarWidget(),
+              ],
+            ),
             SizedBox(
               width: min(600, _width * 0.85),
               child: Row(
