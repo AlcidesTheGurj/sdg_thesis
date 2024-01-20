@@ -29,7 +29,7 @@ class _WidgetTreeState extends State<WidgetTree> {
 
   final List<Widget> views = [
     GuestPage(),
-    UserPage()
+    const UserPage()
   ];
 
   final _loggedIn = Auth().authStateChanges;

@@ -1,7 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sdg_thesis/home_page.dart';
 import 'package:firebase_database/firebase_database.dart' as firedatabase;
 
 class Questions extends StatefulWidget {
@@ -45,7 +44,7 @@ class _QuestionsState extends State<Questions> {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
+            icon: const Icon(Icons.arrow_back, color: Colors.black),
             onPressed: () {
               Navigator.of(context).pop();
             },

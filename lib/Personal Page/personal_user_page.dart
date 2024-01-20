@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../auth.dart';
-import '../main.dart';
 
 class UserPage extends StatefulWidget {
   //final User? user;
@@ -77,7 +76,7 @@ class _UserPageState extends State<UserPage> {
         TextField(
           controller: _controllerPassword,
           obscureText: true,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: 'password',
           ),
         ),
