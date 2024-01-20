@@ -7,7 +7,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:sdg_thesis/blank_page.dart';
+import 'package:sdg_thesis/customization_page.dart';
 import 'package:sdg_thesis/home_page.dart';
 import 'package:sdg_thesis/Personal%20Page/personal_user_page.dart';
 import 'Personal Page/personal_guest_page.dart';
@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
   //list used to iterate through views
   final List<Widget> views = [
     const MyHomePage(),
-    BlankPage(),
+    const CustomizationPage(),
     const LoginScreen(),
     //const LoginScreen(),
     const WidgetTree()
@@ -73,8 +73,9 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
  // List<Color> colors = [Colors.amber, Colors.blue, Colors.green, Colors.red];
-  List<Color> colors = [Colors.amber, Colors.amber, Colors.amber, Colors.amber];
-  List<String> titles = ["Home","Points Shop","Leaderboard","Account"];
+  List<Color> colors = [Colors.amber, Colors.blue, Colors.green, Colors.red];
+  List<String> titles = ["Home","Avatar Palette","Leaderboard","Account"];
+  List<IconData> icons = [Icons.home,Icons.palette,Icons.leaderboard,Icons.person];
 
   @override
   void initState() {
@@ -94,10 +95,17 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.black,
         appBar: AppBar(
             backgroundColor: Colors.transparent,
-            title: Text(
-              titles[_selectedIndex],
-              style: GoogleFonts.roboto(
-                  fontSize: 25.0, color: colors[_selectedIndex]),
+            // title: Text(
+            //   titles[_selectedIndex],
+            //   style: GoogleFonts.roboto(
+            //       fontSize: 25.0, color: colors[_selectedIndex]),
+            // ),
+            title: Row(
+              children: [
+                Icon(icons[_selectedIndex],color: colors[_selectedIndex],size: 25.0,),
+                SizedBox(width: 5.0,),
+                Text(titles[_selectedIndex],style: GoogleFonts.roboto(fontSize: 25.0),)
+              ],
             ),
             actions: [
               // Text(
@@ -112,17 +120,20 @@ class _HomeState extends State<Home> {
                 return const Center(child: CircularProgressIndicator(),);
               case ConnectionState.active:
                 if (snapshot.hasData){
-                  return Text("${user?.email}");
+                  return Text(style: GoogleFonts.roboto(
+                      fontSize: 15.0),"${user?.email}");
                 }
                 else {
-                  return Text("Guest");
+                  return Text(style: GoogleFonts.roboto(
+                      fontSize: 15.0),"Guest");
                 }
               case ConnectionState.done:
                 if (snapshot.hasData){
-                  return Text("${user?.email}");
+                  return Text(style: GoogleFonts.roboto(
+                      fontSize: 15.0),"${user?.email}");
                 }
                 else {
-                  return Text("Guest");
+                  return const Text("Guest");
                 }
             }
           },
@@ -155,26 +166,26 @@ class _HomeState extends State<Home> {
               },
               tabs: [
                 GButton(
-                  hoverColor: Colors.amber,
-                  icon: Icons.home,
+                  hoverColor: colors[0],
+                  icon: icons[0],
                   text: titles[0],
                   iconActiveColor: Colors.amber,
                 ),
                 GButton(
-                  hoverColor: Colors.blue,
-                  icon: Icons.shopping_cart_sharp,
+                  hoverColor: colors[1],
+                  icon: icons[1],
                   text: titles[1],
                   iconActiveColor: Colors.blue,
                 ),
                 GButton(
-                  hoverColor: Colors.green,
-                  icon: Icons.leaderboard_sharp,
+                  hoverColor: colors[2],
+                  icon: icons[2],
                   text: titles[2],
                   iconActiveColor: Colors.green,
                 ),
                 GButton(
-                  hoverColor: Colors.red,
-                  icon: Icons.person,
+                  hoverColor: colors[3],
+                  icon: icons[3],
                   text: titles[3],
                   iconActiveColor: Colors.red,
                 ),
