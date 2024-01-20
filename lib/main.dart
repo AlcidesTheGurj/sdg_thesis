@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttermoji/fluttermojiController.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -7,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:sdg_thesis/blank_page.dart';
 import 'package:sdg_thesis/home_page.dart';
 import 'package:sdg_thesis/Personal%20Page/personal_user_page.dart';
+import 'Personal Page/personal_guest_page.dart';
 import 'auth.dart';
 import 'firebase_options.dart';
 import 'Personal Page/personal_widget_tree.dart';
@@ -17,6 +21,8 @@ String name = "Guest";
 
 //uuid used for storing favorites/watchlist/completed for specific device
 String v1 = "";
+
+User? user = Auth().currentUser;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +39,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
    MyApp({Key? key}) : super(key: key);
 
-  //final User? user = Auth().currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +64,7 @@ class _HomeState extends State<Home> {
   //list used to iterate through views
   final List<Widget> views = [
     const MyHomePage(),
-     const BlankPage(),
+    BlankPage(),
     const LoginScreen(),
     //const LoginScreen(),
     const WidgetTree()
@@ -73,8 +78,12 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
+    Get.put(FluttermojiController());
     super.initState();
   }
+
+  final _loggedIn = Auth().authStateChanges;
+
 
   @override
   Widget build(BuildContext context) {
@@ -91,10 +100,34 @@ class _HomeState extends State<Home> {
                   fontSize: 25.0, color: colors[_selectedIndex]),
             ),
             actions: [
-              Text(
-                name,
-                style: GoogleFonts.roboto(fontSize: 20.0, color: Colors.white),
-              ),
+              // Text(
+              //   user != null? name = user?.email! as String : name = name,
+              //   style: GoogleFonts.roboto(fontSize: 20.0, color: Colors.white),
+              // ),
+          StreamBuilder(stream: _loggedIn,
+          builder: (context,snapshot){
+            switch (snapshot.connectionState){
+              case ConnectionState.none:
+              case ConnectionState.waiting:
+                return const Center(child: CircularProgressIndicator(),);
+              case ConnectionState.active:
+                if (snapshot.hasData){
+                  return Text("${user?.email}");
+                }
+                else {
+                  return Text("Guest");
+                }
+              case ConnectionState.done:
+                if (snapshot.hasData){
+                  return Text("${user?.email}");
+                }
+                else {
+                  return Text("Guest");
+                }
+            }
+          },
+        ),
+              //IconButton(onPressed: (){}, icon: const Icon(Icons.person,size: 25,))
             ]),
         //iterating body
         body: views[_selectedIndex],
