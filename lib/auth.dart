@@ -18,7 +18,7 @@ class Auth {
 
     String? userUuid = _firebaseAuth.currentUser?.uid;
     if (userUuid != null){
-      DatabaseReference ref = FirebaseDatabase.instance.ref(userUuid);
+      //DatabaseReference ref = FirebaseDatabase.instance.ref(userUuid);
       // await ref.set({
       //   "name": "test",
       //   "age": 18,

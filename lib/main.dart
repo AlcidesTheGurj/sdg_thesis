@@ -60,7 +60,7 @@ class _HomeState extends State<Home> {
   final List<Widget> views = [
     const MyHomePage(),
     const CustomizationPage(),
-    const MyHomePage(),
+    const Placeholder(),
     //const LoginScreen(),
     const WidgetTree()
   ];
