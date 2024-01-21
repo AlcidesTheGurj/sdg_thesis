@@ -27,7 +27,7 @@ class GuestPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         _userUid(),
-        _signOutButton()
+        _signOutButton(),
       ],
     );
   }
