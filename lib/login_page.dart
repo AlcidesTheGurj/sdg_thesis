@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:sdg_thesis/home_page.dart';
+//import 'package:sdg_thesis/home_page.dart';
 
-import 'main.dart';
+//import 'main.dart';
 
 const users =  {
   'dribbble@gmail.com': '12345',
@@ -51,7 +51,7 @@ class LoginScreen extends StatelessWidget {
       onLogin: _authUser,
       onSignup: _signupUser,
       onSubmitAnimationCompleted: () {
-        print("object");
+        //print("object");
       },
       onRecoverPassword: _recoverPassword,
     );

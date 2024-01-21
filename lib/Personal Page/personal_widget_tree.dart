@@ -47,14 +47,14 @@ class _WidgetTreeState extends State<WidgetTree> {
             return GuestPage();
           }
           else {
-            return UserPage();
+            return const UserPage();
           }
         case ConnectionState.done:
           if (snapshot.hasData){
             return GuestPage();
           }
           else {
-            return UserPage();
+            return const UserPage();
           }
       }
     },

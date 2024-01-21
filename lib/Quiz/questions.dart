@@ -211,12 +211,12 @@ class _QuestionsState extends State<Questions> {
                 onPressed: () {
                   if (widget.listOfQuestions[index]['correct_answer'] ==
                       userInput) {
-                    print("YAYYYY");
+                   // print("YAYYYY");
                   }
                   setState(() {
                     index++;
                   });
-                  print(index);
+                 // print(index);
                 },
                 child: const Text("submit"))
           ],
