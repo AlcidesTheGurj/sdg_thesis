@@ -1,8 +1,9 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart' as firedatabase;
+//import 'package:firebase_database/firebase_database.dart' as firedatabase;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:chat_bubbles/chat_bubbles.dart';
 
 class Questions extends StatefulWidget {
   const Questions(
@@ -26,6 +27,7 @@ class _QuestionsState extends State<Questions> {
 
   final List<bool> _isSelected = [false, false, true];
   final List<String> alphabetSelections = ["A", "B", "C"];
+  String userInput = "none";
 
   late int playerScore;
 
@@ -35,10 +37,14 @@ class _QuestionsState extends State<Questions> {
 
   @override
   void initState() {
+    // print(widget.listOfQuestions);
+    // print(widget.listOfQuestions[index]['answer'].length);
+    // print(widget.listOfQuestions[1]['answer'].length);
+
     super.initState();
-    firedatabase.Query dbRef =
-        firedatabase.FirebaseDatabase.instance.ref().child('Gamemodes');
-    print(widget.listOfQuestions);
+    // firedatabase.Query dbRef =
+    //     firedatabase.FirebaseDatabase.instance.ref().child('Gamemodes');
+    //print(widget.listOfQuestions);
   }
 
   @override
@@ -55,12 +61,40 @@ class _QuestionsState extends State<Questions> {
           ),
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("Question ${index + 1} of ${widget.listOfQuestions.length}",
-                style: const TextStyle(fontSize: 22.0)),
+            // Text(
+            //   "Question ${index + 1} of ${widget.listOfQuestions.length}",
+            //   style: const TextStyle(fontSize: 22.0),
+            // ),
             const SizedBox(
               height: 20,
+            ),
+            Align(
+              child: LinearPercentIndicator(
+                width: MediaQuery.of(context).size.width,
+                lineHeight: 14.0,
+                percent: (index + 1) / widget.listOfQuestions.length,
+                backgroundColor: Colors.grey,
+                progressColor: Colors.blue,
+                animation: true,
+              ),
+            ),
+            Row(
+              children: [Text("data"),
+                BubbleSpecialTwo(
+                  text: widget.listOfQuestions[index]['question'].toString(),
+                  isSender: false,
+                  color: Colors.purple.shade100,
+                  tail: true,
+                  textStyle: const TextStyle(
+                    fontSize: 20,
+                    color: Colors.purple,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
             Text(
               widget.listOfQuestions[index]['question'].toString(),
@@ -68,20 +102,10 @@ class _QuestionsState extends State<Questions> {
                 fontSize: 20.0,
               ),
             ),
-            const Padding(padding: EdgeInsets.all(10.0)),
-            TextFormField(
-              controller: myController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  labelText: 'Enter Answer',
-                  labelStyle: const TextStyle(fontSize: 18)),
-            ),
-            SizedBox(
+            const SizedBox(
               height: 200,
             ),
-            Container(
+            SizedBox(
               // decoration: BoxDecoration(
               //   color: Colors.green.withOpacity(0.3)
               // ),
@@ -90,14 +114,17 @@ class _QuestionsState extends State<Questions> {
                   itemCount: widget.listOfQuestions[index]['answer'].length,
                   itemBuilder: (BuildContext context, int answerIndex) {
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0, left: 5.0, right: 5.0, top: 10.0),
+                      padding: const EdgeInsets.only(
+                          bottom: 20.0, left: 5.0, right: 5.0, top: 10.0),
                       child: SizedBox(
                         height: 60,
                         child: ListTile(
-                          selectedTileColor: Colors.greenAccent.withOpacity(0.5),
+                          selectedTileColor:
+                              Colors.greenAccent.withOpacity(0.5),
                           selected: _isSelected[answerIndex],
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.green, width: 1),
+                            side:
+                                const BorderSide(color: Colors.green, width: 1),
                             borderRadius: BorderRadius.circular(5),
                           ),
                           title: Text(
@@ -123,6 +150,8 @@ class _QuestionsState extends State<Questions> {
                               _isSelected[1] = false;
                               _isSelected[2] = false;
                               _isSelected[answerIndex] = true;
+                              userInput = alphabetSelections[answerIndex];
+                              // print(userInput);
                             });
                           },
                         ),
@@ -130,6 +159,18 @@ class _QuestionsState extends State<Questions> {
                     );
                   }),
             ),
+            ElevatedButton(
+                onPressed: () {
+                  if (widget.listOfQuestions[index]['correct_answer'] ==
+                      userInput) {
+                    print("YAYYYY");
+                  }
+                  setState(() {
+                    index++;
+                  });
+                  print(index);
+                },
+                child: const Text("submit"))
           ],
         ),
       ),

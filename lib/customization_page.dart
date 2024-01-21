@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -67,7 +68,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
   @override
   void initState() {
     _loadAvatar(context);
-    if (user == null){
+    if (user == null) {
       lock = true;
     }
     super.initState();
@@ -76,7 +77,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
   Widget circleAvatarWidget() {
     return CircleAvatar(
       radius: 90,
-      backgroundColor: Colors.white70.withOpacity(0.9),
+      backgroundColor: const Color(0xff7c1c43).withOpacity(0.65),
       child: ClipRRect(
         borderRadius: const BorderRadius.all(
           Radius.circular(
@@ -113,7 +114,13 @@ class _CustomizationPageState extends State<CustomizationPage> {
                     radius: 70,
                   ),
                   const Icon(Icons.arrow_right, size: 25),
-                  circleAvatarWidget(),
+                  AvatarGlow(
+                      startDelay: const Duration(milliseconds: 1000),
+                      glowColor: Colors.red,
+                      glowShape: BoxShape.circle,
+                      glowRadiusFactor: 0.2,
+                      curve: Curves.fastOutSlowIn,
+                      child: circleAvatarWidget()),
                 ],
               ),
               SizedBox(

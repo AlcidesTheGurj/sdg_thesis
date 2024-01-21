@@ -50,6 +50,11 @@ dependencies:
   flutter_svg: ^2.0.5
   animated_icon_button: ^1.0.2
   rflutter_alert: ^2.0.7
+  animate_gradient: ^0.0.2+1
+  fancy_password_field: ^2.0.2
+  percent_indicator: ^4.2.3
+  avatar_glow: ^3.0.1
+  chat_bubbles: ^1.5.0
 
 dev_dependencies:
   flutter_test:

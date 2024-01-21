@@ -1,8 +1,7 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
+//import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -20,7 +19,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
-  final firestore.FirebaseFirestore _firestore = firestore.FirebaseFirestore.instance;
+ // final firestore.FirebaseFirestore _firestore = firestore.FirebaseFirestore.instance;
   firedatabase.Query dbRef = firedatabase.FirebaseDatabase.instance.ref().child('Gamemodes');
   //firedatabase.DatabaseReference reference = firedatabase.FirebaseDatabase.instance.ref().child('Gamemodes');
 
@@ -32,9 +31,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
 
 
     final List<Color> modeColors = [
-      Colors.purple.withOpacity(0.3),
-      Colors.blue.withOpacity(0.3),
-      Colors.green.withOpacity(0.3)
+      Colors.blueAccent.withOpacity(0.5),
+      Colors.greenAccent.withOpacity(0.5),
+      Colors.redAccent.withOpacity(0.5)
     ];
 
   Widget myWidget({required Map gamemode}) {
@@ -99,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     @override
     Widget build(BuildContext context) {
       return
-        Container(
+        SizedBox(
           height: double.infinity,
           child: FirebaseAnimatedList(
             query: dbRef,
