@@ -119,7 +119,7 @@ class _HomeState extends State<Home> {
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             elevation: 0,
-            backgroundColor: Colors.black,
+            backgroundColor: Colors.transparent,
             // title: Text(
             //   titles[_selectedIndex],
             //   style: GoogleFonts.roboto(
@@ -184,16 +184,16 @@ class _HomeState extends State<Home> {
 
           //bottom navigation that controls iteration of body
           bottomNavigationBar: Container(
-            color: Colors.black,
+            color: Colors.transparent,
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
               child: GNav(
-                backgroundColor: Colors.black,
+                backgroundColor: Colors.transparent,
                 tabBackgroundColor: Colors.grey
                     .withOpacity(0.1), // selected tab background color
                 padding: const EdgeInsets.all(14),
-                gap: 8,
+                gap: 10,
                 haptic: true,
                 iconSize: 26, // tab button icon size
                 curve: Curves.bounceIn,

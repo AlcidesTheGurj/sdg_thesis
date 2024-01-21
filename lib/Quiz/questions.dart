@@ -1,9 +1,14 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:fluttermoji/fluttermoji.dart';
 //import 'package:firebase_database/firebase_database.dart' as firedatabase;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
+
+import '../customization_page.dart';
+import '../main.dart';
 
 class Questions extends StatefulWidget {
   const Questions(
@@ -16,7 +21,32 @@ class Questions extends StatefulWidget {
   State<Questions> createState() => _QuestionsState();
 }
 
+
 class _QuestionsState extends State<Questions> {
+
+  Widget circleAvatarWidget() {
+    return CircleAvatar(
+      radius: 90,
+      backgroundColor: const Color(0xff7c1c43).withOpacity(0.65),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(
+          Radius.circular(
+            90,
+          ),
+        ),
+        child: SvgPicture.string(
+          FluttermojiFunctions().decodeFluttermojifromString(avatarData),
+          height: 150,
+          width: 100,
+        ),
+      ),
+    );
+    // FluttermojiCircleAvatar(
+    //   backgroundColor: Colors.grey[200],
+    //   radius: 100,
+    // ));
+  }
+
   String status = '';
 
   late DatabaseReference dbRef;
@@ -35,8 +65,28 @@ class _QuestionsState extends State<Questions> {
 
   String title = "";
 
+  Future<void> _loadAvatar(BuildContext context) async {
+    if (context.mounted && user != null) {
+      DatabaseReference ref =
+      FirebaseDatabase.instance.ref('Players/${user?.uid}/avatar');
+      var dataSnapshot = await ref.get();
+      var userObject = dataSnapshot.value!;
+      //print(userObject);
+      //print(user?.uid as String);
+
+      //final value = FluttermojiFunctions().decodeFluttermojifromString(userObject as String);
+      //print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+      //print(userObject as String);
+
+      setState(() {
+        avatarData = userObject as String;
+      });
+    }
+  }
+
   @override
   void initState() {
+    _loadAvatar(context);
     // print(widget.listOfQuestions);
     // print(widget.listOfQuestions[index]['answer'].length);
     // print(widget.listOfQuestions[1]['answer'].length);
@@ -81,7 +131,8 @@ class _QuestionsState extends State<Questions> {
               ),
             ),
             Row(
-              children: [Text("data"),
+              children: [
+                circleAvatarWidget(),
                 BubbleSpecialTwo(
                   text: widget.listOfQuestions[index]['question'].toString(),
                   isSender: false,
@@ -101,9 +152,6 @@ class _QuestionsState extends State<Questions> {
               style: const TextStyle(
                 fontSize: 20.0,
               ),
-            ),
-            const SizedBox(
-              height: 200,
             ),
             SizedBox(
               // decoration: BoxDecoration(
