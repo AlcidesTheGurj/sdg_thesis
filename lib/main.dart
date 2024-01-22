@@ -7,6 +7,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:info_widget/info_widget.dart';
 import 'package:sdg_thesis/customization_page.dart';
 import 'package:sdg_thesis/home_page.dart';
 import 'auth.dart';
@@ -68,7 +69,12 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   // List<Color> colors = [Colors.amber, Colors.blue, Colors.green, Colors.red];
-  List<Color> colors = [Colors.amber, Colors.blue, Colors.green, Colors.red];
+  List<Color> colors = [
+    Colors.blue,
+    Colors.purpleAccent,
+    Colors.green,
+    Colors.red
+  ];
   List<String> titles = ["Home", "Avatar Palette", "Leaderboard", "Account"];
   List<IconData> icons = [
     Icons.home,
@@ -77,15 +83,18 @@ class _HomeState extends State<Home> {
     Icons.person
   ];
 
-  List<Color> gradientColors = [
-    const Color(0xff1f005c),
-    const Color(0xff5b0060),
-    const Color(0xff870160),
-    const Color(0xffac255e),
-    const Color(0xffca485c),
-    const Color(0xffe16b5c),
-    const Color(0xfff39060),
-    const Color(0xffffb56b),
+  List<Color> primaryGradientColors = [
+    const Color(0xff160041),
+    const Color(0xff410046),
+    const Color(0xff600145),
+    const Color(0xff7c1c43),
+  ];
+
+  List<Color> secondaryGradientColors = [
+    const Color(0xff752933),
+    const Color(0xff803c36),
+    const Color(0xff5d3823),
+    const Color(0xff644525),
   ];
 
   @override
@@ -94,7 +103,16 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
- // final _loggedIn = Auth().authStateChanges;
+  // final _loggedIn = Auth().authStateChanges;
+
+  /*Color(0xffe5243b),
+          Color(0xffc5192d),
+          Color(0xffa21942),
+          Color(0xffff3a21),
+          Color(0xfffd6925),
+          Color(0xffbf8b2e),
+          Color(0xffdda63a),
+          Color(0xfffd9d24),*/
 
   @override
   Widget build(BuildContext context) {
@@ -102,23 +120,25 @@ class _HomeState extends State<Home> {
       // used to hide keyboard on press
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: AnimateGradient(
-        primaryColors: const [
-          Color(0xff160041),
-          Color(0xff410046),
-          Color(0xff600145),
-          Color(0xff7c1c43),
-        ],
-        secondaryColors: const [
-          Color(0xff752933),
-          Color(0xff803c36),
-          Color(0xff5d3823),
-          Color(0xff644525),
-        ],
+        primaryColors: primaryGradientColors,
+        secondaryColors: secondaryGradientColors,
         child: Scaffold(
           //resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             elevation: 0,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InfoWidget(
+                  infoText:
+                  "This application was created to raise awareness about the United Nations' 17 Sustainable Development Goals (SDGs). To learn more about sustainable development visit: sds.un.org",
+                  iconData: Icons.help,
+                  iconColor: Colors.grey,
+                  infoTextStyle: GoogleFonts.roboto(fontSize: 14, color: Colors.black),
+                ),
+              ),
+            ],
             backgroundColor: Colors.transparent,
             // title: Text(
             //   titles[_selectedIndex],
@@ -130,7 +150,7 @@ class _HomeState extends State<Home> {
                 Icon(
                   icons[_selectedIndex],
                   color: colors[_selectedIndex],
-                  size: 25.0,
+                  size: 30.0,
                 ),
                 const SizedBox(
                   width: 5.0,
@@ -208,13 +228,13 @@ class _HomeState extends State<Home> {
                     hoverColor: colors[0],
                     icon: icons[0],
                     text: titles[0],
-                    iconActiveColor: Colors.amber,
+                    iconActiveColor: Colors.blue,
                   ),
                   GButton(
                     hoverColor: colors[1],
                     icon: icons[1],
                     text: titles[1],
-                    iconActiveColor: Colors.blue,
+                    iconActiveColor: Colors.purpleAccent,
                   ),
                   GButton(
                     hoverColor: colors[2],
