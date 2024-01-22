@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -73,41 +72,7 @@ class _GuestPageState extends State<GuestPage> {
     await Auth().signOut();
   }
 
-  List<bool> hm = [
-    false,
-    false,
-    true,
-    false,
-    true,
-    true,
-    true,
-    true,
-    true,
-    false,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-  ];
+  List<bool> hm = [false,false,true,false,true,true,true,true,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,];
 
   @override
   Widget build(BuildContext context) {
@@ -146,14 +111,7 @@ class _GuestPageState extends State<GuestPage> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
                           child: Stack(children: [
-                            CachedNetworkImage(
-                              imageUrl:
-                                  "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2F$index.jpg?alt=media&token=5f0f305b-50de-48ff-969f-de5f729d2b79",
-                              placeholder: (context, url) =>
-                                  const CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            ),
+                            Image.asset("images/$index.jpg", fit: BoxFit.fill,),
                             Visibility(
                               visible: hm[index],
                               child: FractionallySizedBox(
