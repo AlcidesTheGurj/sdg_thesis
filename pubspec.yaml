@@ -58,6 +58,7 @@ dependencies:
   firebase_storage: ^11.6.0
   cached_network_image: ^3.2.3
   info_widget: ^1.0.0
+  transparent_image: ^2.0.1
 
 dev_dependencies:
   flutter_test:
