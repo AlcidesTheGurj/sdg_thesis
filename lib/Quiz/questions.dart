@@ -1,3 +1,4 @@
+import 'package:animate_gradient/animate_gradient.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
 
+import '../completed_quiz.dart';
 import '../customization_page.dart';
 import '../main.dart';
 
@@ -21,13 +23,12 @@ class Questions extends StatefulWidget {
   State<Questions> createState() => _QuestionsState();
 }
 
-
 class _QuestionsState extends State<Questions> {
-
   Widget circleAvatarWidget() {
     return CircleAvatar(
       radius: 90,
-      backgroundColor: const Color(0xff7c1c43).withOpacity(0.65),
+      // backgroundColor: const Color(0xff7c1c43).withOpacity(0.65),
+      backgroundColor: Colors.transparent,
       child: ClipRRect(
         borderRadius: const BorderRadius.all(
           Radius.circular(
@@ -70,7 +71,7 @@ class _QuestionsState extends State<Questions> {
   Future<void> _loadAvatar(BuildContext context) async {
     if (context.mounted && user != null) {
       DatabaseReference ref =
-      FirebaseDatabase.instance.ref('Players/${user?.uid}/avatar');
+          FirebaseDatabase.instance.ref('Players/${user?.uid}/avatar');
       var dataSnapshot = await ref.get();
       var userObject = dataSnapshot.value!;
       //print(userObject);
@@ -101,6 +102,25 @@ class _QuestionsState extends State<Questions> {
 
   @override
   Widget build(BuildContext context) {
+
+    Route _createRoute(int totalPoints) {
+      return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>  CompletedPage(totalPoints),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 1.0);
+          const end = Offset.zero;
+          const curve = Curves.ease;
+
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        },
+      );
+    }
+
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -133,35 +153,64 @@ class _QuestionsState extends State<Questions> {
                   animation: true,
                 ),
               ),
-              const SizedBox(height: 20,),
-              Row(
-                children: [
-                  circleAvatarWidget(),
-                  BubbleSpecialTwo(
-                    text: widget.listOfQuestions[index]['question'].toString(),
-                    isSender: false,
-                    color: Colors.purple.shade100,
-                    tail: true,
-                    textStyle: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.purple,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+              const SizedBox(
+                height: 20,
               ),
-              Text(
-                widget.listOfQuestions[index]['question'].toString(),
-                style: const TextStyle(
-                  fontSize: 20.0,
+              AnimateGradient(
+                primaryColors: const [
+                  Color(0xff160041),
+                  Color(0xff410046),
+                  Color(0xff600145),
+                  Color(0xff7c1c43),
+                ],
+                secondaryColors: const [
+                  Color(0xff752933),
+                  Color(0xff803c36),
+                  Color(0xff5d3823),
+                  Color(0xff644525),
+                ],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    circleAvatarWidget(),
+                  ],
                 ),
               ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // SizedBox(width:MediaQuery.of(context).size.width * 0.30),
+
+                    BubbleSpecialTwo(
+                      text:
+                          widget.listOfQuestions[index]['question'].toString(),
+                      isSender: false,
+                      color: Color(0xff410046),
+                      tail: false,
+                      textStyle: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Text(
+              //   widget.listOfQuestions[index]['question'].toString(),
+              //   style: const TextStyle(
+              //     fontSize: 20.0,
+              //   ),
+              // ),
               SizedBox(
                 // decoration: BoxDecoration(
                 //   color: Colors.green.withOpacity(0.3)
                 // ),
-                height: 300,
+                height: 260,
                 child: ListView.builder(
                     itemCount: widget.listOfQuestions[index]['answer'].length,
                     itemBuilder: (BuildContext context, int answerIndex) {
@@ -175,8 +224,8 @@ class _QuestionsState extends State<Questions> {
                                 Colors.greenAccent.withOpacity(0.5),
                             selected: _isSelected[answerIndex],
                             shape: RoundedRectangleBorder(
-                              side:
-                                  const BorderSide(color: Colors.green, width: 1),
+                              side: const BorderSide(
+                                  color: Colors.green, width: 1),
                               borderRadius: BorderRadius.circular(5),
                             ),
                             title: Text(
@@ -213,16 +262,37 @@ class _QuestionsState extends State<Questions> {
               ),
               ElevatedButton(
                   onPressed: () {
-                    if (widget.listOfQuestions[index]['correct_answer'] ==
-                        userInput) {
-                     // print("YAYYYY");
+                    if (index < widget.listOfQuestions.length - 1){
+                      if (widget.listOfQuestions[index]['correct_answer'] ==
+                          userInput) {
+                        // print("YAYYYY");
+                        setState(() {
+                          totalPoints +=
+                          widget.listOfQuestions[index]['point'] as int;
+                          print(totalPoints);
+                          index++;
+                        });
+                      }
+                      else
+                      {
+                        setState(() {
+                          index++;
+                        });
+                      }
                     }
-                    setState(() {
-                      totalPoints += widget.listOfQuestions[index]['point'] as int;
-                      print(totalPoints);
-                      index++;
-                    });
-                   // print(index);
+                    else {
+                      //Navigator.pop(context);
+                      totalPoints +=
+                      widget.listOfQuestions[index]['point'] as int;
+                      Navigator.of(context).pushReplacement(_createRoute(totalPoints));
+
+                    }
+                    // setState(() {
+                    //   totalPoints += widget.listOfQuestions[index]['point'] as int;
+                    //   print(totalPoints);
+                    //   index++;
+                    // });
+                    // print(index);
                   },
                   child: const Text("submit"))
             ],
