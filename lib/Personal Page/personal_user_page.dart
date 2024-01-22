@@ -78,7 +78,7 @@ class _UserPageState extends State<UserPage> {
     return Text(errorMsg == '' ? '' : errorMsg);
   }
 
-  Widget _submitButton(String password, String controller) {
+  Widget _submitButton() {
     return ElevatedButton(
       style: const ButtonStyle(
           backgroundColor: MaterialStatePropertyAll(
@@ -91,8 +91,10 @@ class _UserPageState extends State<UserPage> {
           signInWithEmailAndPassword();
         }
         else {
-          if (password == controller){
-            createUserWithEmailAndPassword();
+          if (_controllerPassword.text == _controllerConfirm.text){
+           createUserWithEmailAndPassword();
+           //  print("Password: ${_controllerPassword.text}");
+           //  print("Confirm Password: ${_controllerConfirm.text}");
           }
           else{
             setState(() {
@@ -174,7 +176,7 @@ class _UserPageState extends State<UserPage> {
             // ),
           ),
           _errorMsg(),
-          _submitButton(_controllerPassword.text,_controllerConfirm.text),
+          _submitButton(),
           _loginOrRegisterButton()
         ],
       ),

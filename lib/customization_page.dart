@@ -100,208 +100,210 @@ class _CustomizationPageState extends State<CustomizationPage> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    return Stack(children: [
-      Center(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FluttermojiCircleAvatar(
-                    backgroundColor: Colors.white70.withOpacity(0.25),
-                    radius: 70,
-                  ),
-                  const Icon(Icons.arrow_right, size: 25),
-                  AvatarGlow(
-                      startDelay: const Duration(milliseconds: 1000),
-                      glowColor: Colors.red,
-                      glowShape: BoxShape.circle,
-                      glowRadiusFactor: 0.2,
-                      curve: Curves.fastOutSlowIn,
-                      child: circleAvatarWidget()),
-                ],
-              ),
-              SizedBox(
-                width: min(600, width * 0.85),
-                child: Row(
+    return SingleChildScrollView(
+      child: Stack(children: [
+        Center(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Customize:",
-                      // style: Theme.of(context).textTheme.titleLarge,
-                      style: GoogleFonts.roboto(fontSize: 20.0),
+                    FluttermojiCircleAvatar(
+                      backgroundColor: Colors.white70.withOpacity(0.25),
+                      radius: 70,
                     ),
-                    const Spacer(),
-                    // FluttermojiSaveWidget(
-                    //   onTap: ()  {
-                    //     _saveAvatar(context);
-                    //   },
-                    // ),
+                    const Icon(Icons.arrow_right, size: 25),
+                    AvatarGlow(
+                        startDelay: const Duration(milliseconds: 1000),
+                        glowColor: Colors.red,
+                        glowShape: BoxShape.circle,
+                        glowRadiusFactor: 0.2,
+                        curve: Curves.fastOutSlowIn,
+                        child: circleAvatarWidget()),
                   ],
                 ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 5.0, vertical: 20),
-                child: FluttermojiCustomizer(
-                  scaffoldWidth: min(620, width * 0.90),
-                  autosave: false,
-                  theme: FluttermojiThemeData(
-                      boxDecoration:
-                          const BoxDecoration(boxShadow: [BoxShadow()])),
-                ),
-              ),
-              Container(
-                width: 110,
-                height: 40,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: const BorderRadius.all(Radius.circular(10))),
-                child: FluttermojiSaveWidget(
-                  onTap: () {
-                    _saveAvatar(context);
-                  },
+                SizedBox(
+                  width: min(600, width * 0.85),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.all(2.0),
-                        child: Icon(
-                          Icons.save,
-                          size: 25,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 3.0,
-                      ),
                       Text(
-                        "Save",
-                        style: GoogleFonts.roboto(fontSize: 25.0),
-                      )
+                        "Customize:",
+                        // style: Theme.of(context).textTheme.titleLarge,
+                        style: GoogleFonts.roboto(fontSize: 20.0),
+                      ),
+                      const Spacer(),
+                      // FluttermojiSaveWidget(
+                      //   onTap: ()  {
+                      //     _saveAvatar(context);
+                      //   },
+                      // ),
                     ],
                   ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5.0, vertical: 20),
+                  child: FluttermojiCustomizer(
+                    scaffoldWidth: min(620, width * 0.90),
+                    autosave: false,
+                    theme: FluttermojiThemeData(
+                        boxDecoration:
+                            const BoxDecoration(boxShadow: [BoxShadow()])),
+                  ),
+                ),
+                Container(
+                  width: 110,
+                  height: 40,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: const BorderRadius.all(Radius.circular(10))),
+                  child: FluttermojiSaveWidget(
+                    onTap: () {
+                      _saveAvatar(context);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(2.0),
+                          child: Icon(
+                            Icons.save,
+                            size: 25,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 3.0,
+                        ),
+                        Text(
+                          "Save",
+                          style: GoogleFonts.roboto(fontSize: 25.0),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      Visibility(
-        visible: lock,
-        child: FractionallySizedBox(
-            alignment: Alignment.center,
-            widthFactor: 1.0,
-            heightFactor: 1.0,
-            child: DecoratedBox(
-              decoration: BoxDecoration(color: Colors.black.withOpacity(0.9)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  const Icon(
-                    Icons.lock,
-                    size: 70,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (user != null) {
-                        Alert(
-                          context: context,
-                          style: AlertStyle(
-                              backgroundColor: Colors.black,
-                              animationDuration:
-                                  const Duration(milliseconds: 300),
-                              animationType: AnimationType.fromBottom,
-                              descStyle:
-                                  GoogleFonts.roboto(color: Colors.white)),
-                          image: const Icon(
-                            Icons.lock_open,
-                            color: Colors.blue,
-                            size: 75,
-                          ),
-                          desc:
-                              "Would you like Avatar Customization for 500 points?",
-                          buttons: [
-                            DialogButton(
-                              onPressed: () => Navigator.pop(context),
-                              width: 120,
-                              color: Colors.red,
-                              child: Text(
-                                "No",
-                                style: GoogleFonts.roboto(
-                                    color: Colors.white, fontSize: 25),
-                              ),
-                            ),
-                            DialogButton(
-                              onPressed: () {
-                                setState(() {
-                                  lock = false;
-                                  Navigator.pop(context);
-                                });
-                              },
-                              width: 120,
+        Visibility(
+          visible: lock,
+          child: FractionallySizedBox(
+              alignment: Alignment.center,
+              widthFactor: 1.0,
+              heightFactor: 1.0,
+              child: DecoratedBox(
+                decoration: BoxDecoration(color: Colors.black.withOpacity(0.9)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    const Icon(
+                      Icons.lock,
+                      size: 70,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (user != null) {
+                          Alert(
+                            context: context,
+                            style: AlertStyle(
+                                backgroundColor: Colors.black,
+                                animationDuration:
+                                    const Duration(milliseconds: 300),
+                                animationType: AnimationType.fromBottom,
+                                descStyle:
+                                    GoogleFonts.roboto(color: Colors.white)),
+                            image: const Icon(
+                              Icons.lock_open,
                               color: Colors.blue,
-                              child: Text(
-                                "Yes",
-                                style: GoogleFonts.roboto(
-                                    color: Colors.white, fontSize: 25),
-                              ),
+                              size: 75,
                             ),
-                          ],
-                        ).show();
-                      } else {
-                        Alert(
-                          context: context,
-                          style: AlertStyle(
-                              backgroundColor: Colors.black,
-                              animationDuration:
-                                  const Duration(milliseconds: 300),
-                              animationType: AnimationType.fromBottom,
-                              descStyle:
-                                  GoogleFonts.roboto(color: Colors.white)),
-                          image: const Icon(
-                            Icons.info_outline,
-                            color: Colors.red,
-                            size: 75,
-                          ),
-                          desc:
-                              "You need to Log In and earn 500 points to unlock this feature",
-                          buttons: [
-                            DialogButton(
-                              onPressed: () => Navigator.pop(context),
-                              width: 120,
+                            desc:
+                                "Would you like Avatar Customization for 500 points?",
+                            buttons: [
+                              DialogButton(
+                                onPressed: () => Navigator.pop(context),
+                                width: 120,
+                                color: Colors.red,
+                                child: Text(
+                                  "No",
+                                  style: GoogleFonts.roboto(
+                                      color: Colors.white, fontSize: 25),
+                                ),
+                              ),
+                              DialogButton(
+                                onPressed: () {
+                                  setState(() {
+                                    lock = false;
+                                    Navigator.pop(context);
+                                  });
+                                },
+                                width: 120,
+                                color: Colors.blue,
+                                child: Text(
+                                  "Yes",
+                                  style: GoogleFonts.roboto(
+                                      color: Colors.white, fontSize: 25),
+                                ),
+                              ),
+                            ],
+                          ).show();
+                        } else {
+                          Alert(
+                            context: context,
+                            style: AlertStyle(
+                                backgroundColor: Colors.black,
+                                animationDuration:
+                                    const Duration(milliseconds: 300),
+                                animationType: AnimationType.fromBottom,
+                                descStyle:
+                                    GoogleFonts.roboto(color: Colors.white)),
+                            image: const Icon(
+                              Icons.info_outline,
                               color: Colors.red,
-                              child: Text(
-                                "OK",
-                                style: GoogleFonts.roboto(
-                                    color: Colors.white, fontSize: 25),
-                              ),
+                              size: 75,
                             ),
-                          ],
-                        ).show();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                    ),
-                    child: Text(
-                      "Unlock",
-                      style: GoogleFonts.roboto(fontSize: 25.0),
-                    ),
-                  )
-                ],
-              ),
-            )),
-      ),
-    ]);
+                            desc:
+                                "You need to Log In and earn 500 points to unlock this feature",
+                            buttons: [
+                              DialogButton(
+                                onPressed: () => Navigator.pop(context),
+                                width: 120,
+                                color: Colors.red,
+                                child: Text(
+                                  "OK",
+                                  style: GoogleFonts.roboto(
+                                      color: Colors.white, fontSize: 25),
+                                ),
+                              ),
+                            ],
+                          ).show();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                      ),
+                      child: Text(
+                        "Unlock",
+                        style: GoogleFonts.roboto(fontSize: 25.0),
+                      ),
+                    )
+                  ],
+                ),
+              )),
+        ),
+      ]),
+    );
   }
 }
 // class NewPage extends StatelessWidget {
