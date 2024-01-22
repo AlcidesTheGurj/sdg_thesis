@@ -65,6 +65,8 @@ class _QuestionsState extends State<Questions> {
 
   String title = "";
 
+  int totalPoints = 0;
+
   Future<void> _loadAvatar(BuildContext context) async {
     if (context.mounted && user != null) {
       DatabaseReference ref =
@@ -110,116 +112,121 @@ class _QuestionsState extends State<Questions> {
             },
           ),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            // Text(
-            //   "Question ${index + 1} of ${widget.listOfQuestions.length}",
-            //   style: const TextStyle(fontSize: 22.0),
-            // ),
-            const SizedBox(
-              height: 20,
-            ),
-            Align(
-              child: LinearPercentIndicator(
-                width: MediaQuery.of(context).size.width,
-                lineHeight: 14.0,
-                percent: (index + 1) / widget.listOfQuestions.length,
-                backgroundColor: Colors.grey,
-                progressColor: Colors.blue,
-                animation: true,
-              ),
-            ),
-            Row(
-              children: [
-                circleAvatarWidget(),
-                BubbleSpecialTwo(
-                  text: widget.listOfQuestions[index]['question'].toString(),
-                  isSender: false,
-                  color: Colors.purple.shade100,
-                  tail: true,
-                  textStyle: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.purple,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            Text(
-              widget.listOfQuestions[index]['question'].toString(),
-              style: const TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-            SizedBox(
-              // decoration: BoxDecoration(
-              //   color: Colors.green.withOpacity(0.3)
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // Text(
+              //   "Question ${index + 1} of ${widget.listOfQuestions.length}",
+              //   style: const TextStyle(fontSize: 22.0),
               // ),
-              height: 300,
-              child: ListView.builder(
-                  itemCount: widget.listOfQuestions[index]['answer'].length,
-                  itemBuilder: (BuildContext context, int answerIndex) {
-                    return Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 20.0, left: 5.0, right: 5.0, top: 10.0),
-                      child: SizedBox(
-                        height: 60,
-                        child: ListTile(
-                          selectedTileColor:
-                              Colors.greenAccent.withOpacity(0.5),
-                          selected: _isSelected[answerIndex],
-                          shape: RoundedRectangleBorder(
-                            side:
-                                const BorderSide(color: Colors.green, width: 1),
-                            borderRadius: BorderRadius.circular(5),
+              const SizedBox(
+                height: 20,
+              ),
+              Align(
+                child: LinearPercentIndicator(
+                  width: MediaQuery.of(context).size.width,
+                  lineHeight: 14.0,
+                  percent: (index + 1) / widget.listOfQuestions.length,
+                  backgroundColor: Colors.grey,
+                  progressColor: Colors.blue,
+                  animation: true,
+                ),
+              ),
+              const SizedBox(height: 20,),
+              Row(
+                children: [
+                  circleAvatarWidget(),
+                  BubbleSpecialTwo(
+                    text: widget.listOfQuestions[index]['question'].toString(),
+                    isSender: false,
+                    color: Colors.purple.shade100,
+                    tail: true,
+                    textStyle: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.purple,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              Text(
+                widget.listOfQuestions[index]['question'].toString(),
+                style: const TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+              SizedBox(
+                // decoration: BoxDecoration(
+                //   color: Colors.green.withOpacity(0.3)
+                // ),
+                height: 300,
+                child: ListView.builder(
+                    itemCount: widget.listOfQuestions[index]['answer'].length,
+                    itemBuilder: (BuildContext context, int answerIndex) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                            bottom: 20.0, left: 5.0, right: 5.0, top: 10.0),
+                        child: SizedBox(
+                          height: 60,
+                          child: ListTile(
+                            selectedTileColor:
+                                Colors.greenAccent.withOpacity(0.5),
+                            selected: _isSelected[answerIndex],
+                            shape: RoundedRectangleBorder(
+                              side:
+                                  const BorderSide(color: Colors.green, width: 1),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            title: Text(
+                              '${widget.listOfQuestions[index]['answer'][answerIndex]}',
+                              style: GoogleFonts.roboto(
+                                  fontSize: 20.0, color: Colors.white),
+                            ),
+                            // subtitle: Text(
+                            //     "None",
+                            //     style: GoogleFonts.roboto(
+                            //         fontSize: 16.0,
+                            //         color: Colors.white70
+                            //     )
+                            // ),
+                            leading: Text(
+                              alphabetSelections[answerIndex],
+                              style: GoogleFonts.roboto(
+                                  fontSize: 30.0, color: Colors.white),
+                            ),
+                            onTap: () {
+                              setState(() {
+                                _isSelected[0] = false;
+                                _isSelected[1] = false;
+                                _isSelected[2] = false;
+                                _isSelected[answerIndex] = true;
+                                userInput = alphabetSelections[answerIndex];
+                                // print(userInput);
+                              });
+                            },
                           ),
-                          title: Text(
-                            '${widget.listOfQuestions[index]['answer'][answerIndex]}',
-                            style: GoogleFonts.roboto(
-                                fontSize: 20.0, color: Colors.white),
-                          ),
-                          // subtitle: Text(
-                          //     "None",
-                          //     style: GoogleFonts.roboto(
-                          //         fontSize: 16.0,
-                          //         color: Colors.white70
-                          //     )
-                          // ),
-                          leading: Text(
-                            alphabetSelections[answerIndex],
-                            style: GoogleFonts.roboto(
-                                fontSize: 30.0, color: Colors.white),
-                          ),
-                          onTap: () {
-                            setState(() {
-                              _isSelected[0] = false;
-                              _isSelected[1] = false;
-                              _isSelected[2] = false;
-                              _isSelected[answerIndex] = true;
-                              userInput = alphabetSelections[answerIndex];
-                              // print(userInput);
-                            });
-                          },
                         ),
-                      ),
-                    );
-                  }),
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  if (widget.listOfQuestions[index]['correct_answer'] ==
-                      userInput) {
-                   // print("YAYYYY");
-                  }
-                  setState(() {
-                    index++;
-                  });
-                 // print(index);
-                },
-                child: const Text("submit"))
-          ],
+                      );
+                    }),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    if (widget.listOfQuestions[index]['correct_answer'] ==
+                        userInput) {
+                     // print("YAYYYY");
+                    }
+                    setState(() {
+                      totalPoints += widget.listOfQuestions[index]['point'] as int;
+                      print(totalPoints);
+                      index++;
+                    });
+                   // print(index);
+                  },
+                  child: const Text("submit"))
+            ],
+          ),
         ),
       ),
     );
