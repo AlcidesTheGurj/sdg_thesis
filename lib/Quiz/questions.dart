@@ -149,7 +149,7 @@ class _QuestionsState extends State<Questions> {
                   lineHeight: 14.0,
                   percent: (index + 1) / widget.listOfQuestions.length,
                   backgroundColor: Colors.grey,
-                  progressColor: Colors.blue,
+                  progressColor: const Color(0xff00689d),
                   animation: true,
                 ),
               ),

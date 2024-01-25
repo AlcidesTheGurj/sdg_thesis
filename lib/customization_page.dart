@@ -77,7 +77,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
   Widget circleAvatarWidget() {
     return CircleAvatar(
       radius: 90,
-      backgroundColor: const Color(0xff7c1c43).withOpacity(0.65),
+      backgroundColor: const Color(0xffa21942).withOpacity(0.65),
       child: ClipRRect(
         borderRadius: const BorderRadius.all(
           Radius.circular(
@@ -116,7 +116,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
                   const Icon(Icons.arrow_right, size: 25),
                   AvatarGlow(
                       startDelay: const Duration(milliseconds: 1000),
-                      glowColor: Colors.red,
+                      glowColor: Color(0xffa21942),
                       glowShape: BoxShape.circle,
                       glowRadiusFactor: 0.2,
                       curve: Curves.fastOutSlowIn,
@@ -145,11 +145,24 @@ class _CustomizationPageState extends State<CustomizationPage> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 5.0, vertical: 20),
                 child: FluttermojiCustomizer(
-                  scaffoldWidth: min(620, width * 0.90),
+                  scaffoldWidth: width,
                   autosave: false,
                   theme: FluttermojiThemeData(
-                      boxDecoration:
-                          const BoxDecoration(boxShadow: [BoxShadow()])),
+                      boxDecoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.6),
+                          spreadRadius: 6,
+                          blurRadius: 8,
+                          offset: const Offset(0, 3),
+                        )
+                      ]),
+                      primaryBgColor: Colors.black,
+                    secondaryBgColor: Colors.transparent,
+                    iconColor: const Color(0xffdd1367),
+                    labelTextStyle: GoogleFonts.roboto(fontSize: 20),
+                    unselectedIconColor: Colors.white,
+                    selectedIconColor: const Color(0xffdd1367),
+                  ),
                 ),
               ),
               Container(
@@ -224,7 +237,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
                                   GoogleFonts.roboto(color: Colors.white)),
                           image: const Icon(
                             Icons.lock_open,
-                            color: Colors.blue,
+                            color: Color(0xff00689d),
                             size: 75,
                           ),
                           desc:
@@ -248,7 +261,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
                                 });
                               },
                               width: 120,
-                              color: Colors.blue,
+                              color: const Color(0xff00689d),
                               child: Text(
                                 "Yes",
                                 style: GoogleFonts.roboto(
@@ -290,7 +303,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: const Color(0xff00689d),
                     ),
                     child: Text(
                       "Unlock",

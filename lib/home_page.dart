@@ -36,13 +36,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     const Icon(Icons.auto_mode, size: 40),
   ];
 
+  //0.5 opacity
   final List<Color> modeColors = [
-    Colors.blueAccent.withOpacity(0.5),
-    Colors.greenAccent.withOpacity(0.5),
-    Colors.redAccent.withOpacity(0.5),
-    Colors.grey.withOpacity(0.5),
-    Colors.grey.withOpacity(0.5),
-    Colors.grey.withOpacity(0.5),
+    Color(0xff00689d),
+    Color(0xff3f7e44),
+    Color(0xffe5243b),
+    Colors.grey,
+    Colors.grey,
+    Colors.grey,
   ];
 
   @override

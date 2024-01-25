@@ -119,7 +119,7 @@ class _UserPageState extends State<UserPage> {
         });
       },
       child: Text(isLogin ? 'Register instead' : 'Login instead',
-          style: GoogleFonts.roboto(fontSize: 18,color:Colors.blueAccent,
+          style: GoogleFonts.roboto(fontSize: 18,color:const Color(0xff00689d),
           )),
     );
   }
