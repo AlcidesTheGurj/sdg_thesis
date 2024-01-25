@@ -70,10 +70,10 @@ class _HomeState extends State<Home> {
 
   // List<Color> colors = [Colors.amber, Colors.blue, Colors.green, Colors.red];
   List<Color> colors = [
-    Colors.blue,
-    Colors.purpleAccent,
-    Colors.green,
-    Colors.red
+    const Color(0xff00689d),
+    const Color(0xffdd1367),
+    const Color(0xff3f7e44),
+    const Color(0xffe5243b),
   ];
   List<String> titles = ["Home", "Avatar Palette", "Leaderboard", "Account"];
   List<IconData> icons = [
@@ -228,25 +228,25 @@ class _HomeState extends State<Home> {
                     hoverColor: colors[0],
                     icon: icons[0],
                     text: titles[0],
-                    iconActiveColor: Colors.blue,
+                    iconActiveColor: colors[0],
                   ),
                   GButton(
                     hoverColor: colors[1],
                     icon: icons[1],
                     text: titles[1],
-                    iconActiveColor: Colors.purpleAccent,
+                    iconActiveColor: colors[1],
                   ),
                   GButton(
                     hoverColor: colors[2],
                     icon: icons[2],
                     text: titles[2],
-                    iconActiveColor: Colors.green,
+                    iconActiveColor: colors[2],
                   ),
                   GButton(
                     hoverColor: colors[3],
                     icon: icons[3],
                     text: titles[3],
-                    iconActiveColor: Colors.red,
+                    iconActiveColor: colors[3],
                   ),
                 ],
               ),
