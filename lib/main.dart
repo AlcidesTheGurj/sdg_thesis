@@ -10,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:info_widget/info_widget.dart';
 import 'package:sdg_thesis/customization_page.dart';
 import 'package:sdg_thesis/home_page.dart';
+import 'package:sdg_thesis/leaderboard.dart';
 import 'auth.dart';
 import 'firebase_options.dart';
 import 'Personal Page/personal_widget_tree.dart';
@@ -61,7 +62,7 @@ class _HomeState extends State<Home> {
   final List<Widget> views = [
     const MyHomePage(),
     const CustomizationPage(),
-    const Placeholder(),
+    const LeaderBoard(),
     //const LoginScreen(),
     const WidgetTree()
   ];
