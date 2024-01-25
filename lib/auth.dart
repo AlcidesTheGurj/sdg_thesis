@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sdg_thesis/main.dart';
 
 class Auth {
@@ -56,5 +57,48 @@ class Auth {
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
     user = Auth().currentUser;
+  }
+
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: <String>[
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ]
+  );
+
+
+  Future<dynamic> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+      await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      String? userUuid = _firebaseAuth.currentUser?.uid;
+      if (userUuid != null){
+        DatabaseReference ref = FirebaseDatabase.instance.ref("Players/$userUuid");
+        await ref.set({
+          "points": 0,
+        });
+      }
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on Exception catch (e) {
+      print('exception->$e');
+    }
+  }
+
+  Future<bool> signOutFromGoogle() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      return true;
+    } on Exception catch (_) {
+      return false;
+    }
   }
 }
