@@ -30,9 +30,9 @@ class _UserPageState extends State<UserPage> {
         errorMsg = e.message!;
       });
     }
-    if(mounted){
+    if (mounted) {
       setState(() {
-        if (user?.email != null){
+        if (user?.email != null) {
           name = user?.email as String;
         }
       });
@@ -48,10 +48,10 @@ class _UserPageState extends State<UserPage> {
         errorMsg = e.message!;
       });
     }
-    if (mounted){
+    if (mounted) {
       setState(() {
         User? user = Auth().currentUser;
-        if (user?.email != null){
+        if (user?.email != null) {
           name = user?.email as String;
         }
       });
@@ -66,10 +66,10 @@ class _UserPageState extends State<UserPage> {
       controller: controller,
       obscureText: false,
       decoration: InputDecoration(
-          labelText: title,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
+        labelText: title,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
       ),
     );
   }
@@ -87,16 +87,14 @@ class _UserPageState extends State<UserPage> {
       onPressed: () {
         print("object");
         print(isLogin);
-        if (isLogin){
+        if (isLogin) {
           signInWithEmailAndPassword();
-        }
-        else {
-          if (_controllerPassword.text == _controllerConfirm.text){
-           createUserWithEmailAndPassword();
-           //  print("Password: ${_controllerPassword.text}");
-           //  print("Confirm Password: ${_controllerConfirm.text}");
-          }
-          else{
+        } else {
+          if (_controllerPassword.text == _controllerConfirm.text) {
+            createUserWithEmailAndPassword();
+            //  print("Password: ${_controllerPassword.text}");
+            //  print("Confirm Password: ${_controllerConfirm.text}");
+          } else {
             setState(() {
               errorMsg = "Passwords need to match";
             });
@@ -104,7 +102,8 @@ class _UserPageState extends State<UserPage> {
         }
 
         //isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword;
-      },child: Text(
+      },
+      child: Text(
         isLogin ? 'Login' : 'Register',
         style: GoogleFonts.roboto(fontSize: 16),
       ),
@@ -119,9 +118,41 @@ class _UserPageState extends State<UserPage> {
         });
       },
       child: Text(isLogin ? 'Register instead' : 'Login instead',
-          style: GoogleFonts.roboto(fontSize: 18,color:const Color(0xff00689d),
+          style: GoogleFonts.roboto(
+            fontSize: 18,
+            color: const Color(0xff00689d),
           )),
     );
+  }
+
+  Future<void> signInWithGoogle() async {
+    try {
+      await Auth().signInWithGoogle();
+    } on FirebaseAuthException catch (e) {
+      print("error");
+    }
+    if (mounted) {
+      setState(() {
+        if (user?.email != null) {
+          name = user?.email as String;
+        }
+      });
+    }
+  }
+
+  Future<void> signOutWithGoogle() async {
+    try {
+      await Auth().signOutFromGoogle();
+    } on FirebaseAuthException catch (e) {
+      print("error");
+    }
+    if (mounted) {
+      setState(() {
+        if (user?.email != null) {
+          name = user?.email as String;
+        }
+      });
+    }
   }
 
   @override
@@ -129,56 +160,70 @@ class _UserPageState extends State<UserPage> {
     return Container(
       height: MediaQuery.of(context).size.height,
       padding: const EdgeInsets.only(right: 16.0, left: 16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            isLogin? "Sign In":"Register",
-            style: GoogleFonts.roboto(fontSize: 40),
-          ),
-          SizedBox(height: 15.0),
-          _entryField('email', _controllerEmail),
-          SizedBox(
-            height: 15,
-          ),
-          FancyPasswordField(
-            hasStrengthIndicator: false,
-            hasValidationRules: false,
-            decoration: InputDecoration(
-                labelText: "Password",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.0))),
-            controller: _controllerPassword,
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Visibility(
-            visible: !isLogin,
-            child: FancyPasswordField(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              isLogin ? "Sign In" : "Register",
+              style: GoogleFonts.roboto(fontSize: 40),
+            ),
+            SizedBox(height: 15.0),
+            _entryField('email', _controllerEmail),
+            SizedBox(
+              height: 15,
+            ),
+            FancyPasswordField(
               hasStrengthIndicator: false,
               hasValidationRules: false,
               decoration: InputDecoration(
-                  labelText: "Confirm Password",
+                  labelText: "Password",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.0))),
-              controller: _controllerConfirm,
+              controller: _controllerPassword,
             ),
-            // child:  TextField(
-            //   controller: _controllerPassword,
-            //   obscureText: true,
-            //   decoration: InputDecoration(
-            //       labelText: 'Confirm Password',
-            //       border: OutlineInputBorder(
-            //         borderRadius: BorderRadius.circular(12.0),
-            //       ),
-            //       suffix: Icon(Icons.remove_red_eye),),
-            // ),
-          ),
-          _errorMsg(),
-          _submitButton(),
-          _loginOrRegisterButton()
-        ],
+            SizedBox(
+              height: 15,
+            ),
+            Visibility(
+              visible: !isLogin,
+              child: FancyPasswordField(
+                hasStrengthIndicator: false,
+                hasValidationRules: false,
+                decoration: InputDecoration(
+                    labelText: "Confirm Password",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0))),
+                controller: _controllerConfirm,
+              ),
+              // child:  TextField(
+              //   controller: _controllerPassword,
+              //   obscureText: true,
+              //   decoration: InputDecoration(
+              //       labelText: 'Confirm Password',
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(12.0),
+              //       ),
+              //       suffix: Icon(Icons.remove_red_eye),),
+              // ),
+            ),
+            _errorMsg(),
+            _submitButton(),
+            _loginOrRegisterButton(),
+            SizedBox(height: 25,),
+            InkWell(
+              onTap: () {
+                signInWithGoogle();
+              },
+              child: Ink(
+                child: Padding(
+                  padding: EdgeInsets.all(6),
+                  child: Image.asset("images/google-dark.png"),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
