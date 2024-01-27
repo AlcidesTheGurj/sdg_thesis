@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:firebase_database/firebase_database.dart' as firedatabase;
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:sdg_thesis/Quiz/questions.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -38,18 +37,36 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   //0.5 opacity
   final List<Color> modeColors = [
-    Color(0xff00689d),
-    Color(0xff3f7e44),
-    Color(0xffe5243b),
+    const Color(0xff00689d),
+    const Color(0xff3f7e44),
+    const Color(0xffe5243b),
     Colors.grey,
     Colors.grey,
     Colors.grey,
   ];
 
+  var gameData;
+
+  Future<void> _loadGamemodes(BuildContext context) async {
+    if (context.mounted) {
+      DatabaseReference ref =
+      FirebaseDatabase.instance.ref('Gamemodes');
+      var dataSnapshot = await ref.get();
+      var gameObject = dataSnapshot.value!;
+      //print(dataSnapshot.value!.runtimeType);
+     // print(gameObject.runtimeType);
+
+      setState(() {
+        gameData = gameObject;
+         print(gameData);
+       //print(gameData.runtimeType);
+      });
+    }
+  }
+
   @override
   void initState() {
-    // print("asdddddddddddddddddddddddddddddddddddddddddd");
-    // print(imagesRef);
+    _loadGamemodes(context);
     super.initState();
   }
 
@@ -107,41 +124,49 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: SizedBox(
-            width: 180,
-            child: CachedNetworkImage(
-              imageUrl:
-                  "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2FSDG%20Wheel_PRINT_Transparent.png?alt=media&token=f9775cca-96fe-4b1a-8427-3a52567ae8c2",
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          floating: false,
+          backgroundColor: Colors.transparent,
+          flexibleSpace: FlexibleSpaceBar(
+            background: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: SizedBox(
+                width: 180,
+                child: CachedNetworkImage(
+                  imageUrl:
+                      "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2FSDG%20Wheel_PRINT_Transparent.png?alt=media&token=f9775cca-96fe-4b1a-8427-3a52567ae8c2",
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
+              ),
             ),
           ),
+          expandedHeight: 220,
         ),
-        const SizedBox(
-          height: 15,
-          // child: Text(
-          //   "Game",
-          //   style: GoogleFonts.roboto(fontSize: 25),
-          // ),
-        ),
-        Expanded(
-          child: FirebaseAnimatedList(
-            query: dbRef,
-            itemBuilder: (BuildContext context, DataSnapshot snapshot,
-                Animation<double> animation, int index) {
-              // itemBuilder must return something
-              Map gamemode = snapshot.value as Map;
-              gamemode['key'] = snapshot.key;
-              //print(gamemode);
-              return myWidget(gamemode: gamemode);
-            },
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+                (context, index) =>
+              myWidget(gamemode: gameData[index]),
+            childCount: gameData?.length ?? 0,
           ),
         ),
       ],
     );
+    // Expanded(
+    //   child: FirebaseAnimatedList(
+    //     query: dbRef,
+    //     itemBuilder: (BuildContext context, DataSnapshot snapshot,
+    //         Animation<double> animation, int index) {
+    //       // itemBuilder must return something
+    //       Map gamemode = snapshot.value as Map;
+    //       gamemode['key'] = snapshot.key;
+    //       //print(gamemode);
+    //       return myWidget(gamemode: gamemode);
+    //     },
+    //   ),
+    // ),
   }
 }
