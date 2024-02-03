@@ -18,7 +18,7 @@ String avatarData = "";
 bool lock = true;
 
 class CustomizationPage extends StatefulWidget {
-  const CustomizationPage({Key? key}) : super(key: key);
+  const CustomizationPage({super.key});
 
   @override
   State<CustomizationPage> createState() => _CustomizationPageState();
@@ -69,6 +69,9 @@ class _CustomizationPageState extends State<CustomizationPage> {
   void initState() {
     _loadAvatar(context);
     if (user == null) {
+      lock = true;
+    }
+    if (googleUser == true){
       lock = true;
     }
     super.initState();

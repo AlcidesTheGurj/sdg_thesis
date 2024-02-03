@@ -9,6 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_database/firebase_database.dart' as firedatabase;
 import 'package:sdg_thesis/Quiz/questions.dart';
 
+import 'main.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
   final String title = 'Flutter Demo Home Page';
@@ -67,6 +69,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     _loadGamemodes(context);
+    print(googleUser);
     super.initState();
   }
 
@@ -98,7 +101,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   context,
                   MaterialPageRoute(
                     builder: (context) => Questions(
-                      competitionId: gamemode['key'],
                       listOfQuestions: gamemode['questions'],
                     ),
                   ),

@@ -14,9 +14,9 @@ import '../main.dart';
 
 class Questions extends StatefulWidget {
   const Questions(
-      {Key? key, required this.competitionId, required this.listOfQuestions})
+      {Key? key, required this.listOfQuestions})
       : super(key: key);
-  final String competitionId;
+  //final String competitionId;
   final List listOfQuestions;
 
   @override

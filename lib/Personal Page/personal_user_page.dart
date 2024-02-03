@@ -214,6 +214,9 @@ class _UserPageState extends State<UserPage> {
             InkWell(
               onTap: () {
                 signInWithGoogle();
+                setState(() {
+                  googleUser = !googleUser;
+                });
               },
               child: Ink(
                 child: Padding(

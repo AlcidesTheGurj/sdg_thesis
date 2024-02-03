@@ -22,6 +22,7 @@ String name = "Guest";
 String v1 = "";
 
 User? user = Auth().currentUser;
+bool googleUser = false;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
