@@ -417,6 +417,23 @@ class _GuestPageState extends State<GuestPage> {
                 style: GoogleFonts.roboto(fontSize: 16.0),
               ),
             ),
+            InkWell(
+              onTap: () {},
+              child: Ink(
+                color: Color(0xFF397AF3),
+                child: Padding(
+                  padding: EdgeInsets.all(6),
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Image.asset("images/google-square.png"), // <-- Use 'Image.asset(...)' here
+                      SizedBox(width: 12),
+                      Text('Sign in with Google'),
+                    ],
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

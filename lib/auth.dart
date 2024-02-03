@@ -59,12 +59,12 @@ class Auth {
     user = Auth().currentUser;
   }
 
-  GoogleSignIn _googleSignIn = GoogleSignIn(
-      scopes: <String>[
-        'email',
-        'https://www.googleapis.com/auth/contacts.readonly',
-      ]
-  );
+  // GoogleSignIn _googleSignIn = GoogleSignIn(
+  //     scopes: <String>[
+  //       'email',
+  //       'https://www.googleapis.com/auth/contacts.readonly',
+  //     ]
+  // );
 
 
   Future<dynamic> signInWithGoogle() async {
