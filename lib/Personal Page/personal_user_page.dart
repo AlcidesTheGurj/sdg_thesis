@@ -160,72 +160,108 @@ class _UserPageState extends State<UserPage> {
     return Container(
       height: MediaQuery.of(context).size.height,
       padding: const EdgeInsets.only(right: 16.0, left: 16.0),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              isLogin ? "Sign In" : "Register",
-              style: GoogleFonts.roboto(fontSize: 40),
-            ),
-            SizedBox(height: 15.0),
-            _entryField('email', _controllerEmail),
-            SizedBox(
-              height: 15,
-            ),
-            FancyPasswordField(
-              hasStrengthIndicator: false,
-              hasValidationRules: false,
-              decoration: InputDecoration(
-                  labelText: "Password",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0))),
-              controller: _controllerPassword,
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Visibility(
-              visible: !isLogin,
-              child: FancyPasswordField(
+      child: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                isLogin ? "Sign In" : "Register",
+                style: GoogleFonts.roboto(fontSize: 40),
+              ),
+
+              const SizedBox(height: 15.0),
+              InkWell(
+                onTap: () {
+                  signInWithGoogle();
+                  setState(() {
+                    googleUser = !googleUser;
+                  });
+                },
+                child: Ink(
+                  child: Padding(
+                    padding: EdgeInsets.all(6),
+                    child: Image.asset("images/google-dark.png"),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15.0),
+
+              _entryField('email', _controllerEmail),
+              const SizedBox(
+                height: 15,
+              ),
+              FancyPasswordField(
                 hasStrengthIndicator: false,
                 hasValidationRules: false,
                 decoration: InputDecoration(
-                    labelText: "Confirm Password",
+                    labelText: "Password",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0))),
-                controller: _controllerConfirm,
+                controller: _controllerPassword,
               ),
-              // child:  TextField(
-              //   controller: _controllerPassword,
-              //   obscureText: true,
-              //   decoration: InputDecoration(
-              //       labelText: 'Confirm Password',
-              //       border: OutlineInputBorder(
-              //         borderRadius: BorderRadius.circular(12.0),
-              //       ),
-              //       suffix: Icon(Icons.remove_red_eye),),
-              // ),
-            ),
-            _errorMsg(),
-            _submitButton(),
-            _loginOrRegisterButton(),
-            SizedBox(height: 25,),
-            InkWell(
-              onTap: () {
-                signInWithGoogle();
-                setState(() {
-                  googleUser = !googleUser;
-                });
-              },
-              child: Ink(
-                child: Padding(
-                  padding: EdgeInsets.all(6),
-                  child: Image.asset("images/google-dark.png"),
+              const SizedBox(
+                height: 15,
+              ),
+              Visibility(
+                visible: !isLogin,
+                child: FancyPasswordField(
+                  hasStrengthIndicator: false,
+                  hasValidationRules: false,
+                  decoration: InputDecoration(
+                      labelText: "Confirm Password",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0))),
+                  controller: _controllerConfirm,
                 ),
+                // child:  TextField(
+                //   controller: _controllerPassword,
+                //   obscureText: true,
+                //   decoration: InputDecoration(
+                //       labelText: 'Confirm Password',
+                //       border: OutlineInputBorder(
+                //         borderRadius: BorderRadius.circular(12.0),
+                //       ),
+                //       suffix: Icon(Icons.remove_red_eye),),
+                // ),
               ),
-            ),
-          ],
+              _errorMsg(),
+              _submitButton(),
+              _loginOrRegisterButton(),
+              //SizedBox(height: 25,),
+              // InkWell(
+              //   onTap: () {
+              //     signInWithGoogle();
+              //     setState(() {
+              //       googleUser = !googleUser;
+              //     });
+              //   },
+              //   child: Ink(
+              //     child: Padding(
+              //       padding: EdgeInsets.all(6),
+              //       child: Image.asset("images/google-dark.png"),
+              //     ),
+              //   ),
+              // ),
+              // InkWell(
+              //   onTap: () {},
+              //   child: Ink(
+              //     color: Color(0xFF397AF3),
+              //     child: Padding(
+              //       padding: EdgeInsets.all(6),
+              //       child: Wrap(
+              //         crossAxisAlignment: WrapCrossAlignment.center,
+              //         children: [
+              //           Image.asset("images/google-square-light.png"), // <-- Use 'Image.asset(...)' here
+              //           SizedBox(width: 12),
+              //           Text('Sign in with Google'),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // )
+            ],
+          ),
         ),
       ),
     );

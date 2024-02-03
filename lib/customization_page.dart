@@ -68,10 +68,11 @@ class _CustomizationPageState extends State<CustomizationPage> {
   @override
   void initState() {
     _loadAvatar(context);
+    print(googleUser);
     if (user == null) {
       lock = true;
     }
-    if (googleUser == true){
+    if (googleUser == false){
       lock = true;
     }
     super.initState();
@@ -228,7 +229,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      if (user != null) {
+                      if (user != null || googleUser) {
                         Alert(
                           context: context,
                           style: AlertStyle(
