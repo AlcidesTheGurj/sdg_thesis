@@ -20,9 +20,28 @@ class GuestPage extends StatefulWidget {
 class _GuestPageState extends State<GuestPage> {
   final User? user = Auth().currentUser;
 
+  double playerPoints = 0;
+
+  Future<void> getUserScore() async {
+    if (user != null){
+      DatabaseReference ref = FirebaseDatabase.instance.ref("Players/${user?.uid}/points");
+      final snapshot = await ref.get();
+      final Map<Object?, Object?>? dataMap = snapshot.value as Map<Object?, Object?>?;
+
+      double currentPoints = 0;
+      if (dataMap?['points'] != null){
+        currentPoints += dataMap?['points'] as int;
+      }
+      setState(() {
+        playerPoints = currentPoints;
+      });
+    }
+  }
+
   @override
   void initState() {
     _loadAvatar(context);
+    getUserScore();
     super.initState();
   }
 
@@ -128,10 +147,7 @@ class _GuestPageState extends State<GuestPage> {
               CircularPercentIndicator(
                 radius: 90.0,
                 lineWidth: 10.0,
-                percent: 0.80,
-                center: Text("test",
-                    style: GoogleFonts.roboto(
-                        fontSize: 15.5, color: Colors.white)),
+                percent: playerPoints / 100,
                 progressColor: Colors.purple,
                 backgroundColor: Colors.black,
               ),

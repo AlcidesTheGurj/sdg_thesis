@@ -74,16 +74,19 @@ class Auth {
       final GoogleSignInAuthentication? googleAuth =
       await googleUser?.authentication;
 
+      //print(googleUser?.id);
+
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
 
-      String? userUuid = _firebaseAuth.currentUser?.uid;
+      String? userUuid = googleUser?.id;
+
       if (userUuid != null){
         DatabaseReference ref = FirebaseDatabase.instance.ref("Players/$userUuid");
-        await ref.set({
-          "points": 0,
+        await ref.update({
+          'log': true,
         });
       }
 
