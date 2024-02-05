@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
 
-import '../completed_quiz.dart';
+import 'completed_quiz.dart';
 import '../customization_page.dart';
 import '../main.dart';
 

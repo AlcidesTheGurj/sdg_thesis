@@ -69,7 +69,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     _loadGamemodes(context);
+    print("dsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaazzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
     print(googleUser);
+    print(user);
     super.initState();
   }
 
