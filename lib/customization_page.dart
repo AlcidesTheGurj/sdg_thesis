@@ -120,7 +120,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
                   const Icon(Icons.arrow_right, size: 25),
                   AvatarGlow(
                       startDelay: const Duration(milliseconds: 1000),
-                      glowColor: Color(0xffa21942),
+                      glowColor: const Color(0xffa21942),
                       glowShape: BoxShape.circle,
                       glowRadiusFactor: 0.2,
                       curve: Curves.fastOutSlowIn,
@@ -245,7 +245,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
                             size: 75,
                           ),
                           desc:
-                              "Would you like Avatar Customization for 500 points?",
+                              "Would you like Mentor Customization for 500 points?",
                           buttons: [
                             DialogButton(
                               onPressed: () => Navigator.pop(context),

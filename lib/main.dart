@@ -77,7 +77,7 @@ class _HomeState extends State<Home> {
     const Color(0xff3f7e44),
     const Color(0xffe5243b),
   ];
-  List<String> titles = ["Home", "Avatar Palette", "Leaderboard", "Account"];
+  List<String> titles = ["Home", "Mentor Palette", "Leaderboard", "Account"];
   List<IconData> icons = [
     Icons.home,
     Icons.palette,
