@@ -32,7 +32,7 @@ class Auth {
     if (userUuid != null){
       DatabaseReference ref = FirebaseDatabase.instance.ref("Players/$userUuid");
       await ref.update({
-        'log': true,
+        'email': email,
       });
     }
     user = Auth().currentUser;
@@ -49,6 +49,7 @@ class Auth {
     if (userUuid != null){
       DatabaseReference ref = FirebaseDatabase.instance.ref("Players/$userUuid");
       await ref.set({
+        "email": email,
         "points": 0,
       });
     }
@@ -56,7 +57,7 @@ class Auth {
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
-    user = Auth().currentUser;
+    user = null;
   }
 
   // GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -69,36 +70,50 @@ class Auth {
 
   Future<dynamic> signInWithGoogle() async {
     try {
+      // Sign in with Google
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
       final GoogleSignInAuthentication? googleAuth =
       await googleUser?.authentication;
-
-      //print(googleUser?.id);
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
 
-      String? userUuid = googleUser?.id;
+      // Sign in with Firebase Authentication
+      final UserCredential authResult =
+      await FirebaseAuth.instance.signInWithCredential(credential);
 
-      if (userUuid != null){
-        DatabaseReference ref = FirebaseDatabase.instance.ref("Players/$userUuid");
+      // Get the authenticated user
+      user = authResult.user;
+
+      // Add the user to the Realtime Database under "Players"
+      if (user != null) {
+        DatabaseReference ref =
+        FirebaseDatabase.instance.ref().child("Players").child(user!.uid);
+
         await ref.update({
-          'log': true,
+          'displayName': user!.displayName,
+          'email': user!.email,
+          // Add any other user information you want to store
         });
       }
 
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+      return authResult;
     } on Exception catch (e) {
-      print('exception->$e');
+      print('Exception: $e');
+      // Handle exceptions as needed
     }
   }
 
   Future<bool> signOutFromGoogle() async {
     try {
+      // Sign out from Firebase Authentication
       await FirebaseAuth.instance.signOut();
+
+      // Sign out from Google Sign-In
+      await GoogleSignIn().signOut();
+
       return true;
     } on Exception catch (_) {
       return false;

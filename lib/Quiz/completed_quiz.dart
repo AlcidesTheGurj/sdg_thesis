@@ -6,7 +6,7 @@ import '../main.dart';
 
 class CompletedPage extends StatefulWidget {
   final int totalPoints;
-   const CompletedPage(this.totalPoints, {super.key});
+  const CompletedPage(this.totalPoints, {super.key});
 
   @override
   State<CompletedPage> createState() => _CompletedPageState();
@@ -15,26 +15,20 @@ class CompletedPage extends StatefulWidget {
 class _CompletedPageState extends State<CompletedPage> {
   Future<void> updateUserScore() async {
     if (user != null) {
-      DatabaseReference ref = FirebaseDatabase.instance.ref("Players/${user?.uid}/points");
+      DatabaseReference ref = FirebaseDatabase.instance.reference().child("Players/${user?.uid}");
       final snapshot = await ref.get();
 
-      final Map<dynamic, dynamic>? dataMap = snapshot.value as Map<dynamic, dynamic>?;
+      int existingPoints = 0;
 
-      if (dataMap != null) {
-        // Accessing 'total_points' from the map
-        dynamic totalPointsData = dataMap['total_points'];
-
-        // Checking if 'total_points' is not null
-        if (totalPointsData != null) {
-          int totalPoints = totalPointsData as int;
-
-          print("Total Points: $totalPoints");
-
-          await ref.update({
-            "total_points": widget.totalPoints + totalPoints,
-          });
-        }
+      final Object? existingPointsObj = snapshot.value;
+      if (existingPointsObj != null && existingPointsObj is Map) {
+        // If 'total_points' exists in the snapshot, retrieve its value
+        existingPoints = existingPointsObj['total_points'] ?? 0;
       }
+
+      await ref.update({
+        "total_points": widget.totalPoints + existingPoints,
+      });
     }
   }
 
@@ -49,9 +43,11 @@ class _CompletedPageState extends State<CompletedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(children: [
-        Center(child: Text(" you earned ${widget.totalPoints}")),
-      ],),
+      body: Column(
+        children: [
+          Center(child: Text(" you earned ${widget.totalPoints}")),
+        ],
+      ),
     );
   }
 }

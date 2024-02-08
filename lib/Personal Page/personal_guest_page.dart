@@ -23,18 +23,63 @@ class _GuestPageState extends State<GuestPage> {
   double playerPoints = 0;
 
   Future<void> getUserScore() async {
-    if (user != null){
-      DatabaseReference ref = FirebaseDatabase.instance.ref("Players/${user?.uid}/points");
+    if (user != null) {
+      DatabaseReference ref =
+          FirebaseDatabase.instance.ref().child("Players/${user?.uid}");
       final snapshot = await ref.get();
-      final Map<Object?, Object?>? dataMap = snapshot.value as Map<Object?, Object?>?;
 
-      double currentPoints = 0;
-      if (dataMap?['points'] != null){
-        currentPoints += dataMap?['points'] as int;
+      double existingPoints = 0.0; // Declare as double
+
+      final Object? existingPointsObj = snapshot.value;
+      if (existingPointsObj != null && existingPointsObj is Map) {
+        // If 'total_points' exists in the snapshot, retrieve its value
+        existingPoints = (existingPointsObj['total_points'] ?? 0)
+            .toDouble(); // Convert to double
       }
+
       setState(() {
-        playerPoints = currentPoints;
+        playerPoints = existingPoints;
       });
+    }
+  }
+
+  Future<void> getUserBadges() async {
+    if (user != null) {
+      DatabaseReference ref =
+          FirebaseDatabase.instance.ref().child("Players/${user?.uid}");
+      final snapshot = await ref.get();
+
+      List<bool> existingBadges =
+          List<bool>.filled(20, true); // Default to 20 false values
+
+      Map<dynamic, dynamic>? snapshotValueMap =
+          snapshot.value as Map<dynamic, dynamic>?;
+
+      if (snapshotValueMap != null) {
+        // If 'badge_progress' exists in the snapshot and is a list, retrieve its values
+        List<dynamic>? badgeProgressList =
+            snapshotValueMap['badge_progress'] as List<dynamic>?;
+
+        if (badgeProgressList != null) {
+          // Cast the values to bool
+          existingBadges =
+              badgeProgressList.map((value) => value as bool).toList();
+        }
+      }
+
+      print(
+          "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+      print(existingBadges);
+      setState(() {
+        badgeProgress = existingBadges;
+      });
+
+      if (snapshotValueMap?['badge_progress'] == null) {
+        // If 'badge_progress' doesn't exist, add it with default false values
+        await ref.update({
+          'badge_progress': existingBadges,
+        });
+      }
     }
   }
 
@@ -42,14 +87,15 @@ class _GuestPageState extends State<GuestPage> {
   void initState() {
     _loadAvatar(context);
     getUserScore();
+    getUserBadges();
     super.initState();
   }
 
   Widget circleAvatarWidget() {
     return CircleAvatar(
-      radius: 90,
+      radius: 110,
       // backgroundColor: const Color(0xff7c1c43).withOpacity(0.65),
-      backgroundColor: Colors.white.withOpacity(0.4),
+      backgroundColor: const Color(0xffe5243b).withOpacity(0.1),
       child: ClipRRect(
         borderRadius: const BorderRadius.all(
           Radius.circular(
@@ -58,7 +104,7 @@ class _GuestPageState extends State<GuestPage> {
         ),
         child: SvgPicture.string(
           FluttermojiFunctions().decodeFluttermojifromString(avatarData),
-          height: 150,
+          height: 200,
           width: 100,
         ),
       ),
@@ -91,47 +137,12 @@ class _GuestPageState extends State<GuestPage> {
   // Widget _userUid() {
   Future<void> signOut() async {
     await Auth().signOut();
+    await Auth().signOutFromGoogle();
   }
 
-  List<bool> hm = [
-    false,
-    false,
-    true,
-    false,
-    true,
-    true,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
-  ];
+  // true is locked
+  // false i unlocked
+  List<bool> badgeProgress = List<bool>.filled(20, true);
 
   @override
   Widget build(BuildContext context) {
@@ -142,16 +153,32 @@ class _GuestPageState extends State<GuestPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Stack(alignment: Alignment.center, children: [
-              circleAvatarWidget(),
-              CircularPercentIndicator(
-                radius: 90.0,
-                lineWidth: 10.0,
-                percent: playerPoints / 100,
-                progressColor: Colors.purple,
-                backgroundColor: Colors.black,
-              ),
-            ]),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Stack(alignment: Alignment.center, children: [
+                circleAvatarWidget(),
+                CircularPercentIndicator(
+                  radius: 110.0,
+                  lineWidth: 16.0,
+                  percent: (playerPoints % 100) / 100,
+                  progressColor: const Color(0xffe5243b),
+                  backgroundColor: Colors.black,
+                ),
+                Positioned(
+                  bottom: 0.0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xffe5243b),
+                      borderRadius: BorderRadius.circular(
+                          8.0), // Replace with your desired color
+                    ),
+                    child: Text('${(playerPoints / 100).floor()}',
+                        style: GoogleFonts.roboto(
+                            fontSize: 22, fontWeight: FontWeight.bold)),
+                  ),
+                ),
+              ]),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -190,29 +217,48 @@ class _GuestPageState extends State<GuestPage> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 24)),
                           desc: index == 17
-                              ? "Answer all"
+                              ? "Unlock all badges related to SDG completion"
                               : "Correctly answer all questions related to SDG ${index + 1}.",
                           //title: "Badge no. ${index + 1}",
-                          image: Image.asset(
-                            "images/$index.png",
-                            fit: BoxFit.fill,
-                          ),
+                          image: Stack(children: [
+                            Image.asset(
+                              "images/$index.png",
+                              fit: BoxFit.fill,
+                            ),
+                            Positioned(
+                              left: 0.0,
+                              right: 0.0,
+                              top: 0.0,
+                              bottom: 0.0,
+                              child: Visibility(
+                                visible: badgeProgress[index],
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.95)),
+                                  child: const Icon(
+                                    Icons.lock,
+                                    size: 80,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]),
                           buttons: [
-                            // DialogButton(
-                            //   onPressed: () {
-                            //     setState(() {
-                            //       lock = false;
-                            //       Navigator.pop(context);
-                            //     });
-                            //   },
-                            //   width: 120,
-                            //   color: Colors.transparent,
-                            //   child: Text(
-                            //     "OK",
-                            //     style: GoogleFonts.roboto(
-                            //         color: Colors.white, fontSize: 25),
-                            //   ),
-                            // ),
+                            DialogButton(
+                              onPressed: () {
+                                setState(() {
+                                  lock = false;
+                                  Navigator.pop(context);
+                                });
+                              },
+                              width: 120,
+                              color: const Color(0xffe5243b),
+                              child: Text(
+                                "OK",
+                                style: GoogleFonts.roboto(
+                                    color: Colors.white, fontSize: 25),
+                              ),
+                            ),
                           ],
                         ).show();
                       },
@@ -226,7 +272,7 @@ class _GuestPageState extends State<GuestPage> {
                                 fit: BoxFit.fill,
                               ),
                               Visibility(
-                                visible: hm[index],
+                                visible: badgeProgress[index],
                                 child: FractionallySizedBox(
                                     widthFactor: 1.0,
                                     heightFactor: 1.0,
@@ -243,7 +289,16 @@ class _GuestPageState extends State<GuestPage> {
                   }),
             ),
             const SizedBox(
-              height: 25,
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("Milestones:", style: GoogleFonts.roboto(fontSize: 24.0)),
+                ],
+              ),
             ),
             SizedBox(
               height: 125,
@@ -254,7 +309,8 @@ class _GuestPageState extends State<GuestPage> {
                     padding: const EdgeInsets.all(10.0),
                     child: Container(
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white)),
+                        border: Border.all(color: Colors.white.withOpacity(0.6)),
+                      ),
                       width: 150,
                       child: InkWell(
                         onTap: () {
@@ -279,40 +335,53 @@ class _GuestPageState extends State<GuestPage> {
                               "images/17.png",
                               fit: BoxFit.fill,
                             ),
-                            buttons: [
-                              // DialogButton(
-                              //   onPressed: () {
-                              //     setState(() {
-                              //       lock = false;
-                              //       Navigator.pop(context);
-                              //     });
-                              //   },
-                              //   width: 120,
-                              //   color: Colors.transparent,
-                              //   child: Text(
-                              //     "OK",
-                              //     style: GoogleFonts.roboto(
-                              //         color: Colors.white, fontSize: 25),
-                              //   ),
-                              // ),
-                            ],
+                            buttons: [ DialogButton(
+                              onPressed: () {
+                                setState(() {
+                                  lock = false;
+                                  Navigator.pop(context);
+                                });
+                              },
+                              width: 120,
+                              color: const Color(0xffe5243b),
+                              child: Text(
+                                "OK",
+                                style: GoogleFonts.roboto(
+                                    color: Colors.white, fontSize: 25),
+                              ),
+                            ),],
                           ).show();
                         },
-                        child: Image.asset(
-                          "images/1.png",
-                          fit: BoxFit.fill,
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Image.asset(
+                                "images/1.png",
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                            Visibility(
+                              visible: false,
+                              child: FractionallySizedBox(
+                                  widthFactor: 1.0,
+                                  heightFactor: 1.0,
+                                  alignment: Alignment.center,
+                                  child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.9)),
+                                      child: const Icon(Icons.lock))),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 15,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Container(
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white)),
+                        border: Border.all(color: Colors.white.withOpacity(0.6)),
+                      ),
                       width: 150,
                       child: InkWell(
                         onTap: () {
@@ -337,40 +406,53 @@ class _GuestPageState extends State<GuestPage> {
                               "images/17.png",
                               fit: BoxFit.fill,
                             ),
-                            buttons: [
-                              // DialogButton(
-                              //   onPressed: () {
-                              //     setState(() {
-                              //       lock = false;
-                              //       Navigator.pop(context);
-                              //     });
-                              //   },
-                              //   width: 120,
-                              //   color: Colors.transparent,
-                              //   child: Text(
-                              //     "OK",
-                              //     style: GoogleFonts.roboto(
-                              //         color: Colors.white, fontSize: 25),
-                              //   ),
-                              // ),
-                            ],
+                            buttons: [ DialogButton(
+                              onPressed: () {
+                                setState(() {
+                                  lock = false;
+                                  Navigator.pop(context);
+                                });
+                              },
+                              width: 120,
+                              color: const Color(0xffe5243b),
+                              child: Text(
+                                "OK",
+                                style: GoogleFonts.roboto(
+                                    color: Colors.white, fontSize: 25),
+                              ),
+                            ),],
                           ).show();
                         },
-                        child: Image.asset(
-                          "images/1.png",
-                          fit: BoxFit.fill,
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Image.asset(
+                                "images/14.png",
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                            Visibility(
+                              visible: false,
+                              child: FractionallySizedBox(
+                                  widthFactor: 1.0,
+                                  heightFactor: 1.0,
+                                  alignment: Alignment.center,
+                                  child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.9)),
+                                      child: const Icon(Icons.lock))),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 15,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Container(
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white)),
+                        border: Border.all(color: Colors.white.withOpacity(0.6)),
+                      ),
                       width: 150,
                       child: InkWell(
                         onTap: () {
@@ -395,28 +477,43 @@ class _GuestPageState extends State<GuestPage> {
                               "images/17.png",
                               fit: BoxFit.fill,
                             ),
-                            buttons: [
-                              // DialogButton(
-                              //   onPressed: () {
-                              //     setState(() {
-                              //       lock = false;
-                              //       Navigator.pop(context);
-                              //     });
-                              //   },
-                              //   width: 120,
-                              //   color: Colors.transparent,
-                              //   child: Text(
-                              //     "OK",
-                              //     style: GoogleFonts.roboto(
-                              //         color: Colors.white, fontSize: 25),
-                              //   ),
-                              // ),
-                            ],
+                            buttons: [ DialogButton(
+                              onPressed: () {
+                                setState(() {
+                                  lock = false;
+                                  Navigator.pop(context);
+                                });
+                              },
+                              width: 120,
+                              color: const Color(0xffe5243b),
+                              child: Text(
+                                "OK",
+                                style: GoogleFonts.roboto(
+                                    color: Colors.white, fontSize: 25),
+                              ),
+                            ),],
                           ).show();
                         },
-                        child: Image.asset(
-                          "images/1.png",
-                          fit: BoxFit.fill,
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Image.asset(
+                                "images/17.png",
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                            Visibility(
+                              visible: false,
+                              child: FractionallySizedBox(
+                                  widthFactor: 1.0,
+                                  heightFactor: 1.0,
+                                  alignment: Alignment.center,
+                                  child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.9)),
+                                      child: const Icon(Icons.lock))),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -424,6 +521,7 @@ class _GuestPageState extends State<GuestPage> {
                 ],
               ),
             ),
+            SizedBox(height: 30,),
             Text(user?.email ?? 'user email',
                 style: GoogleFonts.roboto(fontSize: 16.0)),
             ElevatedButton(
