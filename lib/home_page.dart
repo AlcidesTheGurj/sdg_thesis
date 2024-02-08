@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:firebase_database/firebase_database.dart' as firedatabase;
 import 'package:sdg_thesis/Quiz/questions.dart';
+import 'package:sdg_thesis/Quiz/select_pool.dart';
 
 import 'main.dart';
 
@@ -101,11 +102,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               if (gamemode['questions'] != null) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => Questions(
-                      listOfQuestions: gamemode['questions'],
+                  // MaterialPageRoute(
+                  //   builder: (context) => Questions(
+                  //     listOfQuestions: gamemode['questions'],
+                  //   ),
+                  // ),
+                    MaterialPageRoute(
+                      builder: (context) => SelectPool(
+                      ),
                     ),
-                  ),
                 );
               } else {
                 showDialog(

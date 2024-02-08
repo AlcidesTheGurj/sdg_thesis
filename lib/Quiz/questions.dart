@@ -13,9 +13,7 @@ import '../customization_page.dart';
 import '../main.dart';
 
 class Questions extends StatefulWidget {
-  const Questions(
-      {Key? key, required this.listOfQuestions})
-      : super(key: key);
+  const Questions({Key? key, required this.listOfQuestions}) : super(key: key);
   //final String competitionId;
   final List listOfQuestions;
 
@@ -102,16 +100,17 @@ class _QuestionsState extends State<Questions> {
 
   @override
   Widget build(BuildContext context) {
-
     Route _createRoute(int totalPoints) {
       return PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>  CompletedPage(totalPoints),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            CompletedPage(totalPoints),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(0.0, 1.0);
           const end = Offset.zero;
           const curve = Curves.ease;
 
-          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
           return SlideTransition(
             position: animation.drive(tween),
@@ -126,7 +125,7 @@ class _QuestionsState extends State<Questions> {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -156,25 +155,12 @@ class _QuestionsState extends State<Questions> {
               const SizedBox(
                 height: 20,
               ),
-              AnimateGradient(
-                primaryColors: const [
-                  Color(0xff160041),
-                  Color(0xff410046),
-                  Color(0xff600145),
-                  Color(0xff7c1c43),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  circleAvatarWidget(),
                 ],
-                secondaryColors: const [
-                  Color(0xff752933),
-                  Color(0xff803c36),
-                  Color(0xff5d3823),
-                  Color(0xff644525),
-                ],
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    circleAvatarWidget(),
-                  ],
-                ),
               ),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -188,7 +174,7 @@ class _QuestionsState extends State<Questions> {
                       text:
                           widget.listOfQuestions[index]['question'].toString(),
                       isSender: false,
-                      color: Color(0xff410046),
+                      color: const Color(0xff3f7e44),
                       tail: false,
                       textStyle: const TextStyle(
                         fontSize: 20,
@@ -220,12 +206,11 @@ class _QuestionsState extends State<Questions> {
                         child: SizedBox(
                           height: 60,
                           child: ListTile(
-                            selectedTileColor:
-                                Colors.greenAccent.withOpacity(0.5),
+                            selectedTileColor: const Color(0xff00689d),
                             selected: _isSelected[answerIndex],
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(
-                                  color: Colors.green, width: 1),
+                                  color: Color(0xff00689d), width: 1),
                               borderRadius: BorderRadius.circular(5),
                             ),
                             title: Text(
@@ -262,30 +247,27 @@ class _QuestionsState extends State<Questions> {
               ),
               ElevatedButton(
                   onPressed: () {
-                    if (index < widget.listOfQuestions.length - 1){
+                    if (index < widget.listOfQuestions.length - 1) {
                       if (widget.listOfQuestions[index]['correct_answer'] ==
                           userInput) {
                         // print("YAYYYY");
                         setState(() {
                           totalPoints +=
-                          widget.listOfQuestions[index]['point'] as int;
+                              widget.listOfQuestions[index]['point'] as int;
                           print(totalPoints);
                           index++;
                         });
-                      }
-                      else
-                      {
+                      } else {
                         setState(() {
                           index++;
                         });
                       }
-                    }
-                    else {
+                    } else {
                       //Navigator.pop(context);
                       totalPoints +=
-                      widget.listOfQuestions[index]['point'] as int;
-                      Navigator.of(context).pushReplacement(_createRoute(totalPoints));
-
+                          widget.listOfQuestions[index]['point'] as int;
+                      Navigator.of(context)
+                          .pushReplacement(_createRoute(totalPoints));
                     }
                     // setState(() {
                     //   totalPoints += widget.listOfQuestions[index]['point'] as int;
