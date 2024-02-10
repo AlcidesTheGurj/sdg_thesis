@@ -7,7 +7,7 @@ import '../main.dart';
 
 class UserPage extends StatefulWidget {
   //final User? user;
-  const UserPage({Key? key}) : super(key: key);
+  const UserPage({super.key});
 
   @override
   State<UserPage> createState() => _UserPageState();
@@ -85,8 +85,8 @@ class _UserPageState extends State<UserPage> {
         Color(0xff410046),
       )),
       onPressed: () {
-        print("object");
-        print(isLogin);
+        // print("object");
+        // print(isLogin);
         if (isLogin) {
           signInWithEmailAndPassword();
         } else {
@@ -129,7 +129,7 @@ class _UserPageState extends State<UserPage> {
     try {
       await Auth().signInWithGoogle();
     } on FirebaseAuthException catch (e) {
-      print("error");
+      debugPrint(e as String?);
     }
     if (mounted) {
       setState(() {
@@ -144,7 +144,7 @@ class _UserPageState extends State<UserPage> {
     try {
       await Auth().signOutFromGoogle();
     } on FirebaseAuthException catch (e) {
-      print("error");
+      debugPrint(e as String?);
     }
     if (mounted) {
       setState(() {
@@ -180,7 +180,7 @@ class _UserPageState extends State<UserPage> {
                 },
                 child: Ink(
                   child: Padding(
-                    padding: EdgeInsets.all(6),
+                    padding: const EdgeInsets.all(6),
                     child: Image.asset("images/google-dark.png"),
                   ),
                 ),

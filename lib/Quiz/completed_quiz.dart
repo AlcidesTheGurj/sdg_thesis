@@ -1,5 +1,4 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -15,7 +14,7 @@ class CompletedPage extends StatefulWidget {
 class _CompletedPageState extends State<CompletedPage> {
   Future<void> updateUserScore() async {
     if (user != null) {
-      DatabaseReference ref = FirebaseDatabase.instance.reference().child("Players/${user?.uid}");
+      DatabaseReference ref = FirebaseDatabase.instance.ref().child("Players/${user?.uid}");
       final snapshot = await ref.get();
 
       int existingPoints = 0;

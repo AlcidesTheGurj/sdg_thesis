@@ -5,12 +5,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:firebase_database/firebase_database.dart' as firedatabase;
-import 'package:sdg_thesis/Quiz/questions.dart';
 import 'package:sdg_thesis/Quiz/select_pool.dart';
-
-import 'main.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -61,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
       setState(() {
         gameData = gameObject;
-         print(gameData);
+         //print(gameData);
        //print(gameData.runtimeType);
       });
     }
@@ -109,6 +105,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   // ),
                     MaterialPageRoute(
                       builder: (context) => SelectPool(
+                        listOfQuestions: gamemode['questions'],
+                        poolText: gamemode['pool_text'],
                       ),
                     ),
                 );

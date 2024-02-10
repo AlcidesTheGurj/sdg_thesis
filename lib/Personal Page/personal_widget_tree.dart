@@ -4,7 +4,7 @@ import 'personal_guest_page.dart';
 import 'personal_user_page.dart';
 
 class WidgetTree extends StatefulWidget {
-  const WidgetTree({Key? key}) : super(key: key);
+  const WidgetTree({super.key});
 
   @override
   State<WidgetTree> createState() => _WidgetTreeState();
@@ -28,7 +28,7 @@ class WidgetTree extends StatefulWidget {
 class _WidgetTreeState extends State<WidgetTree> {
 
   final List<Widget> views = [
-    GuestPage(),
+    const GuestPage(),
     const UserPage()
   ];
 
@@ -44,14 +44,14 @@ class _WidgetTreeState extends State<WidgetTree> {
           return const Center(child: CircularProgressIndicator(),);
         case ConnectionState.active:
           if (snapshot.hasData){
-            return GuestPage();
+            return const GuestPage();
           }
           else {
             return const UserPage();
           }
         case ConnectionState.done:
           if (snapshot.hasData){
-            return GuestPage();
+            return const GuestPage();
           }
           else {
             return const UserPage();
