@@ -1,4 +1,3 @@
-import 'package:animate_gradient/animate_gradient.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,7 +12,7 @@ import '../customization_page.dart';
 import '../main.dart';
 
 class Questions extends StatefulWidget {
-  const Questions({Key? key, required this.listOfQuestions}) : super(key: key);
+  const Questions({super.key, required this.listOfQuestions});
   //final String competitionId;
   final List listOfQuestions;
 
@@ -100,7 +99,7 @@ class _QuestionsState extends State<Questions> {
 
   @override
   Widget build(BuildContext context) {
-    Route _createRoute(int totalPoints) {
+    Route createRoute(int totalPoints) {
       return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
             CompletedPage(totalPoints),
@@ -130,10 +129,16 @@ class _QuestionsState extends State<Questions> {
               Navigator.of(context).pop();
             },
           ),
+          actions: [
+            IconButton(onPressed: () {
+
+            }, icon: const Icon(Icons.lightbulb))
+          ],
         ),
         body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Text(
               //   "Question ${index + 1} of ${widget.listOfQuestions.length}",
@@ -156,42 +161,69 @@ class _QuestionsState extends State<Questions> {
                 height: 20,
               ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  circleAvatarWidget(),
-                ],
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // SizedBox(width:MediaQuery.of(context).size.width * 0.30),
-
-                    BubbleSpecialTwo(
-                      text:
-                          widget.listOfQuestions[index]['question'].toString(),
-                      isSender: false,
-                      color: const Color(0xff3f7e44),
-                      tail: false,
-                      textStyle: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      circleAvatarWidget(),
+                      BubbleSpecialTwo(
+                        text: widget.listOfQuestions[index]['question']
+                            .toString(),
+                        isSender: false,
+                        color: const Color(0xff3f7e44),
+                        tail: true,
+                        textStyle: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
+
+              //circleAvatarWidget(),
+              // Align(
+              //   alignment: Alignment.center,
+              //   child: SingleChildScrollView(
+              //     scrollDirection: Axis.horizontal,
+              //     child: Row(
+              //       mainAxisSize: MainAxisSize.max,
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         // SizedBox(width:MediaQuery.of(context).size.width * 0.30),
+              //
+              //         BubbleSpecialOne(
+              //           text: widget.listOfQuestions[index]['question']
+              //               .toString(),
+              //           isSender: false,
+              //           color: const Color(0xff3f7e44),
+              //           tail: false,
+              //           textStyle: const TextStyle(
+              //             fontSize: 20,
+              //             color: Colors.white,
+              //             fontStyle: FontStyle.italic,
+              //             fontWeight: FontWeight.bold,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               // Text(
               //   widget.listOfQuestions[index]['question'].toString(),
               //   style: const TextStyle(
               //     fontSize: 20.0,
               //   ),
               // ),
+              const SizedBox(
+                height: 50,
+              ),
               SizedBox(
                 // decoration: BoxDecoration(
                 //   color: Colors.green.withOpacity(0.3)
@@ -254,7 +286,7 @@ class _QuestionsState extends State<Questions> {
                         setState(() {
                           totalPoints +=
                               widget.listOfQuestions[index]['point'] as int;
-                          print(totalPoints);
+                          //print(totalPoints);
                           index++;
                         });
                       } else {
@@ -267,7 +299,7 @@ class _QuestionsState extends State<Questions> {
                       totalPoints +=
                           widget.listOfQuestions[index]['point'] as int;
                       Navigator.of(context)
-                          .pushReplacement(_createRoute(totalPoints));
+                          .pushReplacement(createRoute(totalPoints));
                     }
                     // setState(() {
                     //   totalPoints += widget.listOfQuestions[index]['point'] as int;

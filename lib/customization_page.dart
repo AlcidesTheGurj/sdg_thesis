@@ -68,7 +68,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
   @override
   void initState() {
     _loadAvatar(context);
-    print(googleUser);
+   // print(googleUser);
     if (user == null) {
       lock = true;
     }
