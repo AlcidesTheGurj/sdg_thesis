@@ -1,9 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sdg_thesis/Quiz/questions.dart';
 
 class SelectPool extends StatefulWidget {
-  const SelectPool({super.key, required this.listOfQuestions, required this.poolText});
+  const SelectPool(
+      {super.key, required this.listOfQuestions, required this.poolText});
   final List<dynamic> listOfQuestions;
   final List<dynamic> poolText;
 
@@ -12,71 +15,93 @@ class SelectPool extends StatefulWidget {
 }
 
 class _SelectPoolState extends State<SelectPool> {
-  List<bool> _isSelected = List.generate(3, (index) => index == 2); // Initializing with the last item selected
+  //int poolSize = 0;
+  //late List<bool> _isSelected; // Declare _isSelected without initialization
+
   List<IconData> poolIcon = [Icons.local_activity, Icons.label, Icons.abc];
 
-  int poolIndex = 2; // Initializing with the last index
+  //int poolIndex = 2; // Initializing with the last index
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Column(
+  void initState() {
+    // poolSize = widget.poolText.length;
+    // _isSelected = List.generate(poolSize, (index) => index == 2); // Initialize with the last item selected
+    super.initState();
+  }
+
+  Widget poolWidget({required String poolText, required int index}) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(10, 30, 10, 0),
+      padding: const EdgeInsets.all(10),
+      height: 120,
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        border: Border.all(
+          color: Colors.black, // Set the color of the border
+          width: 2.0,
+        ),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: ListView(
+        physics: const NeverScrollableScrollPhysics(),
         children: [
-          SizedBox(
-            height: 260,
-            child: ListView.builder(
-              itemCount: widget.poolText.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 20.0,
-                    left: 5.0,
-                    right: 5.0,
-                    top: 10.0,
-                  ),
-                  child: SizedBox(
-                    height: 60,
-                    child: ListTile(
-                      selectedTileColor: const Color(0xff00689d),
-                      selected: _isSelected[index],
-                      shape: RoundedRectangleBorder(
-                        side: const BorderSide(color: Color(0xff00689d), width: 1),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      title: Text(
-                        widget.poolText[index],
-                        style: GoogleFonts.roboto(fontSize: 20.0, color: Colors.white),
-                      ),
-                      leading: Icon(poolIcon[index]),
-                      onTap: () {
-                        setState(() {
-                          _isSelected = List.generate(widget.poolText.length, (i) => i == index);
-                          poolIndex = index;
-                        });
-                      },
-                    ),
-                  ),
-                );
-              },
+          ListTile(
+            leading: Text(
+              poolText,
+              style: GoogleFonts.roboto(fontSize: 16.0, color: Colors.white),
             ),
-          ),
-          ElevatedButton(
-            onPressed: () {
+            trailing: Image.asset(
+              "images/$index.png",
+              fit: BoxFit.fill,
+            ),
+            onTap: () {
               Navigator.push(
                 context,
+                // MaterialPageRoute(
+                //   builder: (context) => Questions(
+                //     listOfQuestions: gamemode['questions'],
+                //   ),
+                // ),
                 MaterialPageRoute(
                   builder: (context) => Questions(
-                    listOfQuestions: widget.listOfQuestions[poolIndex] as List<dynamic>,
+                    listOfQuestions: widget.listOfQuestions[index],
                   ),
                 ),
               );
             },
-            child: const Text("Submit"),
           ),
         ],
       ),
     );
   }
-}
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: CustomScrollView(
+      slivers: [
+        const SliverAppBar(
+          floating: false,
+          backgroundColor: Colors.transparent,
+          flexibleSpace: FlexibleSpaceBar(
+            background: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: SizedBox(
+                width: 180,
+                child: Icon(Icons.construction,size: 140,)
+              ),
+            ),
+          ),
+          expandedHeight: 220,
+        ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) =>
+                poolWidget(poolText: widget.poolText[index], index: index),
+            childCount: widget.poolText.length,
+          ),
+        ),
+      ],
+    ));
+  }
+}

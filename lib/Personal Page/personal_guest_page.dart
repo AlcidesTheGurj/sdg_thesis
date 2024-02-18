@@ -249,13 +249,13 @@ class _GuestPageState extends State<GuestPage> {
                       width: 10,
                     ),*/
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              margin: const EdgeInsets.all(6),
               height: 200,
               child: GridView.builder(
-                  scrollDirection: Axis.horizontal,
+                  scrollDirection: Axis.vertical,
                   itemCount: badgeProgress.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3),
+                      crossAxisCount: 6),
                   itemBuilder: (_, int index) {
                     return InkWell(
                       onTap: () {
