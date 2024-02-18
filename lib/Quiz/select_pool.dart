@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sdg_thesis/Quiz/questions.dart';
 
@@ -32,7 +31,7 @@ class _SelectPoolState extends State<SelectPool> {
   Widget poolWidget({required String poolText, required int index}) {
     return Container(
       margin: const EdgeInsets.fromLTRB(10, 30, 10, 0),
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(8),
       height: 120,
       decoration: BoxDecoration(
         color: Colors.transparent,
@@ -42,35 +41,43 @@ class _SelectPoolState extends State<SelectPool> {
         ),
         borderRadius: BorderRadius.circular(30),
       ),
-      child: ListView(
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          ListTile(
-            leading: Text(
-              poolText,
-              style: GoogleFonts.roboto(fontSize: 16.0, color: Colors.white),
+      child: InkWell(
+        child: Row(
+          children: [
+            SizedBox(
+              width: 80,
+              child: Image.asset(
+                "images/$index.png",
+                fit: BoxFit.fill,
+              ),
             ),
-            trailing: Image.asset(
-              "images/$index.png",
-              fit: BoxFit.fill,
+            const SizedBox(
+              width: 10,
             ),
-            onTap: () {
-              Navigator.push(
-                context,
-                // MaterialPageRoute(
-                //   builder: (context) => Questions(
-                //     listOfQuestions: gamemode['questions'],
-                //   ),
-                // ),
-                MaterialPageRoute(
-                  builder: (context) => Questions(
-                    listOfQuestions: widget.listOfQuestions[index],
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
+            Flexible(
+              child: Text(
+                poolText,
+                style: GoogleFonts.roboto(fontSize: 18.0, color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+        onTap: () {
+          //Navigator.pop(context);
+          Navigator.pushReplacement(
+            context,
+            // MaterialPageRoute(
+            //   builder: (context) => Questions(
+            //     listOfQuestions: gamemode['questions'],
+            //   ),
+            // ),
+            MaterialPageRoute(
+              builder: (context) => Questions(
+                listOfQuestions: widget.listOfQuestions[index],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -78,30 +85,43 @@ class _SelectPoolState extends State<SelectPool> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: const Text("Standard"),
+        ),
+
         body: CustomScrollView(
-      slivers: [
-        const SliverAppBar(
-          floating: false,
-          backgroundColor: Colors.transparent,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: SizedBox(
-                width: 180,
-                child: Icon(Icons.construction,size: 140,)
+          slivers: [
+            SliverAppBar(
+              automaticallyImplyLeading: false,
+              floating: false,
+              backgroundColor: Colors.transparent,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: SizedBox(
+                    width: 120,
+                    height: 120,
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2FE_SDG_logo_without_UN_emblem_square_CMYK_Transparent.png?alt=media&token=83f19ed2-3a7c-458b-8698-7136559ab3af",
+                      placeholder: (context, url) =>
+                          const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+                  ),
+                ),
+              ),
+              expandedHeight: 200,
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) =>
+                    poolWidget(poolText: widget.poolText[index], index: index),
+                childCount: widget.poolText.length,
               ),
             ),
-          ),
-          expandedHeight: 220,
-        ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) =>
-                poolWidget(poolText: widget.poolText[index], index: index),
-            childCount: widget.poolText.length,
-          ),
-        ),
-      ],
-    ));
+          ],
+        ));
   }
 }
