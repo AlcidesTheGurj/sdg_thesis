@@ -1,11 +1,12 @@
+import 'package:animate_gradient/animate_gradient.dart';
+import 'package:avatar_glow/avatar_glow.dart';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttermoji/fluttermoji.dart';
-//import 'package:firebase_database/firebase_database.dart' as firedatabase;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:chat_bubbles/chat_bubbles.dart';
 
 import 'completed_quiz.dart';
 import '../customization_page.dart';
@@ -23,7 +24,7 @@ class Questions extends StatefulWidget {
 class _QuestionsState extends State<Questions> {
   Widget circleAvatarWidget() {
     return CircleAvatar(
-      radius: 90,
+      radius: 80,
       // backgroundColor: const Color(0xff7c1c43).withOpacity(0.65),
       backgroundColor: Colors.transparent,
       child: ClipRRect(
@@ -34,7 +35,7 @@ class _QuestionsState extends State<Questions> {
         ),
         child: SvgPicture.string(
           FluttermojiFunctions().decodeFluttermojifromString(avatarData),
-          height: 150,
+          height: 140,
           width: 100,
         ),
       ),
@@ -97,6 +98,109 @@ class _QuestionsState extends State<Questions> {
     //print(widget.listOfQuestions);
   }
 
+  List<Color> primaryGradientColors = [
+    const Color(0xff160041),
+    const Color(0xff410046),
+    const Color(0xff600145),
+    const Color(0xff7c1c43),
+  ];
+
+  List<Color> secondaryGradientColors = [
+    const Color(0xff752933),
+    const Color(0xff803c36),
+    const Color(0xff5d3823),
+    const Color(0xff644525),
+  ];
+
+  Widget answersWidget({required int answerIndex}) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(10, 30, 10, 0),
+      padding: const EdgeInsets.all(8),
+      height: 100,
+      decoration: BoxDecoration(
+        color: _isSelected[answerIndex]?Colors.purple:Colors.transparent,
+        border: Border.all(
+          color: Colors.black, // Set the color of the border
+          width: 2.0,
+        ),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: InkWell(
+        child: Row(
+          children: [
+            SizedBox(
+              width: 80,
+              child: Text(alphabetSelections[answerIndex],style: GoogleFonts.roboto(fontSize:30,fontWeight:FontWeight.bold),),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Flexible(
+              child: Text(
+                widget.listOfQuestions[index]['answer'][answerIndex],
+                style: GoogleFonts.roboto(fontSize: 18.0, color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+        onTap: () {
+          setState(() {
+            _isSelected[0] = false;
+            _isSelected[1] = false;
+            _isSelected[2] = false;
+            _isSelected[answerIndex] = true;
+            userInput = alphabetSelections[answerIndex];
+            // print(userInput);
+          });
+        },
+      ),
+    );
+  }
+
+  Widget questionsWidget() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        AvatarGlow(
+          startDelay: const Duration(milliseconds: 1000),
+          glowColor: const Color(0xffa21942),
+          glowShape: BoxShape.circle,
+          glowRadiusFactor: 0.2,
+          curve: Curves.fastOutSlowIn,
+          child: circleAvatarWidget(),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black, // Choose the border color
+                  width: 2.0, // Choose the border width
+                ),
+                borderRadius: BorderRadius.circular(
+                    10.0), // Adjust the radius for a circular border
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  widget.listOfQuestions[index]['question'].toString(),
+                  style:
+                      GoogleFonts.roboto(fontSize: 20, fontWeight: FontWeight.bold),textAlign: TextAlign.justify,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Route createRoute(int totalPoints) {
@@ -121,168 +225,75 @@ class _QuestionsState extends State<Questions> {
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          actions: [
-            IconButton(onPressed: () {
-
-            }, icon: const Icon(Icons.lightbulb))
-          ],
-        ),
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Text(
-              //   "Question ${index + 1} of ${widget.listOfQuestions.length}",
-              //   style: const TextStyle(fontSize: 22.0),
-              // ),
-              const SizedBox(
-                height: 20,
-              ),
-              Align(
-                child: LinearPercentIndicator(
-                  width: MediaQuery.of(context).size.width,
-                  lineHeight: 14.0,
-                  percent: (index + 1) / widget.listOfQuestions.length,
-                  backgroundColor: Colors.grey,
-                  progressColor: const Color(0xff00689d),
-                  animation: true,
+      child: AnimateGradient(
+        primaryColors: primaryGradientColors,
+        secondaryColors: secondaryGradientColors,
+        child: Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              automaticallyImplyLeading: false,
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      circleAvatarWidget(),
-                      BubbleSpecialTwo(
-                        text: widget.listOfQuestions[index]['question']
-                            .toString(),
-                        isSender: false,
-                        color: const Color(0xff3f7e44),
-                        tail: true,
-                        textStyle: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                Expanded(
+                  child: LinearPercentIndicator(
+                    lineHeight: 14.0,
+                    percent: (index + 1) / widget.listOfQuestions.length,
+                    backgroundColor: Colors.grey,
+                    progressColor: const Color(0xff00689d),
+                    animation: true,
                   ),
                 ),
-              ),
-
-              //circleAvatarWidget(),
-              // Align(
-              //   alignment: Alignment.center,
-              //   child: SingleChildScrollView(
-              //     scrollDirection: Axis.horizontal,
-              //     child: Row(
-              //       mainAxisSize: MainAxisSize.max,
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       children: [
-              //         // SizedBox(width:MediaQuery.of(context).size.width * 0.30),
-              //
-              //         BubbleSpecialOne(
-              //           text: widget.listOfQuestions[index]['question']
-              //               .toString(),
-              //           isSender: false,
-              //           color: const Color(0xff3f7e44),
-              //           tail: false,
-              //           textStyle: const TextStyle(
-              //             fontSize: 20,
-              //             color: Colors.white,
-              //             fontStyle: FontStyle.italic,
-              //             fontWeight: FontWeight.bold,
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              // Text(
-              //   widget.listOfQuestions[index]['question'].toString(),
-              //   style: const TextStyle(
-              //     fontSize: 20.0,
-              //   ),
-              // ),
-              const SizedBox(
-                height: 50,
-              ),
-              SizedBox(
-                // decoration: BoxDecoration(
-                //   color: Colors.green.withOpacity(0.3)
-                // ),
-                height: 260,
-                child: ListView.builder(
-                    itemCount: widget.listOfQuestions[index]['answer'].length,
-                    itemBuilder: (BuildContext context, int answerIndex) {
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 20.0, left: 5.0, right: 5.0, top: 10.0),
-                        child: SizedBox(
-                          height: 60,
-                          child: ListTile(
-                            selectedTileColor: const Color(0xff00689d),
-                            selected: _isSelected[answerIndex],
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  color: Color(0xff00689d), width: 1),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            title: Text(
-                              '${widget.listOfQuestions[index]['answer'][answerIndex]}',
-                              style: GoogleFonts.roboto(
-                                  fontSize: 20.0, color: Colors.white),
-                            ),
-                            // subtitle: Text(
-                            //     "None",
-                            //     style: GoogleFonts.roboto(
-                            //         fontSize: 16.0,
-                            //         color: Colors.white70
-                            //     )
-                            // ),
-                            leading: Text(
-                              alphabetSelections[answerIndex],
-                              style: GoogleFonts.roboto(
-                                  fontSize: 30.0, color: Colors.white),
-                            ),
-                            onTap: () {
-                              setState(() {
-                                _isSelected[0] = false;
-                                _isSelected[1] = false;
-                                _isSelected[2] = false;
-                                _isSelected[answerIndex] = true;
-                                userInput = alphabetSelections[answerIndex];
-                                // print(userInput);
-                              });
-                            },
-                          ),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.lightbulb)),
+              ],
+            ),
+            body: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  floating: false,
+                  backgroundColor: Colors.transparent,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: questionsWidget(),
+                    ),
+                  ),
+                  expandedHeight: MediaQuery.sizeOf(context).height / 2,
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, listIndex) =>
+                        answersWidget(answerIndex: listIndex),
+                    childCount: 3,
+                  ),
+                ),
+              ],
+            ),
+            bottomNavigationBar: BottomAppBar(
+                color: Colors.transparent,
+                child: InkWell(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black, // Set the color of the border
+                          width: 2.0,
                         ),
-                      );
-                    }),
-              ),
-              ElevatedButton(
-                  onPressed: () {
+                        borderRadius: BorderRadius.circular(8.0)),
+                    child: const Center(
+                      child: Text("Continue"),
+                    ),
+                  ),
+                  onTap: () {
                     if (index < widget.listOfQuestions.length - 1) {
                       if (widget.listOfQuestions[index]['correct_answer'] ==
                           userInput) {
-                        // print("YAYYYY");
                         setState(() {
                           totalPoints +=
                               widget.listOfQuestions[index]['point'] as int;
@@ -301,17 +312,8 @@ class _QuestionsState extends State<Questions> {
                       Navigator.of(context)
                           .pushReplacement(createRoute(totalPoints));
                     }
-                    // setState(() {
-                    //   totalPoints += widget.listOfQuestions[index]['point'] as int;
-                    //   print(totalPoints);
-                    //   index++;
-                    // });
-                    // print(index);
                   },
-                  child: const Text("submit"))
-            ],
-          ),
-        ),
+                ))),
       ),
     );
   }

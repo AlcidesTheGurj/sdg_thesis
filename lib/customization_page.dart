@@ -68,11 +68,11 @@ class _CustomizationPageState extends State<CustomizationPage> {
   @override
   void initState() {
     _loadAvatar(context);
-   // print(googleUser);
+    // print(googleUser);
     if (user == null) {
       lock = true;
     }
-    if (googleUser == false){
+    if (googleUser == false) {
       lock = true;
     }
     super.initState();
@@ -119,12 +119,13 @@ class _CustomizationPageState extends State<CustomizationPage> {
                   ),
                   const Icon(Icons.arrow_right, size: 25),
                   AvatarGlow(
-                      startDelay: const Duration(milliseconds: 1000),
-                      glowColor: const Color(0xffa21942),
-                      glowShape: BoxShape.circle,
-                      glowRadiusFactor: 0.2,
-                      curve: Curves.fastOutSlowIn,
-                      child: circleAvatarWidget()),
+                    startDelay: const Duration(milliseconds: 1000),
+                    glowColor: const Color(0xffa21942),
+                    glowShape: BoxShape.circle,
+                    glowRadiusFactor: 0.2,
+                    curve: Curves.fastOutSlowIn,
+                    child: circleAvatarWidget(),
+                  ),
                 ],
               ),
               SizedBox(
@@ -152,15 +153,15 @@ class _CustomizationPageState extends State<CustomizationPage> {
                   scaffoldWidth: width,
                   autosave: false,
                   theme: FluttermojiThemeData(
-                      boxDecoration: BoxDecoration(boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.6),
-                          spreadRadius: 6,
-                          blurRadius: 8,
-                          offset: const Offset(0, 3),
-                        )
-                      ]),
-                      primaryBgColor: Colors.black,
+                    boxDecoration: BoxDecoration(boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.6),
+                        spreadRadius: 6,
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      )
+                    ]),
+                    primaryBgColor: Colors.black,
                     secondaryBgColor: Colors.transparent,
                     iconColor: const Color(0xffdd1367),
                     labelTextStyle: GoogleFonts.roboto(fontSize: 20),
