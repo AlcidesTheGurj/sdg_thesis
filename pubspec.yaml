@@ -60,6 +60,10 @@ dependencies:
   info_widget: ^1.0.0
   transparent_image: ^2.0.1
   google_sign_in: ^6.2.1
+  pdf: ^3.10.7
+  syncfusion_flutter_pdf: ^24.2.6
+  open_file: ^3.3.2
+  path_provider: ^2.1.2
 
 dev_dependencies:
   flutter_test:
