@@ -128,6 +128,7 @@ class _GuestPageState extends State<GuestPage> {
     getUserScore();
     getUserBadges();
     getUserMilestones();
+    //print(user);
     super.initState();
   }
 

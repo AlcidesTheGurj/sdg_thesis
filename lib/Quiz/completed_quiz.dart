@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
+import '../auth.dart';
 import '../main.dart';
 
 class CompletedPage extends StatefulWidget {
@@ -12,7 +14,9 @@ class CompletedPage extends StatefulWidget {
 }
 
 class _CompletedPageState extends State<CompletedPage> {
+  final User? user = Auth().currentUser;
   Future<void> updateUserScore() async {
+    print(user);
     if (user != null) {
       DatabaseReference ref = FirebaseDatabase.instance.ref().child("Players/${user?.uid}");
       final snapshot = await ref.get();

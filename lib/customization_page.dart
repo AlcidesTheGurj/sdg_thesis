@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,11 +12,12 @@ import 'package:fluttermoji/fluttermojiSaveWidget.dart';
 import 'package:fluttermoji/fluttermojiThemeData.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'auth.dart';
 import 'main.dart';
 //import 'package:firebase_database/firebase_database.dart' as firedatabase;
 
 String avatarData = "";
-bool lock = true;
+bool lock = false;
 
 class CustomizationPage extends StatefulWidget {
   const CustomizationPage({super.key});
@@ -63,18 +65,52 @@ class _CustomizationPageState extends State<CustomizationPage> {
     }
   }
 
+  Future<void> getUserCustomization() async {
+    final User? user = Auth().currentUser;
+    int totalPoints = 0;
+    if (user != null) {
+      DatabaseReference ref = FirebaseDatabase.instance.ref().child("Players/${user.uid}");
+      final snapshot = await ref.get();
+
+      final Object? existingPointsObj = snapshot.value;
+
+      setState(() {
+        if (existingPointsObj != null && existingPointsObj is Map) {
+          totalPoints = (existingPointsObj['total_points'] ?? 0);
+          if (totalPoints >= 500) {
+            // Use a new variable for modification and trigger a rebuild
+            Map<String, dynamic> updatedData = {...existingPointsObj, 'customization': true};
+            ref.set(updatedData); // Update the data in the database
+            lock = false;
+          }
+          else {
+            lock = true;
+          }
+        }
+      });
+    }
+    else {
+      setState(() {
+        lock = true;
+      });
+    }
+  }
+
+
   //firedatabase.Query dbRef = firedatabase.FirebaseDatabase.instance.ref().child('user');
 
   @override
   void initState() {
     _loadAvatar(context);
+    lock = false;
+    getUserCustomization();
     // print(googleUser);
-    if (user == null) {
-      lock = true;
-    }
-    if (googleUser == false) {
-      lock = true;
-    }
+    // if (user == null) {
+    //   lock = true;
+    // }
+    // if (googleUser == false) {
+    //   lock = true;
+    // }
     super.initState();
   }
 
@@ -230,52 +266,6 @@ class _CustomizationPageState extends State<CustomizationPage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      if (user != null || googleUser) {
-                        Alert(
-                          context: context,
-                          style: AlertStyle(
-                              backgroundColor: Colors.black,
-                              animationDuration:
-                                  const Duration(milliseconds: 300),
-                              animationType: AnimationType.fromBottom,
-                              descStyle:
-                                  GoogleFonts.roboto(color: Colors.white)),
-                          image: const Icon(
-                            Icons.lock_open,
-                            color: Color(0xff00689d),
-                            size: 75,
-                          ),
-                          desc:
-                              "Would you like Mentor Customization for 500 points?",
-                          buttons: [
-                            DialogButton(
-                              onPressed: () => Navigator.pop(context),
-                              width: 120,
-                              color: Colors.red,
-                              child: Text(
-                                "No",
-                                style: GoogleFonts.roboto(
-                                    color: Colors.white, fontSize: 25),
-                              ),
-                            ),
-                            DialogButton(
-                              onPressed: () {
-                                setState(() {
-                                  lock = false;
-                                  Navigator.pop(context);
-                                });
-                              },
-                              width: 120,
-                              color: const Color(0xff00689d),
-                              child: Text(
-                                "Yes",
-                                style: GoogleFonts.roboto(
-                                    color: Colors.white, fontSize: 25),
-                              ),
-                            ),
-                          ],
-                        ).show();
-                      } else {
                         Alert(
                           context: context,
                           style: AlertStyle(
@@ -291,7 +281,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
                             size: 75,
                           ),
                           desc:
-                              "You need to Log In and earn 500 points to unlock this feature",
+                              "You need to reach level 5 to unlock this feature",
                           buttons: [
                             DialogButton(
                               onPressed: () => Navigator.pop(context),
@@ -305,7 +295,6 @@ class _CustomizationPageState extends State<CustomizationPage> {
                             ),
                           ],
                         ).show();
-                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xff00689d),

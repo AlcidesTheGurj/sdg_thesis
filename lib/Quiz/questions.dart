@@ -99,17 +99,17 @@ class _QuestionsState extends State<Questions> {
   }
 
   List<Color> primaryGradientColors = [
-    const Color(0xff160041),
-    const Color(0xff410046),
-    const Color(0xff600145),
-    const Color(0xff7c1c43),
+    const Color(0xff212130),
+    const Color(0xff212130),
+    const Color(0xff212130),
+    const Color(0xff212130),
   ];
 
   List<Color> secondaryGradientColors = [
-    const Color(0xff752933),
-    const Color(0xff803c36),
-    const Color(0xff5d3823),
-    const Color(0xff644525),
+    const Color(0xff39304a),
+    const Color(0xff39304a),
+    const Color(0xff39304a),
+    const Color(0xff39304a),
   ];
 
   Widget answersWidget({required int answerIndex}) {
@@ -118,7 +118,7 @@ class _QuestionsState extends State<Questions> {
       padding: const EdgeInsets.all(8),
       height: 100,
       decoration: BoxDecoration(
-        color: _isSelected[answerIndex]?Colors.purple:Colors.transparent,
+        color: _isSelected[answerIndex]?Color(0xff38aecc):Colors.transparent,
         border: Border.all(
           color: Colors.black, // Set the color of the border
           width: 2.0,
