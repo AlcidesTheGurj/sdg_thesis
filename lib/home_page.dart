@@ -1,4 +1,5 @@
-//import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
+import 'dart:async';
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -10,20 +11,18 @@ import 'package:sdg_thesis/Quiz/select_pool.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
-  final String title = 'Flutter Demo Home Page';
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  // final firestore.FirebaseFirestore _firestore = firestore.FirebaseFirestore.instance;
+class _MyHomePageState extends State<MyHomePage>
+    with TickerProviderStateMixin {
   firedatabase.Query dbRef =
-      firedatabase.FirebaseDatabase.instance.ref().child('Gamemodes');
+  firedatabase.FirebaseDatabase.instance.ref().child('Gamemodes');
   final storage = FirebaseStorage.instance;
   final storageRef = FirebaseStorage.instance.ref();
   final imagesRef = FirebaseStorage.instance.ref().child("images");
-  //firedatabase.DatabaseReference reference = firedatabase.FirebaseDatabase.instance.ref().child('Gamemodes');
 
   final List<Icon> modeIcons = [
     const Icon(Icons.quiz, size: 40),
@@ -34,7 +33,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     const Icon(Icons.auto_mode, size: 40),
   ];
 
-  //0.5 opacity
   final List<Color> modeColors = [
     const Color(0xff00689d),
     const Color(0xff3f7e44),
@@ -46,27 +44,78 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   var gameData;
 
+  late AnimationController _rotationController;
+  late Animation<double> _rotationAnimation;
+
+  bool _isSpinning = false;
+
+  @override
+  void initState() {
+    _loadGamemodes(context);
+
+    _rotationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+
+    _rotationAnimation = Tween<double>(
+      begin: 0.0,
+      end: pi,
+    ).animate(_rotationController);
+
+    super.initState();
+  }
+
+  void _startSpinningAnimation() {
+    setState(() {
+      _isSpinning = true;
+    });
+    _rotationController.repeat();
+    // Stop the spinning after a delay (e.g., 2 seconds)
+    Future.delayed(const Duration(seconds: 1), () {
+      _stopSpinningAnimation();
+    });
+  }
+
+  void _stopSpinningAnimation() {
+    _rotationController.stop();
+    setState(() {
+      _isSpinning = false;
+    });
+  }
+
   Future<void> _loadGamemodes(BuildContext context) async {
     if (context.mounted) {
       DatabaseReference ref =
       FirebaseDatabase.instance.ref('Gamemodes');
       var dataSnapshot = await ref.get();
       var gameObject = dataSnapshot.value!;
-      //print(dataSnapshot.value!.runtimeType);
-     // print(gameObject.runtimeType);
 
       setState(() {
         gameData = gameObject;
-         //print(gameData);
-       //print(gameData.runtimeType);
       });
     }
   }
 
-  @override
-  void initState() {
-    _loadGamemodes(context);
-    super.initState();
+  Widget _buildSpinningImage() {
+    return RotationTransition(
+      turns: _rotationAnimation,
+      child: GestureDetector(
+        onTap: () {
+          if (!_isSpinning) {
+            _startSpinningAnimation();
+            // Add your onClick logic here
+          }
+        },
+        child: CachedNetworkImage(
+          imageUrl:
+          "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2FSDG%20Wheel_PRINT_Transparent.png?alt=media&token=f9775cca-96fe-4b1a-8427-3a52567ae8c2",
+          placeholder: (context, url) =>
+          const Center(child: CircularProgressIndicator()),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+        ),
+      ),
+    );
   }
 
   Widget myWidget({required Map gamemode}) {
@@ -87,25 +136,19 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               style: GoogleFonts.roboto(fontSize: 28.0, color: Colors.white),
             ),
             subtitle: Text("${gamemode['description'] ?? 'None'}",
-                style:
-                    GoogleFonts.roboto(fontSize: 16.0, color: Colors.white70)),
+                style: GoogleFonts.roboto(fontSize: 16.0, color: Colors.white70)),
             trailing: modeIcons[gamemode['index']],
             onTap: () {
               // on tap enter to the competition if questions list it's not null
               if (gamemode['questions'] != null) {
                 Navigator.push(
                   context,
-                  // MaterialPageRoute(
-                  //   builder: (context) => Questions(
-                  //     listOfQuestions: gamemode['questions'],
-                  //   ),
-                  // ),
-                    MaterialPageRoute(
-                      builder: (context) => SelectPool(
-                        listOfQuestions: gamemode['questions'],
-                        poolText: gamemode['pool_text'],
-                      ),
+                  MaterialPageRoute(
+                    builder: (context) => SelectPool(
+                      listOfQuestions: gamemode['questions'],
+                      poolText: gamemode['pool_text'],
                     ),
+                  ),
                 );
               } else {
                 showDialog(
@@ -138,13 +181,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               padding: const EdgeInsets.all(12.0),
               child: SizedBox(
                 width: 180,
-                child: CachedNetworkImage(
-                  imageUrl:
-                      "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2FSDG%20Wheel_PRINT_Transparent.png?alt=media&token=f9775cca-96fe-4b1a-8427-3a52567ae8c2",
-                  placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                ),
+                child: _buildSpinningImage(),
               ),
             ),
           ),
@@ -152,25 +189,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
-                (context, index) =>
-              myWidget(gamemode: gameData[index]),
+                (context, index) => myWidget(gamemode: gameData[index]),
             childCount: gameData?.length ?? 0,
           ),
         ),
       ],
     );
-    // Expanded(
-    //   child: FirebaseAnimatedList(
-    //     query: dbRef,
-    //     itemBuilder: (BuildContext context, DataSnapshot snapshot,
-    //         Animation<double> animation, int index) {
-    //       // itemBuilder must return something
-    //       Map gamemode = snapshot.value as Map;
-    //       gamemode['key'] = snapshot.key;
-    //       //print(gamemode);
-    //       return myWidget(gamemode: gamemode);
-    //     },
-    //   ),
-    // ),
   }
 }

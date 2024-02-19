@@ -1,3 +1,4 @@
+import 'package:animate_gradient/animate_gradient.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,7 +35,7 @@ class _SelectPoolState extends State<SelectPool> {
       padding: const EdgeInsets.all(8),
       height: 120,
       decoration: BoxDecoration(
-        color: Colors.transparent,
+        color: sdgColours[index],
         border: Border.all(
           color: Colors.black, // Set the color of the border
           width: 2.0,
@@ -47,7 +48,7 @@ class _SelectPoolState extends State<SelectPool> {
             SizedBox(
               width: 80,
               child: Image.asset(
-                "images/$index.png",
+                "images/default/$index-web.png",
                 fit: BoxFit.fill,
               ),
             ),
@@ -82,46 +83,86 @@ class _SelectPoolState extends State<SelectPool> {
     );
   }
 
+  List<Color> primaryGradientColors = [
+    const Color(0xff212130),
+    const Color(0xff212130),
+    const Color(0xff212130),
+    const Color(0xff212130),
+  ];
+
+  List<Color> secondaryGradientColors = [
+    const Color(0xff39304a),
+    const Color(0xff39304a),
+    const Color(0xff39304a),
+    const Color(0xff39304a),
+  ];
+
+  List<Color> sdgColours = [
+    const Color(0xffe5243b),
+    const Color(0xffdda63a),
+    const Color(0xff4c9f38),
+    const Color(0xffc5192d),
+    const Color(0xffff3a21),
+    const Color(0xff26bde2),
+    const Color(0xfffcc30b),
+    const Color(0xffa21942),
+    const Color(0xfffd6925),
+    const Color(0xffdd1367),
+    const Color(0xfffd9d24),
+    const Color(0xffbf8b2e),
+    const Color(0xff3f7e44),
+    const Color(0xff0a97d9),
+    const Color(0xff56c02b),
+    const Color(0xff00689d),
+    const Color(0xff19486a),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Standard"),
-        ),
+    return AnimateGradient(
+      primaryColors: primaryGradientColors,
+      secondaryColors: secondaryGradientColors,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            title: const Text("Standard"),
+          ),
 
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              floating: false,
-              backgroundColor: Colors.transparent,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: SizedBox(
-                    width: 120,
-                    height: 120,
-                    child: CachedNetworkImage(
-                      imageUrl:
-                          "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2FE_SDG_logo_without_UN_emblem_square_CMYK_Transparent.png?alt=media&token=83f19ed2-3a7c-458b-8698-7136559ab3af",
-                      placeholder: (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+          body: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                floating: false,
+                backgroundColor: Colors.transparent,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: SizedBox(
+                      width: 120,
+                      height: 120,
+                      child: CachedNetworkImage(
+                        imageUrl:
+                            "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2FE_SDG_logo_without_UN_emblem_square_CMYK_Transparent.png?alt=media&token=83f19ed2-3a7c-458b-8698-7136559ab3af",
+                        placeholder: (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
                     ),
                   ),
                 ),
+                expandedHeight: 200,
               ),
-              expandedHeight: 200,
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) =>
-                    poolWidget(poolText: widget.poolText[index], index: index),
-                childCount: widget.poolText.length,
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) =>
+                      poolWidget(poolText: widget.poolText[index], index: index),
+                  childCount: widget.poolText.length,
+                ),
               ),
-            ),
-          ],
-        ));
+            ],
+          )),
+    );
   }
 }

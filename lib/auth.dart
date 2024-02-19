@@ -50,7 +50,7 @@ class Auth {
       DatabaseReference ref = FirebaseDatabase.instance.ref("Players/$userUuid");
       await ref.set({
         "email": email,
-        "points": 0,
+        "total_points": 0,
       });
     }
   }
@@ -95,7 +95,6 @@ class Auth {
         await ref.update({
           'displayName': user!.displayName,
           'email': user!.email,
-          // Add any other user information you want to store
         });
       }
 
