@@ -1,4 +1,5 @@
 import 'package:animate_gradient/animate_gradient.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 
 import 'package:firebase_database/firebase_database.dart';
@@ -129,6 +130,13 @@ class _QuestionsState extends State<Questions> {
               color: Colors.black,
               width: 2.0,
             ),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0xff28283a), // You can choose the shadow color
+                offset: Offset(0.0, 2.0), // Set the offset to control the shadow direction
+                blurRadius: 3.0, // Adjust the blur radius for the desired effect
+              ),
+            ],
             borderRadius: BorderRadius.circular(30),
           ),
           child: InkWell(
@@ -200,20 +208,24 @@ class _QuestionsState extends State<Questions> {
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.black, // Choose the border color
+                  color: Colors.transparent, // Choose the border color
                   width: 2.0, // Choose the border width
                 ),
                 borderRadius: BorderRadius.circular(
-                    10.0), // Adjust the radius for a circular border
+                    10.0),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0xff28283a), // You can choose the shadow color
+                    offset: Offset(0.0, 2.0), // Set the offset to control the shadow direction
+                    blurRadius: 3.0, // Adjust the blur radius for the desired effect
+                  ),
+                ],// Adjust the radius for a circular border
               ),
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
-                child: Text(
-                  widget.listOfQuestions[index]['question'].toString(),
-                  style: GoogleFonts.roboto(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.justify,
-                ),
+                child: AnimatedTextKit(isRepeatingAnimation: false,animatedTexts: [
+                  TyperAnimatedText(widget.listOfQuestions[index]['question'],textStyle: GoogleFonts.roboto(fontSize: 20,fontWeight:FontWeight.bold))
+                ])
               ),
             ),
           ),

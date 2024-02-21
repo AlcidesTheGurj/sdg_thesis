@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -26,8 +24,8 @@ class _MyHomePageState extends State<MyHomePage>
 
   final List<Icon> modeIcons = [
     const Icon(Icons.quiz, size: 40),
-    const Icon(Icons.auto_awesome, size: 40),
-    const Icon(Icons.stars_rounded, size: 40),
+    const Icon(Icons.star, size: 40),
+    const Icon(Icons.stars, size: 40),
     const Icon(Icons.construction, size: 40),
   ];
 
@@ -42,47 +40,10 @@ class _MyHomePageState extends State<MyHomePage>
 
   var gameData;
 
-  late AnimationController _rotationController;
-  late Animation<double> _rotationAnimation;
-
-  bool _isSpinning = false;
-
   @override
   void initState() {
     _loadGamemodes(context);
-
-    _rotationController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    );
-
-    _rotationAnimation = Tween<double>(
-      begin: 0.0,
-      end: 2*pi,
-    ).animate(_rotationController);
-
     super.initState();
-  }
-
-  void _startSpinningAnimation() {
-    setState(() {
-      _isSpinning = true;
-    });
-
-    _rotationController.forward().whenComplete(() {
-      _rotationController.reverse();
-      // Stop the spinning after a delay (e.g., 2 seconds)
-      Future.delayed(const Duration(seconds: 1), () {
-        _stopSpinningAnimation();
-      });
-    });
-  }
-
-  void _stopSpinningAnimation() {
-    _rotationController.stop();
-    setState(() {
-      _isSpinning = false;
-    });
   }
 
   Future<void> _loadGamemodes(BuildContext context) async {
@@ -96,27 +57,6 @@ class _MyHomePageState extends State<MyHomePage>
         gameData = gameObject;
       });
     }
-  }
-
-  Widget _buildSpinningImage() {
-    return RotationTransition(
-      turns: _rotationAnimation,
-      child: GestureDetector(
-        onTap: () {
-          if (!_isSpinning) {
-            _startSpinningAnimation();
-            // Add your onClick logic here
-          }
-        },
-        child: CachedNetworkImage(
-          imageUrl:
-          "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2FSDG%20Wheel_PRINT_Transparent.png?alt=media&token=f9775cca-96fe-4b1a-8427-3a52567ae8c2",
-          placeholder: (context, url) =>
-          const Center(child: CircularProgressIndicator()),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
-        ),
-      ),
-    );
   }
 
   Widget myWidget({required Map gamemode}) {
@@ -182,7 +122,13 @@ class _MyHomePageState extends State<MyHomePage>
               padding: const EdgeInsets.all(12.0),
               child: SizedBox(
                 width: 180,
-                child: _buildSpinningImage(),
+                child: CachedNetworkImage(
+                  imageUrl:
+                  "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2FSDG%20Wheel_PRINT_Transparent.png?alt=media&token=f9775cca-96fe-4b1a-8427-3a52567ae8c2",
+                  placeholder: (context, url) =>
+                  const Center(child: CircularProgressIndicator()),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
               ),
             ),
           ),
