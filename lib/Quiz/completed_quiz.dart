@@ -1,13 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../auth.dart';
-import '../main.dart';
 
 class CompletedPage extends StatefulWidget {
   final int totalPoints;
-  const CompletedPage(this.totalPoints, {super.key});
+  final int correctCount;
+  final int questionCount;
+  const CompletedPage(this.totalPoints, this.correctCount, this.questionCount,{super.key});
 
   @override
   State<CompletedPage> createState() => _CompletedPageState();
@@ -16,9 +18,10 @@ class CompletedPage extends StatefulWidget {
 class _CompletedPageState extends State<CompletedPage> {
   final User? user = Auth().currentUser;
   Future<void> updateUserScore() async {
-    print(user);
+   // print(user);
     if (user != null) {
-      DatabaseReference ref = FirebaseDatabase.instance.ref().child("Players/${user?.uid}");
+      DatabaseReference ref =
+          FirebaseDatabase.instance.ref().child("Players/${user?.uid}");
       final snapshot = await ref.get();
 
       int existingPoints = 0;
@@ -35,7 +38,6 @@ class _CompletedPageState extends State<CompletedPage> {
     }
   }
 
-
   @override
   void initState() {
     updateUserScore();
@@ -46,10 +48,30 @@ class _CompletedPageState extends State<CompletedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: [
-          Center(child: Text(" you earned ${widget.totalPoints}")),
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              "Quiz Completed",
+              style: GoogleFonts.roboto(fontSize: 38),
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            Text(
+              "${widget.correctCount}/${widget.questionCount}",
+              style: GoogleFonts.roboto(fontSize: 38),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              "+${widget.totalPoints} exp",
+              style: GoogleFonts.roboto(fontSize: 24),
+            ),
+          ],
+        ),
       ),
     );
   }
