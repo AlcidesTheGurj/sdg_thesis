@@ -133,8 +133,10 @@ class _QuestionsState extends State<Questions> {
             boxShadow: const [
               BoxShadow(
                 color: Color(0xff28283a), // You can choose the shadow color
-                offset: Offset(0.0, 2.0), // Set the offset to control the shadow direction
-                blurRadius: 3.0, // Adjust the blur radius for the desired effect
+                offset: Offset(
+                    0.0, 2.0), // Set the offset to control the shadow direction
+                blurRadius:
+                    3.0, // Adjust the blur radius for the desired effect
               ),
             ],
             borderRadius: BorderRadius.circular(30),
@@ -143,19 +145,43 @@ class _QuestionsState extends State<Questions> {
             child: Row(
               children: [
                 SizedBox(
-                  width: 80,
-                  child: Text(
-                    alphabetSelections[answerIndex],
-                    style: GoogleFonts.roboto(
-                        fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                ),
+                    width: 80,
+                    child: _isSelected[answerIndex]
+                        ? AnimatedTextKit(
+                            key: ValueKey(answerIndex),
+                            animatedTexts: [
+                              ScaleAnimatedText(alphabetSelections[answerIndex],
+                                  textStyle: GoogleFonts.roboto(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),duration: const Duration(seconds: 1, microseconds: 500)),
+                            ],
+                            isRepeatingAnimation: true,
+                            repeatForever: true,
+                          )
+                        : Text(
+                            alphabetSelections[answerIndex],
+                            style: GoogleFonts.roboto(
+                                fontSize: 30, fontWeight: FontWeight.bold),
+                          )),
                 Flexible(
-                  child: Text(
-                    widget.listOfQuestions[index]['answer'][answerIndex],
-                    style:
-                        GoogleFonts.roboto(fontSize: 18.0, color: Colors.white),
-                  ),
+                  child: _isSelected[answerIndex]
+                      ? AnimatedTextKit(
+                          key: ValueKey(answerIndex),
+                          animatedTexts: [
+                            ScaleAnimatedText(
+                                widget.listOfQuestions[index]['answer']
+                                    [answerIndex],
+                                textStyle: GoogleFonts.roboto(fontSize: 18),duration: const Duration(seconds: 1, microseconds: 900)),
+                          ],
+                          isRepeatingAnimation: true,
+                          repeatForever: true,
+                        )
+                      : Text(
+                          widget.listOfQuestions[index]['answer'][answerIndex],
+                          style: GoogleFonts.roboto(
+                            fontSize: 18,
+                          ),
+                        ),
                 ),
               ],
             ),
@@ -211,21 +237,30 @@ class _QuestionsState extends State<Questions> {
                   color: Colors.transparent, // Choose the border color
                   width: 2.0, // Choose the border width
                 ),
-                borderRadius: BorderRadius.circular(
-                    10.0),
+                borderRadius: BorderRadius.circular(10.0),
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0xff28283a), // You can choose the shadow color
-                    offset: Offset(0.0, 2.0), // Set the offset to control the shadow direction
-                    blurRadius: 3.0, // Adjust the blur radius for the desired effect
+                    offset: Offset(0.0,
+                        2.0), // Set the offset to control the shadow direction
+                    blurRadius:
+                        3.0, // Adjust the blur radius for the desired effect
                   ),
-                ],// Adjust the radius for a circular border
+                ], // Adjust the radius for a circular border
               ),
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
-                child: AnimatedTextKit(isRepeatingAnimation: false,animatedTexts: [
-                  TyperAnimatedText(widget.listOfQuestions[index]['question'],textStyle: GoogleFonts.roboto(fontSize: 20,fontWeight:FontWeight.bold))
-                ])
+                child: AnimatedTextKit(
+                  key: ValueKey(index),
+                  isRepeatingAnimation: false,
+                  displayFullTextOnTap: true,
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                        widget.listOfQuestions[index]['question'],
+                        textStyle: GoogleFonts.roboto(
+                            fontSize: 20, fontWeight: FontWeight.bold))
+                  ],
+                ),
               ),
             ),
           ),
@@ -239,7 +274,7 @@ class _QuestionsState extends State<Questions> {
     Route createRoute(int totalPoints, int correctCount, int questionCount) {
       return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            CompletedPage(totalPoints,correctCount,questionCount),
+            CompletedPage(totalPoints, correctCount, questionCount),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(0.0, 1.0);
           const end = Offset.zero;
@@ -319,28 +354,44 @@ class _QuestionsState extends State<Questions> {
                           width: 2.0,
                         ),
                         borderRadius: BorderRadius.circular(8.0)),
-                    child: const Center(
-                      child: Text("Continue"),
-                    ),
+                    child: Center(
+                        child: Text('Continue',
+                            style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.bold, fontSize: 24))),
                   ),
                   onTap: () {
                     if (index < widget.listOfQuestions.length - 1) {
-                      if (widget.listOfQuestions[index]['correct_answer'] == userInput) {
+                      if (widget.listOfQuestions[index]['correct_answer'] ==
+                          userInput) {
                         setState(() {
-                          totalPoints += widget.listOfQuestions[index]['point'] as int;
+                          totalPoints +=
+                              widget.listOfQuestions[index]['point'] as int;
                           correctCount++;
+                          _isSelected[0] = false;
+                          _isSelected[1] = false;
+                          _isSelected[2] = false;
                         });
                       }
                       setState(() {
+                        _isSelected[0] = false;
+                        _isSelected[1] = false;
+                        _isSelected[2] = false;
                         index++;
                       });
                     } else {
-                      if (widget.listOfQuestions[index]['correct_answer'] == userInput) {
-                        totalPoints += widget.listOfQuestions[index]['point'] as int;
+                      if (widget.listOfQuestions[index]['correct_answer'] ==
+                          userInput) {
+                        setState(() {
+                          totalPoints +=
+                              widget.listOfQuestions[index]['point'] as int;
+                          correctCount++;
+                        });
                       }
-                      Navigator.of(context).pushReplacement(createRoute(totalPoints,correctCount,widget.listOfQuestions.length));
+                      Navigator.of(context).pushReplacement(createRoute(
+                          totalPoints,
+                          correctCount,
+                          widget.listOfQuestions.length));
                     }
-
                   },
                 ))),
       ),
