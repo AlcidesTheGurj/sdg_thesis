@@ -26,11 +26,9 @@ class _MyHomePageState extends State<MyHomePage>
 
   final List<Icon> modeIcons = [
     const Icon(Icons.quiz, size: 40),
-    const Icon(Icons.stars, size: 40),
-    const Icon(Icons.auto_mode, size: 40),
-    const Icon(Icons.auto_mode, size: 40),
-    const Icon(Icons.auto_mode, size: 40),
-    const Icon(Icons.auto_mode, size: 40),
+    const Icon(Icons.auto_awesome, size: 40),
+    const Icon(Icons.stars_rounded, size: 40),
+    const Icon(Icons.construction, size: 40),
   ];
 
   final List<Color> modeColors = [
@@ -60,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage>
 
     _rotationAnimation = Tween<double>(
       begin: 0.0,
-      end: pi,
+      end: 2*pi,
     ).animate(_rotationController);
 
     super.initState();
@@ -70,10 +68,13 @@ class _MyHomePageState extends State<MyHomePage>
     setState(() {
       _isSpinning = true;
     });
-    _rotationController.repeat();
-    // Stop the spinning after a delay (e.g., 2 seconds)
-    Future.delayed(const Duration(seconds: 1), () {
-      _stopSpinningAnimation();
+
+    _rotationController.forward().whenComplete(() {
+      _rotationController.reverse();
+      // Stop the spinning after a delay (e.g., 2 seconds)
+      Future.delayed(const Duration(seconds: 1), () {
+        _stopSpinningAnimation();
+      });
     });
   }
 
@@ -120,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage>
 
   Widget myWidget({required Map gamemode}) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(10, 30, 10, 0),
+      margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
       padding: const EdgeInsets.all(10),
       height: 95,
       decoration: BoxDecoration(

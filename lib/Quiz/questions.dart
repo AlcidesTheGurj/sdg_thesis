@@ -49,12 +49,12 @@ class _QuestionsState extends State<Questions> {
   String status = '';
 
   late DatabaseReference dbRef;
-  var points = "points";
+  //var points = "points";
   var index = 0;
   late int score = 0;
   bool submit = false;
 
-  final List<bool> _isSelected = [false, false, true];
+  final List<bool> _isSelected = [false, false, false];
   final List<String> alphabetSelections = ["A", "B", "C"];
   String userInput = "none";
 
@@ -65,6 +65,8 @@ class _QuestionsState extends State<Questions> {
   String title = "";
 
   int totalPoints = 0;
+
+  int correctCount = 0;
 
   Future<void> _loadAvatar(BuildContext context) async {
     if (context.mounted && user != null) {
@@ -99,61 +101,79 @@ class _QuestionsState extends State<Questions> {
   }
 
   List<Color> primaryGradientColors = [
+    const Color(0xff1c1c28),
     const Color(0xff212130),
-    const Color(0xff212130),
-    const Color(0xff212130),
-    const Color(0xff212130),
+    const Color(0xff28283a),
+    const Color(0xff2a2a3d),
   ];
 
   List<Color> secondaryGradientColors = [
-    const Color(0xff39304a),
-    const Color(0xff39304a),
-    const Color(0xff39304a),
-    const Color(0xff39304a),
+    const Color(0xff473d5e),
+    const Color(0xff3b314b),
+    const Color(0xff362d46),
+    const Color(0xff342b42),
   ];
-
   Widget answersWidget({required int answerIndex}) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(10, 30, 10, 0),
-      padding: const EdgeInsets.all(8),
-      height: 100,
-      decoration: BoxDecoration(
-        color: _isSelected[answerIndex]?Color(0xff38aecc):Colors.transparent,
-        border: Border.all(
-          color: Colors.black, // Set the color of the border
-          width: 2.0,
+    return Stack(
+      alignment: Alignment.topCenter,
+      children: [
+        Container(
+          margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+          padding: const EdgeInsets.all(12),
+          height: 85,
+          decoration: BoxDecoration(
+            color: _isSelected[answerIndex]
+                ? const Color(0xff43287a)
+                : Colors.transparent,
+            border: Border.all(
+              color: Colors.black,
+              width: 2.0,
+            ),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: InkWell(
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 80,
+                  child: Text(
+                    alphabetSelections[answerIndex],
+                    style: GoogleFonts.roboto(
+                        fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Flexible(
+                  child: Text(
+                    widget.listOfQuestions[index]['answer'][answerIndex],
+                    style:
+                        GoogleFonts.roboto(fontSize: 18.0, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            onTap: () {
+              setState(() {
+                _isSelected[0] = false;
+                _isSelected[1] = false;
+                _isSelected[2] = false;
+                _isSelected[answerIndex] = true;
+                userInput = alphabetSelections[answerIndex];
+              });
+            },
+          ),
         ),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: InkWell(
-        child: Row(
-          children: [
-            SizedBox(
-              width: 80,
-              child: Text(alphabetSelections[answerIndex],style: GoogleFonts.roboto(fontSize:30,fontWeight:FontWeight.bold),),
+        Positioned(
+          top: 0, // Adjust this value to position the arrow
+          child: Visibility(
+            visible: answerIndex == 0 ? true : false,
+            child: const Icon(
+              Icons.keyboard_arrow_up,
+              color: Colors.white,
+              size: 25,
             ),
-            const SizedBox(
-              width: 10,
-            ),
-            Flexible(
-              child: Text(
-                widget.listOfQuestions[index]['answer'][answerIndex],
-                style: GoogleFonts.roboto(fontSize: 18.0, color: Colors.white),
-              ),
-            ),
-          ],
+          ),
         ),
-        onTap: () {
-          setState(() {
-            _isSelected[0] = false;
-            _isSelected[1] = false;
-            _isSelected[2] = false;
-            _isSelected[answerIndex] = true;
-            userInput = alphabetSelections[answerIndex];
-            // print(userInput);
-          });
-        },
-      ),
+      ],
     );
   }
 
@@ -190,8 +210,9 @@ class _QuestionsState extends State<Questions> {
                 padding: const EdgeInsets.all(5.0),
                 child: Text(
                   widget.listOfQuestions[index]['question'].toString(),
-                  style:
-                      GoogleFonts.roboto(fontSize: 20, fontWeight: FontWeight.bold),textAlign: TextAlign.justify,
+                  style: GoogleFonts.roboto(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.justify,
                 ),
               ),
             ),
@@ -203,10 +224,10 @@ class _QuestionsState extends State<Questions> {
 
   @override
   Widget build(BuildContext context) {
-    Route createRoute(int totalPoints) {
+    Route createRoute(int totalPoints, int correctCount, int questionCount) {
       return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            CompletedPage(totalPoints),
+            CompletedPage(totalPoints,correctCount,questionCount),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(0.0, 1.0);
           const end = Offset.zero;
@@ -292,26 +313,22 @@ class _QuestionsState extends State<Questions> {
                   ),
                   onTap: () {
                     if (index < widget.listOfQuestions.length - 1) {
-                      if (widget.listOfQuestions[index]['correct_answer'] ==
-                          userInput) {
+                      if (widget.listOfQuestions[index]['correct_answer'] == userInput) {
                         setState(() {
-                          totalPoints +=
-                              widget.listOfQuestions[index]['point'] as int;
-                          //print(totalPoints);
-                          index++;
-                        });
-                      } else {
-                        setState(() {
-                          index++;
+                          totalPoints += widget.listOfQuestions[index]['point'] as int;
+                          correctCount++;
                         });
                       }
+                      setState(() {
+                        index++;
+                      });
                     } else {
-                      //Navigator.pop(context);
-                      totalPoints +=
-                          widget.listOfQuestions[index]['point'] as int;
-                      Navigator.of(context)
-                          .pushReplacement(createRoute(totalPoints));
+                      if (widget.listOfQuestions[index]['correct_answer'] == userInput) {
+                        totalPoints += widget.listOfQuestions[index]['point'] as int;
+                      }
+                      Navigator.of(context).pushReplacement(createRoute(totalPoints,correctCount,widget.listOfQuestions.length));
                     }
+
                   },
                 ))),
       ),
