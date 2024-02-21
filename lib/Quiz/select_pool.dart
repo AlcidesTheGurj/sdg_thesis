@@ -47,10 +47,13 @@ class _SelectPoolState extends State<SelectPool> {
           children: [
             SizedBox(
               width: 80,
-              child: Image.asset(
+              child: widget.poolText.length > 3 ?Image.asset(
                 "images/default/$index-web.png",
                 fit: BoxFit.fill,
-              ),
+              ):Image.asset(
+                "images/users.png",
+                fit: BoxFit.fill,
+              )
             ),
             const SizedBox(
               width: 10,
