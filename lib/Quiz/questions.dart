@@ -146,42 +146,18 @@ class _QuestionsState extends State<Questions> {
               children: [
                 SizedBox(
                     width: 80,
-                    child: _isSelected[answerIndex]
-                        ? AnimatedTextKit(
-                            key: ValueKey(answerIndex),
-                            animatedTexts: [
-                              ScaleAnimatedText(alphabetSelections[answerIndex],
-                                  textStyle: GoogleFonts.roboto(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold),duration: const Duration(seconds: 1, microseconds: 500)),
-                            ],
-                            isRepeatingAnimation: true,
-                            repeatForever: true,
-                          )
-                        : Text(
-                            alphabetSelections[answerIndex],
-                            style: GoogleFonts.roboto(
-                                fontSize: 30, fontWeight: FontWeight.bold),
-                          )),
+                    child: Text(
+                      alphabetSelections[answerIndex],
+                      style: GoogleFonts.roboto(
+                          fontSize: 30, fontWeight: FontWeight.bold),
+                    )),
                 Flexible(
-                  child: _isSelected[answerIndex]
-                      ? AnimatedTextKit(
-                          key: ValueKey(answerIndex),
-                          animatedTexts: [
-                            ScaleAnimatedText(
-                                widget.listOfQuestions[index]['answer']
-                                    [answerIndex],
-                                textStyle: GoogleFonts.roboto(fontSize: 18),duration: const Duration(seconds: 1, microseconds: 900)),
-                          ],
-                          isRepeatingAnimation: true,
-                          repeatForever: true,
-                        )
-                      : Text(
-                          widget.listOfQuestions[index]['answer'][answerIndex],
-                          style: GoogleFonts.roboto(
-                            fontSize: 18,
-                          ),
-                        ),
+                  child: Text(
+                    widget.listOfQuestions[index]['answer'][answerIndex],
+                    style: GoogleFonts.roboto(
+                      fontSize: 18,
+                    ),
+                  ),
                 ),
               ],
             ),
