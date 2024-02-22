@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sdg_thesis/Quiz/questions.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SelectPool extends StatefulWidget {
   const SelectPool(
@@ -18,8 +19,16 @@ class _SelectPoolState extends State<SelectPool> {
   //int poolSize = 0;
   //late List<bool> _isSelected; // Declare _isSelected without initialization
 
-  List<IconData> poolIcon = [Icons.local_activity, Icons.label, Icons.abc];
-
+  List<IconData> poolIcon = [
+    FontAwesomeIcons.envira,
+    FontAwesomeIcons.handshakeAngle,
+    FontAwesomeIcons.dollarSign
+  ];
+  List<Color> poolColor = [
+    const Color(0xff4c9f38),
+    const Color(0xff19486a),
+    const Color(0xffbf8b2e)
+  ];
   //int poolIndex = 2; // Initializing with the last index
 
   @override
@@ -35,7 +44,8 @@ class _SelectPoolState extends State<SelectPool> {
       padding: const EdgeInsets.all(8),
       height: 120,
       decoration: BoxDecoration(
-        color: sdgColours[index],
+        color:
+            widget.poolText.length > 3 ? sdgColours[index] : poolColor[index],
         border: Border.all(
           color: Colors.black, // Set the color of the border
           width: 2.0,
@@ -46,15 +56,20 @@ class _SelectPoolState extends State<SelectPool> {
         child: Row(
           children: [
             SizedBox(
-              width: 80,
-              child: widget.poolText.length > 3 ?Image.asset(
-                "images/default/$index-web.png",
-                fit: BoxFit.fill,
-              ):Image.asset(
-                "images/users.png",
-                fit: BoxFit.fill,
-              )
-            ),
+                width: 80,
+                child: widget.poolText.length > 3
+                    ? Image.asset(
+                        "images/default/$index-web.png",
+                        fit: BoxFit.fill,
+                      )
+                    : Center(
+                        child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.transparent)),
+                            child: FaIcon(
+                              poolIcon[index],
+                              size: 35,
+                            )))),
             const SizedBox(
               width: 10,
             ),
@@ -126,12 +141,11 @@ class _SelectPoolState extends State<SelectPool> {
       primaryColors: primaryGradientColors,
       secondaryColors: secondaryGradientColors,
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             title: const Text("Standard"),
           ),
-
           body: CustomScrollView(
             slivers: [
               SliverAppBar(
@@ -159,8 +173,8 @@ class _SelectPoolState extends State<SelectPool> {
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (context, index) =>
-                      poolWidget(poolText: widget.poolText[index], index: index),
+                  (context, index) => poolWidget(
+                      poolText: widget.poolText[index], index: index),
                   childCount: widget.poolText.length,
                 ),
               ),

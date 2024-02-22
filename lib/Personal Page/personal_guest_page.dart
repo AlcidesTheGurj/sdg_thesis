@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttermoji/fluttermojiFunctions.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -22,6 +23,16 @@ class _GuestPageState extends State<GuestPage> {
 
   double playerPoints = 0;
 
+  List<IconData> poolIcon = [
+    FontAwesomeIcons.envira,
+    FontAwesomeIcons.handshakeAngle,
+    FontAwesomeIcons.dollarSign
+  ];
+  List<Color> poolColor = [
+    const Color(0xff4c9f38),
+    const Color(0xff19486a),
+    const Color(0xffbf8b2e)
+  ];
   Future<void> getUserScore() async {
     if (user != null) {
       DatabaseReference ref =
@@ -432,10 +443,7 @@ class _GuestPageState extends State<GuestPage> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8.0),
                             child: Stack(children: [
-                              Image.asset(
-                                "images/$index.png",
-                                fit: BoxFit.fill,
-                              ),
+                              Center(child: Icon(poolIcon[index],size: 65,color: poolColor[index],)),
                               Visibility(
                                 visible: milestoneProgress[index],
                                 child: FractionallySizedBox(

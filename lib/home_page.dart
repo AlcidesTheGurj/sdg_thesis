@@ -24,7 +24,7 @@ class _MyHomePageState extends State<MyHomePage>
 
   final List<Icon> modeIcons = [
     const Icon(Icons.quiz, size: 40),
-    const Icon(Icons.star, size: 40),
+    const Icon(Icons.auto_awesome, size: 40),
     const Icon(Icons.stars, size: 40),
     const Icon(Icons.construction, size: 40),
   ];
