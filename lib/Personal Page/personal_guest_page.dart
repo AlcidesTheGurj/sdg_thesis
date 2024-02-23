@@ -514,16 +514,18 @@ Future<void> _createPDF() async {
   PdfDocument document = PdfDocument();
   final page = document.pages.add();
 
-  //page.graphics.drawString('This is a test certificate if it works gg ez', PdfStandardFont(PdfFontFamily.courier, 26));
-// Add title
+  // Add title
   page.graphics.drawString('Certificate of Achievement',
       PdfStandardFont(PdfFontFamily.helvetica, 30),
       bounds: const Rect.fromLTWH(50, 50, 500, 50));
 
-  // Add text
+  // Handle user display name
+  final userName = user?.displayName ?? 'User';
+
+  // Add text with user's display name
   page.graphics.drawString(
-      'This is to certify that ${user?.email} has successfully completed the quiz on SDGs.',
-      PdfStandardFont(PdfFontFamily.helvetica, 16),
+      'This is to certify that $userName has successfully completed the quiz on SDGs.',
+      PdfStandardFont(PdfFontFamily.courier, 16),
       bounds: const Rect.fromLTWH(50, 120, 500, 200));
 
   List<int> bytes = await document.save();

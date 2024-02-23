@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +71,8 @@ class _CustomizationPageState extends State<CustomizationPage> {
     final User? user = Auth().currentUser;
     int totalPoints = 0;
     if (user != null) {
-      DatabaseReference ref = FirebaseDatabase.instance.ref().child("Players/${user.uid}");
+      DatabaseReference ref =
+          FirebaseDatabase.instance.ref().child("Players/${user.uid}");
       final snapshot = await ref.get();
 
       final Object? existingPointsObj = snapshot.value;
@@ -79,23 +82,23 @@ class _CustomizationPageState extends State<CustomizationPage> {
           totalPoints = (existingPointsObj['total_points'] ?? 0);
           if (totalPoints >= 500) {
             // Use a new variable for modification and trigger a rebuild
-            Map<String, dynamic> updatedData = {...existingPointsObj, 'customization': true};
+            Map<String, dynamic> updatedData = {
+              ...existingPointsObj,
+              'customization': true
+            };
             ref.set(updatedData); // Update the data in the database
             lock = false;
-          }
-          else {
+          } else {
             lock = true;
           }
         }
       });
-    }
-    else {
+    } else {
       setState(() {
         lock = true;
       });
     }
   }
-
 
   //firedatabase.Query dbRef = firedatabase.FirebaseDatabase.instance.ref().child('user');
 
@@ -215,6 +218,28 @@ class _CustomizationPageState extends State<CustomizationPage> {
                 child: FluttermojiSaveWidget(
                   onTap: () {
                     _saveAvatar(context);
+                    Flushbar(
+                      flushbarPosition: FlushbarPosition.TOP,
+                      flushbarStyle: FlushbarStyle.FLOATING,
+                      margin: const EdgeInsets.all(8),
+                      borderRadius: BorderRadius.circular(8),
+                      backgroundColor: Color(0xff160041),
+                      boxShadows: const [
+                        BoxShadow(
+                            color: Color(0xff752933),
+                            offset: Offset(0.0, 2.0),
+                            blurRadius: 3.0)
+                      ],
+                      backgroundGradient: const LinearGradient(colors: [
+                        Color(0xff410046),
+                        Color(0xff600145),
+                        Color(0xff7c1c43),
+                      ]),
+                      title: "Success",
+                      message: "Mentor Saved successfully!",
+                      duration: const Duration(seconds: 1),
+                      icon: const Icon(Icons.check),
+                    ).show(context);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -266,35 +291,34 @@ class _CustomizationPageState extends State<CustomizationPage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                        Alert(
-                          context: context,
-                          style: AlertStyle(
-                              backgroundColor: Colors.black,
-                              animationDuration:
-                                  const Duration(milliseconds: 300),
-                              animationType: AnimationType.fromBottom,
-                              descStyle:
-                                  GoogleFonts.roboto(color: Colors.white)),
-                          image: const Icon(
-                            Icons.info_outline,
+                      Alert(
+                        context: context,
+                        style: AlertStyle(
+                            backgroundColor: Colors.black,
+                            animationDuration:
+                                const Duration(milliseconds: 300),
+                            animationType: AnimationType.fromBottom,
+                            descStyle: GoogleFonts.roboto(color: Colors.white)),
+                        image: const Icon(
+                          Icons.info_outline,
+                          color: Colors.red,
+                          size: 75,
+                        ),
+                        desc:
+                            "You need to reach level 5 to unlock this feature",
+                        buttons: [
+                          DialogButton(
+                            onPressed: () => Navigator.pop(context),
+                            width: 120,
                             color: Colors.red,
-                            size: 75,
-                          ),
-                          desc:
-                              "You need to reach level 5 to unlock this feature",
-                          buttons: [
-                            DialogButton(
-                              onPressed: () => Navigator.pop(context),
-                              width: 120,
-                              color: Colors.red,
-                              child: Text(
-                                "OK",
-                                style: GoogleFonts.roboto(
-                                    color: Colors.white, fontSize: 25),
-                              ),
+                            child: Text(
+                              "OK",
+                              style: GoogleFonts.roboto(
+                                  color: Colors.white, fontSize: 25),
                             ),
-                          ],
-                        ).show();
+                          ),
+                        ],
+                      ).show();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xff00689d),
