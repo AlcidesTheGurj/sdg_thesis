@@ -40,7 +40,7 @@ class _SelectPoolState extends State<SelectPool> {
 
   Widget poolWidget({required String poolText, required int index}) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(10, 30, 10, 0),
+      margin: const EdgeInsets.fromLTRB(10, 15, 10, 15),
       padding: const EdgeInsets.all(8),
       height: 120,
       decoration: BoxDecoration(
