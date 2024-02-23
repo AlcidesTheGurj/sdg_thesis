@@ -172,6 +172,10 @@ class _UserPageState extends State<UserPage> {
 
               const SizedBox(height: 15.0),
               InkWell(
+                customBorder: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                splashFactory: NoSplash.splashFactory,
                 onTap: () {
                   signInWithGoogle();
                   setState(() {

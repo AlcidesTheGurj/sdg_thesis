@@ -14,9 +14,11 @@ import '../customization_page.dart';
 import '../main.dart';
 
 class Questions extends StatefulWidget {
-  const Questions({super.key, required this.listOfQuestions});
+  const Questions({super.key, required this.listOfQuestions, required this.index, required this.gameMode});
   //final String competitionId;
   final List listOfQuestions;
+  final int index;
+  final int gameMode;
 
   @override
   State<Questions> createState() => _QuestionsState();
@@ -94,7 +96,6 @@ class _QuestionsState extends State<Questions> {
     // print(widget.listOfQuestions);
     // print(widget.listOfQuestions[index]['answer'].length);
     // print(widget.listOfQuestions[1]['answer'].length);
-
     super.initState();
     // firedatabase.Query dbRef =
     //     firedatabase.FirebaseDatabase.instance.ref().child('Gamemodes');
@@ -120,7 +121,7 @@ class _QuestionsState extends State<Questions> {
       children: [
         Container(
           margin: const EdgeInsets.fromLTRB(10, 20, 10, 15),
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.fromLTRB(10, 0, 0,0,),
           height: 85,
           decoration: BoxDecoration(
             color: _isSelected[answerIndex]
@@ -145,7 +146,7 @@ class _QuestionsState extends State<Questions> {
             child: Row(
               children: [
                 SizedBox(
-                    width: 80,
+                    width: 40,
                     child: Text(
                       alphabetSelections[answerIndex],
                       style: GoogleFonts.roboto(
@@ -250,7 +251,7 @@ class _QuestionsState extends State<Questions> {
     Route createRoute(int totalPoints, int correctCount, int questionCount) {
       return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            CompletedPage(totalPoints, correctCount, questionCount),
+            CompletedPage(totalPoints, correctCount, questionCount, gameMode: widget.gameMode, index: widget.index,),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(0.0, 1.0);
           const end = Offset.zero;

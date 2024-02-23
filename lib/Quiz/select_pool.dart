@@ -93,6 +93,8 @@ class _SelectPoolState extends State<SelectPool> {
             MaterialPageRoute(
               builder: (context) => Questions(
                 listOfQuestions: widget.listOfQuestions[index],
+                index: index,
+                gameMode: widget.poolText.length,
               ),
             ),
           );

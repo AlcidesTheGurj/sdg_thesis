@@ -1,3 +1,4 @@
+import 'package:animate_gradient/animate_gradient.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,10 @@ class CompletedPage extends StatefulWidget {
   final int totalPoints;
   final int correctCount;
   final int questionCount;
-  const CompletedPage(this.totalPoints, this.correctCount, this.questionCount,{super.key});
+  final int index;
+  final int gameMode;
+  const CompletedPage(this.totalPoints, this.correctCount, this.questionCount,
+      {super.key, required this.index, required this.gameMode});
 
   @override
   State<CompletedPage> createState() => _CompletedPageState();
@@ -18,7 +22,7 @@ class CompletedPage extends StatefulWidget {
 class _CompletedPageState extends State<CompletedPage> {
   final User? user = Auth().currentUser;
   Future<void> updateUserScore() async {
-   // print(user);
+    // print(user);
     if (user != null) {
       DatabaseReference ref =
           FirebaseDatabase.instance.ref().child("Players/${user?.uid}");
@@ -38,39 +42,128 @@ class _CompletedPageState extends State<CompletedPage> {
     }
   }
 
+  Future<void> updateUserBadges() async {
+    if (user != null) {
+      DatabaseReference ref = FirebaseDatabase.instance
+          .ref()
+          .child("Players/${user?.uid}/badge_progress");
+
+      final snapshot = await ref.get();
+
+      final List<dynamic>? badgeObj = snapshot.value as List<dynamic>?;
+
+      if (badgeObj != null) {
+        badgeObj[widget.index] = false;
+      }
+
+      DatabaseReference ref2 =
+          FirebaseDatabase.instance.ref().child("Players/${user?.uid}");
+
+      await ref2.update({
+        "badge_progress": badgeObj,
+      });
+    }
+  }
+
+  Future<void> updateUserMilestones() async {
+    if (user != null) {
+      DatabaseReference ref = FirebaseDatabase.instance
+          .ref()
+          .child("Players/${user?.uid}/milestone_progress");
+
+      final snapshot = await ref.get();
+
+      final List<dynamic>? badgeObj = snapshot.value as List<dynamic>?;
+
+      if (badgeObj != null) {
+        badgeObj[widget.index] = false;
+      }
+
+      DatabaseReference ref2 =
+          FirebaseDatabase.instance.ref().child("Players/${user?.uid}");
+
+      await ref2.update({
+        "milestone_progress": badgeObj,
+      });
+    }
+  }
+
   @override
   void initState() {
+    if (widget.correctCount == widget.questionCount) {
+      if (widget.gameMode > 5) {
+        updateUserBadges();
+      }
+    }
+    if (widget.correctCount >
+        widget.questionCount - (widget.questionCount * 0.6)) {
+      if (widget.gameMode > 2) {
+        updateUserMilestones();
+      }
+    }
     updateUserScore();
     super.initState();
   }
 
+  List<Color> primaryGradientColors = [
+    const Color(0xff1c1c28),
+    const Color(0xff212130),
+    const Color(0xff28283a),
+    const Color(0xff2a2a3d),
+  ];
+
+  List<Color> secondaryGradientColors = [
+    const Color(0xff473d5e),
+    const Color(0xff3b314b),
+    const Color(0xff362d46),
+    const Color(0xff342b42),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              "Quiz Completed",
-              style: GoogleFonts.roboto(fontSize: 38),
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            Text(
-              "${widget.correctCount}/${widget.questionCount}",
-              style: GoogleFonts.roboto(fontSize: 38),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              "+${widget.totalPoints} exp",
-              style: GoogleFonts.roboto(fontSize: 24),
-            ),
-          ],
+    return AnimateGradient(
+      primaryColors: primaryGradientColors,
+      secondaryColors: secondaryGradientColors,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(automaticallyImplyLeading: false,backgroundColor: Colors.transparent,),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Quiz Completed",
+                    style: GoogleFonts.roboto(fontSize: 38),
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Text(
+                    "${widget.correctCount}/${widget.questionCount}",
+                    style: GoogleFonts.roboto(fontSize: 38),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "+${widget.totalPoints} exp",
+                    style: GoogleFonts.roboto(fontSize: 24),
+                  ),
+                ],
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Go back"),
+              ),
+            ],
+          ),
         ),
       ),
     );
