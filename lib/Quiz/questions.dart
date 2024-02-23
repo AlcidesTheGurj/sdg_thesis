@@ -119,7 +119,7 @@ class _QuestionsState extends State<Questions> {
       alignment: Alignment.topCenter,
       children: [
         Container(
-          margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+          margin: const EdgeInsets.fromLTRB(10, 20, 10, 15),
           padding: const EdgeInsets.all(12),
           height: 85,
           decoration: BoxDecoration(
@@ -309,7 +309,7 @@ class _QuestionsState extends State<Questions> {
                       child: questionsWidget(),
                     ),
                   ),
-                  expandedHeight: MediaQuery.sizeOf(context).height / 2,
+                  expandedHeight: MediaQuery.sizeOf(context).height / 2 + 20,
                 ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
