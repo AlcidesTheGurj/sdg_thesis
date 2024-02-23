@@ -7,6 +7,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
+import '../main.dart';
+import 'mobile.dart';
 
 import '../auth.dart';
 import '../customization_page.dart';
@@ -97,19 +100,19 @@ class _GuestPageState extends State<GuestPage> {
   Future<void> getUserMilestones() async {
     if (user != null) {
       DatabaseReference ref =
-      FirebaseDatabase.instance.ref().child("Players/${user?.uid}");
+          FirebaseDatabase.instance.ref().child("Players/${user?.uid}");
       final snapshot = await ref.get();
 
       List<bool> existingMilestones =
-      List<bool>.filled(3, true); // Default to 20 false values
+          List<bool>.filled(3, true); // Default to 20 false values
 
       Map<dynamic, dynamic>? snapshotValueMap =
-      snapshot.value as Map<dynamic, dynamic>?;
+          snapshot.value as Map<dynamic, dynamic>?;
 
       if (snapshotValueMap != null) {
         // If 'badge_progress' exists in the snapshot and is a list, retrieve its values
         List<dynamic>? milestoneProgressList =
-        snapshotValueMap['milestone_progress'] as List<dynamic>?;
+            snapshotValueMap['milestone_progress'] as List<dynamic>?;
 
         if (milestoneProgressList != null) {
           // Cast the values to bool
@@ -133,6 +136,7 @@ class _GuestPageState extends State<GuestPage> {
       }
     }
   }
+
   @override
   void initState() {
     _loadAvatar(context);
@@ -237,7 +241,7 @@ class _GuestPageState extends State<GuestPage> {
                             8.0), // Replace with your desired color
                       ),
                       child: Padding(
-                        padding:  const EdgeInsets.fromLTRB(8.0, 1.0, 8.0, 1.0),
+                        padding: const EdgeInsets.fromLTRB(8.0, 1.0, 8.0, 1.0),
                         child: Text('${(playerPoints / 100).floor()}',
                             style: GoogleFonts.roboto(
                                 fontSize: 22, fontWeight: FontWeight.bold)),
@@ -364,7 +368,8 @@ class _GuestPageState extends State<GuestPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Milestones:", style: GoogleFonts.roboto(fontSize: 24.0)),
+                  Text("Milestones:",
+                      style: GoogleFonts.roboto(fontSize: 24.0)),
                 ],
               ),
             ),
@@ -384,7 +389,7 @@ class _GuestPageState extends State<GuestPage> {
                           style: AlertStyle(
                               backgroundColor: Colors.black,
                               animationDuration:
-                              const Duration(milliseconds: 200),
+                                  const Duration(milliseconds: 200),
                               animationType: AnimationType.fromTop,
                               descStyle: GoogleFonts.roboto(
                                   color: Colors.white, fontSize: 22),
@@ -397,9 +402,13 @@ class _GuestPageState extends State<GuestPage> {
                               : "Correctly answer all questions related to SDG ${index + 1}.",
                           //title: "Badge no. ${index + 1}",
                           image: Stack(children: [
-                            Image.asset(
-                              "images/$index.png",
-                              fit: BoxFit.fill,
+                            Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Icon(
+                                poolIcon[index],
+                                size: 80,
+                                color: poolColor[index],
+                              ),
                             ),
                             Positioned(
                               left: 0.0,
@@ -443,7 +452,12 @@ class _GuestPageState extends State<GuestPage> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8.0),
                             child: Stack(children: [
-                              Center(child: Icon(poolIcon[index],size: 65,color: poolColor[index],)),
+                              Center(
+                                  child: Icon(
+                                poolIcon[index],
+                                size: 65,
+                                color: poolColor[index],
+                              )),
                               Visibility(
                                 visible: milestoneProgress[index],
                                 child: FractionallySizedBox(
@@ -453,7 +467,7 @@ class _GuestPageState extends State<GuestPage> {
                                     child: DecoratedBox(
                                         decoration: BoxDecoration(
                                             color:
-                                            Colors.black.withOpacity(0.9)),
+                                                Colors.black.withOpacity(0.9)),
                                         child: const Icon(Icons.lock))),
                               ),
                             ]),
@@ -461,6 +475,25 @@ class _GuestPageState extends State<GuestPage> {
                     );
                   }),
             ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("Certificate:",
+                      style: GoogleFonts.roboto(fontSize: 24.0)),
+                ],
+              ),
+            ),
+            const SizedBox(height: 40,),
+
+            ElevatedButton(
+              onPressed: () async {
+                _createPDF();
+              },
+              child: const Text("Generate"),
+            ),
+            const SizedBox(height: 80,),
             Text(user?.email ?? 'user email',
                 style: GoogleFonts.roboto(fontSize: 16.0)),
             ElevatedButton(
@@ -476,6 +509,29 @@ class _GuestPageState extends State<GuestPage> {
     );
   }
 }
+
+Future<void> _createPDF() async {
+  PdfDocument document = PdfDocument();
+  final page = document.pages.add();
+
+  //page.graphics.drawString('This is a test certificate if it works gg ez', PdfStandardFont(PdfFontFamily.courier, 26));
+// Add title
+  page.graphics.drawString('Certificate of Achievement',
+      PdfStandardFont(PdfFontFamily.helvetica, 30),
+      bounds: const Rect.fromLTWH(50, 50, 500, 50));
+
+  // Add text
+  page.graphics.drawString(
+      'This is to certify that ${user?.email} has successfully completed the quiz on SDGs.',
+      PdfStandardFont(PdfFontFamily.helvetica, 16),
+      bounds: const Rect.fromLTWH(50, 120, 500, 200));
+
+  List<int> bytes = await document.save();
+  document.dispose();
+
+  saveAndLaunchFile(bytes, 'Certificate.pdf');
+}
+
 /*
 * SizedBox(
               height: 125,
