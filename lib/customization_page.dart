@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -223,7 +222,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
                       flushbarStyle: FlushbarStyle.FLOATING,
                       margin: const EdgeInsets.all(8),
                       borderRadius: BorderRadius.circular(8),
-                      backgroundColor: Color(0xff160041),
+                      backgroundColor: const Color(0xff160041),
                       boxShadows: const [
                         BoxShadow(
                             color: Color(0xff752933),
@@ -238,7 +237,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
                       title: "Success",
                       message: "Mentor Saved successfully!",
                       duration: const Duration(seconds: 1),
-                      icon: const Icon(Icons.check),
+                      icon: const Icon(Icons.save_alt),
                     ).show(context);
                   },
                   child: Row(

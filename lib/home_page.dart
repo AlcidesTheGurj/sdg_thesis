@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage>
                   builder: (context) => const AlertDialog(
                     title: Center(
                       child: Text(
-                        'This Game mode is not ready yet, check back later!',
+                        'This Game is constantly being updated, more features coming soon!',
                       ),
                     ),
                   ),

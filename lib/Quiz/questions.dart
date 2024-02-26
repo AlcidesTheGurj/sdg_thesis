@@ -1,20 +1,23 @@
 import 'package:animate_gradient/animate_gradient.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:avatar_glow/avatar_glow.dart';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttermoji/fluttermoji.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-
 import 'completed_quiz.dart';
 import '../customization_page.dart';
 import '../main.dart';
 
 class Questions extends StatefulWidget {
-  const Questions({super.key, required this.listOfQuestions, required this.index, required this.gameMode});
+  const Questions(
+      {super.key,
+      required this.listOfQuestions,
+      required this.index,
+      required this.gameMode});
   //final String competitionId;
   final List listOfQuestions;
   final int index;
@@ -57,7 +60,7 @@ class _QuestionsState extends State<Questions> {
   late int score = 0;
   bool submit = false;
 
-  final List<bool> _isSelected = [false, false, false];
+  final List<bool> _isSelected = [true, false, false];
   final List<String> alphabetSelections = ["A", "B", "C"];
   String userInput = "none";
 
@@ -121,7 +124,12 @@ class _QuestionsState extends State<Questions> {
       children: [
         Container(
           margin: const EdgeInsets.fromLTRB(10, 20, 10, 15),
-          padding: const EdgeInsets.fromLTRB(10, 0, 0,0,),
+          padding: const EdgeInsets.fromLTRB(
+            10,
+            0,
+            0,
+            0,
+          ),
           height: 85,
           decoration: BoxDecoration(
             color: _isSelected[answerIndex]
@@ -250,8 +258,13 @@ class _QuestionsState extends State<Questions> {
   Widget build(BuildContext context) {
     Route createRoute(int totalPoints, int correctCount, int questionCount) {
       return PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            CompletedPage(totalPoints, correctCount, questionCount, gameMode: widget.gameMode, index: widget.index,),
+        pageBuilder: (context, animation, secondaryAnimation) => CompletedPage(
+          totalPoints,
+          correctCount,
+          questionCount,
+          gameMode: widget.gameMode,
+          index: widget.index,
+        ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(0.0, 1.0);
           const end = Offset.zero;
@@ -340,6 +353,27 @@ class _QuestionsState extends State<Questions> {
                     if (index < widget.listOfQuestions.length - 1) {
                       if (widget.listOfQuestions[index]['correct_answer'] ==
                           userInput) {
+                        Flushbar(
+                          flushbarPosition: FlushbarPosition.TOP,
+                          flushbarStyle: FlushbarStyle.FLOATING,
+                          margin: const EdgeInsets.all(8),
+                          borderRadius: BorderRadius.circular(8),
+                          backgroundColor: const Color(0xff188300).withOpacity(0.5),
+                          boxShadows: const [
+                            BoxShadow(
+                                color: Color(0xff1f261a),
+                                offset: Offset(0.0, 2.0),
+                                blurRadius: 3.0)
+                          ],
+                          backgroundGradient: const LinearGradient(colors: [
+                            Color(0xff188300),
+                            Color(0xff40ba0f),
+                          ]),
+                          title: "Correct",
+                          message: "+${widget.listOfQuestions[index]['point']}",
+                          duration: const Duration(seconds: 1),
+                          icon: const Icon(Icons.check),
+                        ).show(context);
                         setState(() {
                           totalPoints +=
                               widget.listOfQuestions[index]['point'] as int;
@@ -347,27 +381,99 @@ class _QuestionsState extends State<Questions> {
                           _isSelected[0] = false;
                           _isSelected[1] = false;
                           _isSelected[2] = false;
+                          userInput = "E";
+                          index++;
                         });
                       }
-                      setState(() {
-                        _isSelected[0] = false;
-                        _isSelected[1] = false;
-                        _isSelected[2] = false;
-                        index++;
-                      });
+                      else {
+                        Flushbar(
+                          flushbarPosition: FlushbarPosition.TOP,
+                          flushbarStyle: FlushbarStyle.FLOATING,
+                          margin: const EdgeInsets.all(8),
+                          borderRadius: BorderRadius.circular(8),
+                          backgroundColor: const Color(0xffa40606).withOpacity(0.5),
+                          boxShadows: const [
+                            BoxShadow(
+                                color: Color(0xff1f261a),
+                                offset: Offset(0.0, 2.0),
+                                blurRadius: 3.0)
+                          ],
+                          backgroundGradient: const LinearGradient(colors: [
+                            Color(0xffa40606),
+                            Color(0xffce0b0b),
+                          ]),
+                          title: "Wrong",
+                          message: "+0",
+                          duration: const Duration(seconds: 1),
+                          icon: const Icon(Icons.close),
+                        ).show(context);
+                        setState(() {
+                          _isSelected[0] = false;
+                          _isSelected[1] = false;
+                          _isSelected[2] = false;
+                          userInput = "E";
+                          index++;
+                        });
+                      }
                     } else {
                       if (widget.listOfQuestions[index]['correct_answer'] ==
                           userInput) {
+                        Flushbar(
+                          flushbarPosition: FlushbarPosition.TOP,
+                          flushbarStyle: FlushbarStyle.FLOATING,
+                          margin: const EdgeInsets.all(8),
+                          borderRadius: BorderRadius.circular(8),
+                          backgroundColor: const Color(0xff188300).withOpacity(0.5),
+                          boxShadows: const [
+                            BoxShadow(
+                                color: Color(0xff1f261a),
+                                offset: Offset(0.0, 2.0),
+                                blurRadius: 3.0)
+                          ],
+                          backgroundGradient: const LinearGradient(colors: [
+                            Color(0xff188300),
+                            Color(0xff40ba0f),
+                          ]),
+                          title: "Correct",
+                          message: "+${widget.listOfQuestions[index]['point']}",
+                          duration: const Duration(seconds: 1),
+                          icon: const Icon(Icons.check),
+                        ).show(context);
                         setState(() {
                           totalPoints +=
                               widget.listOfQuestions[index]['point'] as int;
                           correctCount++;
                         });
                       }
-                      Navigator.of(context).pushReplacement(createRoute(
-                          totalPoints,
-                          correctCount,
-                          widget.listOfQuestions.length));
+                      else {
+                        Flushbar(
+                          flushbarPosition: FlushbarPosition.TOP,
+                          flushbarStyle: FlushbarStyle.FLOATING,
+                          margin: const EdgeInsets.all(8),
+                          borderRadius: BorderRadius.circular(8),
+                          backgroundColor: const Color(0xffa40606).withOpacity(0.5),
+                          boxShadows: const [
+                            BoxShadow(
+                                color: Color(0xff1f261a),
+                                offset: Offset(0.0, 2.0),
+                                blurRadius: 3.0)
+                          ],
+                          backgroundGradient: const LinearGradient(colors: [
+                            Color(0xffa40606),
+                            Color(0xffce0b0b),
+                          ]),
+                          title: "Wrong",
+                          message: "+0",
+                          duration: const Duration(seconds: 1),
+                          icon: const Icon(Icons.close),
+                        ).show(context);
+                      }
+                      Future.delayed(const Duration(seconds: 1), () {
+                        Navigator.of(context).pushReplacement(createRoute(
+                            totalPoints,
+                            correctCount,
+                            widget.listOfQuestions.length));
+                      });
                     }
                   },
                 ))),
