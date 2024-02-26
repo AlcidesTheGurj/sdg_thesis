@@ -256,7 +256,7 @@ class _GuestPageState extends State<GuestPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Badges:", style: GoogleFonts.roboto(fontSize: 24.0)),
+                  Text("Badges", style: GoogleFonts.roboto(fontSize: 24.0)),
                 ],
               ),
             ),
@@ -368,7 +368,7 @@ class _GuestPageState extends State<GuestPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Milestones:",
+                  Text("Milestones",
                       style: GoogleFonts.roboto(fontSize: 24.0)),
                 ],
               ),
@@ -480,7 +480,7 @@ class _GuestPageState extends State<GuestPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Certificate:",
+                  Text("Certificate",
                       style: GoogleFonts.roboto(fontSize: 24.0)),
                 ],
               ),
