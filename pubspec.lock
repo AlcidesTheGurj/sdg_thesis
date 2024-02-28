@@ -169,30 +169,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
-  cloud_firestore:
-    dependency: "direct main"
-    description:
-      name: cloud_firestore
-      sha256: "8bfbb5a2edbc6052452326d60de0113fea2bcbf081d34a3f8e45c8b38307b31c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.14.0"
-  cloud_firestore_platform_interface:
-    dependency: transitive
-    description:
-      name: cloud_firestore_platform_interface
-      sha256: "73ff438fe46028f0e19f55da18b6ddc6906ab750562cd7d9ffab77ff8c0c4307"
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.1.0"
-  cloud_firestore_web:
-    dependency: transitive
-    description:
-      name: cloud_firestore_web
-      sha256: "232e45e95970d3a6baab8f50f9c3a6e2838d145d9d91ec9a7392837c44296397"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.9.0"
   collection:
     dependency: transitive
     description:
@@ -253,10 +229,10 @@ packages:
     dependency: "direct main"
     description:
       name: fancy_password_field
-      sha256: "512bb42320fbd4b18993f10303599b977eebbe036990160d12ea9c031d67e436"
+      sha256: "317f06bc13505a8cce0dd1d1abbeed404ed107e8c1185305bba7ffc7ae189943"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.2"
+    version: "2.0.6"
   ffi:
     dependency: transitive
     description:
@@ -382,14 +358,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_any_logo:
-    dependency: "direct main"
-    description:
-      name: flutter_any_logo
-      sha256: fef531885788ad62154c57653501ae30077775d68cc1003e1d6489fcb005dd8c
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.1"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -419,14 +387,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
-  flutter_slider_drawer:
-    dependency: "direct main"
-    description:
-      name: flutter_slider_drawer
-      sha256: "7e34f47a6d37c7518791fa1e242492df23e75ccbc600eeda4abfd5641aeea709"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.3"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -1059,13 +1019,13 @@ packages:
     source: hosted
     version: "1.3.2"
   url_launcher:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: url_launcher
-      sha256: c512655380d241a337521703af62d2c122bf7b77a46ff7dd750092aa9433499c
+      sha256: "0ecc004c62fd3ed36a2ffcbe0dd9700aee63bd7532d0b642a488b1ec310f492e"
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.4"
+    version: "6.2.5"
   url_launcher_android:
     dependency: transitive
     description:

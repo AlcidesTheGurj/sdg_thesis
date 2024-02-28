@@ -193,10 +193,10 @@ class _UserPageState extends State<UserPage> {
                 style: ButtonStyle(
                   padding: MaterialStateProperty.all(
                       EdgeInsets.zero), // Remove default padding
-                  backgroundColor: MaterialStateProperty.all(Color(0xff131314)),
-                  foregroundColor: MaterialStateProperty.all(Color(0xffe3e3e3)),
+                  backgroundColor: MaterialStateProperty.all(const Color(0xff131314)),
+                  foregroundColor: MaterialStateProperty.all(const Color(0xffe3e3e3)),
                   fixedSize: MaterialStateProperty.all(
-                      Size(183, 40)), // Set width and height
+                      const Size(183, 40)), // Set width and height
                 ),
                 onPressed: () {
                   signInWithGoogle();
