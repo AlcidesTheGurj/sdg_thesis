@@ -154,6 +154,7 @@ class _QuestionsState extends State<Questions> {
             borderRadius: BorderRadius.circular(30),
           ),
           child: InkWell(
+            splashFactory: NoSplash.splashFactory,
             child: Row(
               children: [
                 SizedBox(
@@ -435,6 +436,7 @@ class _QuestionsState extends State<Questions> {
             bottomNavigationBar: BottomAppBar(
                 color: Colors.transparent,
                 child: InkWell(
+                  splashFactory: NoSplash.splashFactory,
                   child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(
