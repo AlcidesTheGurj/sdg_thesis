@@ -174,11 +174,10 @@ class _HomeState extends State<Home> {
                 const SizedBox(
                   width: 5.0,
                 ),
-                Text(
-                  "",
-                  // titles[_selectedIndex]
-                  style: GoogleFonts.roboto(fontSize: 25.0),
-                )
+                // Text(
+                //   titles[_selectedIndex],
+                //   style: GoogleFonts.roboto(fontSize: 25.0),
+                // )
               ],
             ),
             // actions: [
