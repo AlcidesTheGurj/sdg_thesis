@@ -125,13 +125,17 @@ class _HomeState extends State<Home> {
         if (details.primaryVelocity! > 0) {
           // Swiped right
           if (_selectedIndex > 0) {
-            _selectedIndex--;
+            setState(() {
+              _selectedIndex--;
+
+            });
           }
         } else if (details.primaryVelocity! < 0) {
           // Swiped left
           if (_selectedIndex < titles.length - 1) {
-            _selectedIndex++;
-          }
+            setState(() {
+              _selectedIndex++;
+            });          }
         }
       },
       child: AnimateGradient(
@@ -171,7 +175,8 @@ class _HomeState extends State<Home> {
                   width: 5.0,
                 ),
                 Text(
-                  titles[_selectedIndex],
+                  "",
+                  // titles[_selectedIndex]
                   style: GoogleFonts.roboto(fontSize: 25.0),
                 )
               ],
