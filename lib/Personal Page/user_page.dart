@@ -269,7 +269,7 @@ class _GuestPageState extends State<GuestPage> {
               height: 200,
               child: GridView.builder(
                   scrollDirection: Axis.vertical,
-                  itemCount: badgeProgress.length,
+                  itemCount: badgeProgress.length - 1,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 6),
                   itemBuilder: (_, int index) {
@@ -375,7 +375,7 @@ class _GuestPageState extends State<GuestPage> {
             ),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
-              height: 180,
+              height: MediaQuery.of(context).size.height / 6,
               child: GridView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: milestoneProgress.length,

@@ -171,7 +171,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
                 child: Row(
                   children: [
                     Text(
-                      "Customize:",
+                      "Customize",
                       // style: Theme.of(context).textTheme.titleLarge,
                       style: GoogleFonts.roboto(fontSize: 20.0),
                     ),

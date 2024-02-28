@@ -171,22 +171,50 @@ class _UserPageState extends State<UserPage> {
               ),
 
               const SizedBox(height: 15.0),
-              InkWell(
-                customBorder: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+              // InkWell(
+              //   customBorder: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(20),
+              //   ),
+              //   splashFactory: NoSplash.splashFactory,
+              //   onTap: () {
+              //     signInWithGoogle();
+              //     setState(() {
+              //       googleUser = !googleUser;
+              //     });
+              //   },
+              //   child: Ink(
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(6),
+              //       child: Image.asset("images/google-dark.png"),
+              //     ),
+              //   ),
+              // ),
+              OutlinedButton(
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all(
+                      EdgeInsets.zero), // Remove default padding
+                  backgroundColor: MaterialStateProperty.all(Color(0xff131314)),
+                  foregroundColor: MaterialStateProperty.all(Color(0xffe3e3e3)),
+                  fixedSize: MaterialStateProperty.all(
+                      Size(183, 40)), // Set width and height
                 ),
-                splashFactory: NoSplash.splashFactory,
-                onTap: () {
+                onPressed: () {
                   signInWithGoogle();
-                  setState(() {
-                    googleUser = !googleUser;
-                  });
                 },
-                child: Ink(
-                  child: Padding(
-                    padding: const EdgeInsets.all(6),
-                    child: Image.asset("images/google-dark.png"),
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'images/googleLogo.png',
+                      width: 32,
+                      height: 32,
+                    ),
+                    Text(
+                      'Sign in With Google',
+                      style: GoogleFonts.roboto(
+                          fontSize: 14, color: const Color(0xFFE3E3E3)),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 15.0),

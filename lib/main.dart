@@ -13,7 +13,7 @@ import 'package:sdg_thesis/home_page.dart';
 import 'package:sdg_thesis/leaderboard.dart';
 import 'auth.dart';
 import 'firebase_options.dart';
-import 'Personal Page/personal_widget_tree.dart';
+import 'Personal Page/widget_tree.dart';
 
 //name at the top right
 String name = "Guest";
@@ -121,6 +121,19 @@ class _HomeState extends State<Home> {
     return GestureDetector(
       // used to hide keyboard on press
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      onHorizontalDragEnd: (DragEndDetails details) {
+        if (details.primaryVelocity! > 0) {
+          // Swiped right
+          if (_selectedIndex > 0) {
+            _selectedIndex--;
+          }
+        } else if (details.primaryVelocity! < 0) {
+          // Swiped left
+          if (_selectedIndex < titles.length - 1) {
+            _selectedIndex++;
+          }
+        }
+      },
       child: AnimateGradient(
         primaryColors: primaryGradientColors,
         secondaryColors: secondaryGradientColors,

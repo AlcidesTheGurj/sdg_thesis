@@ -1,7 +1,7 @@
 import 'package:sdg_thesis/auth.dart';
 import 'package:flutter/material.dart';
-import 'personal_guest_page.dart';
-import 'personal_user_page.dart';
+import 'user_page.dart';
+import 'guest_page.dart';
 
 class WidgetTree extends StatefulWidget {
   const WidgetTree({super.key});
