@@ -6,8 +6,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttermoji/fluttermoji.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'completed_quiz.dart';
 import '../customization_page.dart';
 import '../main.dart';
@@ -296,9 +299,59 @@ class _QuestionsState extends State<Questions> {
                 IconButton(
                   icon: const Icon(Icons.arrow_back, color: Colors.white),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Alert(
+                      context: context,
+                      style: AlertStyle(
+                        backgroundColor: Colors.transparent,
+                        animationDuration: const Duration(milliseconds: 300),
+                        animationType: AnimationType.fromTop,
+                        descStyle: GoogleFonts.roboto(color: Colors.white),
+                      ),
+                      image: const Icon(
+                        FontAwesomeIcons.exclamation,
+                        color: Colors.red,
+                        size: 80,
+                      ),
+                      desc: "Return to Home page? Tracked progress will be lost!",
+                      buttons: [
+                        DialogButton(
+                          onPressed: () {
+                            Navigator.pop(context, false); // Passing false means "No"
+                          },
+                          width: 120,
+                          color: Colors.red,
+                          child: Text(
+                            "No",
+                            style: GoogleFonts.roboto(
+                              color: Colors.white,
+                              fontSize: 22,
+                            ),
+                          ),
+                        ),
+                        DialogButton(
+                          onPressed: () {
+                            Navigator.pop(context, true); // Passing true means "Yes"
+                          },
+                          width: 120,
+                          color: Colors.blue,
+                          child: Text(
+                            "Yes",
+                            style: GoogleFonts.roboto(
+                              color: Colors.white,
+                              fontSize: 22,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ).show().then((value) {
+                      // This block will be executed after the dialog is closed
+                      if (value == true) {
+                        Navigator.of(context).pop(); // Pop the current screen
+                      }
+                    });
                   },
                 ),
+
                 Expanded(
                   child: LinearPercentIndicator(
                     lineHeight: 14.0,
@@ -308,7 +361,52 @@ class _QuestionsState extends State<Questions> {
                     animation: true,
                   ),
                 ),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.lightbulb)),
+                IconButton(
+                  onPressed: () {
+                    Alert(
+                      context: context,
+                      style: AlertStyle(
+                        backgroundColor: Colors.transparent,
+                        animationDuration: const Duration(milliseconds: 300),
+                        animationType: AnimationType.fromTop,
+                        descStyle: GoogleFonts.roboto(color: Colors.white),
+                      ),
+                      image: const Icon(
+                        Icons.lightbulb_sharp,
+                        color: Color(0xff43287a),
+                        size: 80,
+                      ),
+                      desc: "You can find the answer to this question here: ",
+                      content: InkWell(
+                        onTap: () {
+                          launchUrl(Uri.parse('https://sdgs.un.org/goals'));
+                        },
+                        child: const Text(
+                          "https://sdgs.un.org/goals",
+                          style: TextStyle(
+                            color:
+                                Colors.blue, // You can use any color you prefer
+                          ),
+                        ),
+                      ),
+                      buttons: [
+                        DialogButton(
+                          onPressed: () => Navigator.pop(context),
+                          width: 120,
+                          color: const Color(0xff43287a),
+                          child: Text(
+                            "OK",
+                            style: GoogleFonts.roboto(
+                              color: Colors.white,
+                              fontSize: 22,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ).show();
+                  },
+                  icon: const Icon(Icons.lightbulb),
+                ),
               ],
             ),
             body: CustomScrollView(
@@ -343,11 +441,15 @@ class _QuestionsState extends State<Questions> {
                           color: Colors.black, // Set the color of the border
                           width: 2.0,
                         ),
-                        borderRadius: BorderRadius.circular(8.0)),
+                        borderRadius: BorderRadius.circular(8.0),
+                    color: const Color(0xff43287a)),
                     child: Center(
-                        child: Text('Continue',
-                            style: GoogleFonts.roboto(
-                                fontWeight: FontWeight.bold, fontSize: 24))),
+                      child: Text(
+                        'Continue',
+                        style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.bold, fontSize: 24),
+                      ),
+                    ),
                   ),
                   onTap: () {
                     if (index < widget.listOfQuestions.length - 1) {
@@ -358,7 +460,8 @@ class _QuestionsState extends State<Questions> {
                           flushbarStyle: FlushbarStyle.FLOATING,
                           margin: const EdgeInsets.all(8),
                           borderRadius: BorderRadius.circular(8),
-                          backgroundColor: const Color(0xff188300).withOpacity(0.5),
+                          backgroundColor:
+                              const Color(0xff188300).withOpacity(0.5),
                           boxShadows: const [
                             BoxShadow(
                                 color: Color(0xff1f261a),
@@ -384,14 +487,14 @@ class _QuestionsState extends State<Questions> {
                           userInput = "E";
                           index++;
                         });
-                      }
-                      else {
+                      } else {
                         Flushbar(
                           flushbarPosition: FlushbarPosition.TOP,
                           flushbarStyle: FlushbarStyle.FLOATING,
                           margin: const EdgeInsets.all(8),
                           borderRadius: BorderRadius.circular(8),
-                          backgroundColor: const Color(0xffa40606).withOpacity(0.5),
+                          backgroundColor:
+                              const Color(0xffa40606).withOpacity(0.5),
                           boxShadows: const [
                             BoxShadow(
                                 color: Color(0xff1f261a),
@@ -423,7 +526,8 @@ class _QuestionsState extends State<Questions> {
                           flushbarStyle: FlushbarStyle.FLOATING,
                           margin: const EdgeInsets.all(8),
                           borderRadius: BorderRadius.circular(8),
-                          backgroundColor: const Color(0xff188300).withOpacity(0.5),
+                          backgroundColor:
+                              const Color(0xff188300).withOpacity(0.5),
                           boxShadows: const [
                             BoxShadow(
                                 color: Color(0xff1f261a),
@@ -444,14 +548,14 @@ class _QuestionsState extends State<Questions> {
                               widget.listOfQuestions[index]['point'] as int;
                           correctCount++;
                         });
-                      }
-                      else {
+                      } else {
                         Flushbar(
                           flushbarPosition: FlushbarPosition.TOP,
                           flushbarStyle: FlushbarStyle.FLOATING,
                           margin: const EdgeInsets.all(8),
                           borderRadius: BorderRadius.circular(8),
-                          backgroundColor: const Color(0xffa40606).withOpacity(0.5),
+                          backgroundColor:
+                              const Color(0xffa40606).withOpacity(0.5),
                           boxShadows: const [
                             BoxShadow(
                                 color: Color(0xff1f261a),
