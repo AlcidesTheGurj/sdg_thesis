@@ -68,6 +68,7 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   awesome_snackbar_content: ^0.1.3
   another_flushbar: ^1.12.30
+  flutter_any_logo: ^1.1.1
 
 dev_dependencies:
   flutter_test:
