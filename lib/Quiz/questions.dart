@@ -413,19 +413,22 @@ class _QuestionsState extends State<Questions> {
                       ),
                       image: const Icon(
                         Icons.lightbulb_sharp,
-                        color: Color(0xff43287a),
-                        size: 80,
+                        color: Colors.yellow,
+                        size: 90,
                       ),
-                      desc: "You can find the answer to this question here: ",
+                      desc: "You can find the answer to this question and much more here: ",
                       content: InkWell(
                         onTap: () {
                           launchUrl(Uri.parse('https://sdgs.un.org/goals'));
                         },
-                        child: const Text(
-                          "https://sdgs.un.org/goals",
-                          style: TextStyle(
-                            color:
-                                Colors.blue, // You can use any color you prefer
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(widget.listOfQuestions[index]['source'],
+                            style: const TextStyle(
+                              color:
+                                  Colors.blue,
+                              fontSize: 20,// You can use any color you prefer
+                            ),
                           ),
                         ),
                       ),
@@ -433,7 +436,7 @@ class _QuestionsState extends State<Questions> {
                         DialogButton(
                           onPressed: () => Navigator.pop(context),
                           width: 120,
-                          color: const Color(0xff43287a),
+                          color: const Color(0xff00689d),
                           child: Text(
                             "OK",
                             style: GoogleFonts.roboto(
