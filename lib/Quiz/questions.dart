@@ -77,6 +77,8 @@ class _QuestionsState extends State<Questions> {
 
   int correctCount = 0;
 
+  bool isButtonPressed = false;
+
   Future<void> _loadAvatar(BuildContext context) async {
     if (context.mounted && user != null) {
       DatabaseReference ref =
@@ -126,7 +128,7 @@ class _QuestionsState extends State<Questions> {
       alignment: Alignment.topCenter,
       children: [
         Container(
-          margin: const EdgeInsets.fromLTRB(10, 20, 10, 15),
+          margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
           padding: const EdgeInsets.fromLTRB(
             10,
             0,
@@ -313,11 +315,13 @@ class _QuestionsState extends State<Questions> {
                         color: Colors.red,
                         size: 80,
                       ),
-                      desc: "Return to Home page? Tracked progress will be lost!",
+                      desc:
+                          "Return to Home page? Tracked progress will be lost!",
                       buttons: [
                         DialogButton(
                           onPressed: () {
-                            Navigator.pop(context, false); // Passing false means "No"
+                            Navigator.pop(
+                                context, false); // Passing false means "No"
                           },
                           width: 120,
                           color: Colors.red,
@@ -331,7 +335,8 @@ class _QuestionsState extends State<Questions> {
                         ),
                         DialogButton(
                           onPressed: () {
-                            Navigator.pop(context, true); // Passing true means "Yes"
+                            Navigator.pop(
+                                context, true); // Passing true means "Yes"
                           },
                           width: 120,
                           color: Colors.blue,
@@ -352,7 +357,6 @@ class _QuestionsState extends State<Questions> {
                     });
                   },
                 ),
-
                 Expanded(
                   child: LinearPercentIndicator(
                     lineHeight: 14.0,
@@ -444,7 +448,7 @@ class _QuestionsState extends State<Questions> {
                           width: 2.0,
                         ),
                         borderRadius: BorderRadius.circular(8.0),
-                    color: const Color(0xff43287a)),
+                        color: const Color(0xff43287a)),
                     child: Center(
                       child: Text(
                         'Continue',
@@ -454,132 +458,137 @@ class _QuestionsState extends State<Questions> {
                     ),
                   ),
                   onTap: () {
-                    if (index < widget.listOfQuestions.length - 1) {
-                      if (widget.listOfQuestions[index]['correct_answer'] ==
-                          userInput) {
-                        Flushbar(
-                          flushbarPosition: FlushbarPosition.TOP,
-                          flushbarStyle: FlushbarStyle.FLOATING,
-                          margin: const EdgeInsets.all(8),
-                          borderRadius: BorderRadius.circular(8),
-                          backgroundColor:
-                              const Color(0xff188300).withOpacity(0.5),
-                          boxShadows: const [
-                            BoxShadow(
-                                color: Color(0xff1f261a),
-                                offset: Offset(0.0, 2.0),
-                                blurRadius: 3.0)
-                          ],
-                          backgroundGradient: const LinearGradient(colors: [
-                            Color(0xff188300),
-                            Color(0xff40ba0f),
-                          ]),
-                          title: "Correct",
-                          message: "+${widget.listOfQuestions[index]['point']}",
-                          duration: const Duration(seconds: 1),
-                          icon: const Icon(Icons.check),
-                        ).show(context);
-                        setState(() {
-                          totalPoints +=
-                              widget.listOfQuestions[index]['point'] as int;
-                          correctCount++;
-                          _isSelected[0] = false;
-                          _isSelected[1] = false;
-                          _isSelected[2] = false;
-                          userInput = "E";
-                          index++;
-                        });
+                    if (!isButtonPressed) {
+                      if (index < widget.listOfQuestions.length - 1) {
+                        if (widget.listOfQuestions[index]['correct_answer'] ==
+                            userInput) {
+                          Flushbar(
+                            flushbarPosition: FlushbarPosition.TOP,
+                            flushbarStyle: FlushbarStyle.FLOATING,
+                            margin: const EdgeInsets.all(8),
+                            borderRadius: BorderRadius.circular(8),
+                            backgroundColor:
+                                const Color(0xff188300).withOpacity(0.5),
+                            boxShadows: const [
+                              BoxShadow(
+                                  color: Color(0xff1f261a),
+                                  offset: Offset(0.0, 2.0),
+                                  blurRadius: 3.0)
+                            ],
+                            backgroundGradient: const LinearGradient(colors: [
+                              Color(0xff188300),
+                              Color(0xff40ba0f),
+                            ]),
+                            title: "Correct",
+                            message:
+                                "+${widget.listOfQuestions[index]['point']}",
+                            duration: const Duration(seconds: 1),
+                            icon: const Icon(Icons.check),
+                          ).show(context);
+                          setState(() {
+                            totalPoints +=
+                                widget.listOfQuestions[index]['point'] as int;
+                            correctCount++;
+                            _isSelected[0] = false;
+                            _isSelected[1] = false;
+                            _isSelected[2] = false;
+                            userInput = "E";
+                            index++;
+                          });
+                        } else {
+                          Flushbar(
+                            flushbarPosition: FlushbarPosition.TOP,
+                            flushbarStyle: FlushbarStyle.FLOATING,
+                            margin: const EdgeInsets.all(8),
+                            borderRadius: BorderRadius.circular(8),
+                            backgroundColor:
+                                const Color(0xffa40606).withOpacity(0.5),
+                            boxShadows: const [
+                              BoxShadow(
+                                  color: Color(0xff1f261a),
+                                  offset: Offset(0.0, 2.0),
+                                  blurRadius: 3.0)
+                            ],
+                            backgroundGradient: const LinearGradient(colors: [
+                              Color(0xffa40606),
+                              Color(0xffce0b0b),
+                            ]),
+                            title: "Wrong",
+                            message: "+0",
+                            duration: const Duration(seconds: 1),
+                            icon: const Icon(Icons.close),
+                          ).show(context);
+                          setState(() {
+                            _isSelected[0] = false;
+                            _isSelected[1] = false;
+                            _isSelected[2] = false;
+                            userInput = "E";
+                            index++;
+                          });
+                        }
                       } else {
-                        Flushbar(
-                          flushbarPosition: FlushbarPosition.TOP,
-                          flushbarStyle: FlushbarStyle.FLOATING,
-                          margin: const EdgeInsets.all(8),
-                          borderRadius: BorderRadius.circular(8),
-                          backgroundColor:
-                              const Color(0xffa40606).withOpacity(0.5),
-                          boxShadows: const [
-                            BoxShadow(
-                                color: Color(0xff1f261a),
-                                offset: Offset(0.0, 2.0),
-                                blurRadius: 3.0)
-                          ],
-                          backgroundGradient: const LinearGradient(colors: [
-                            Color(0xffa40606),
-                            Color(0xffce0b0b),
-                          ]),
-                          title: "Wrong",
-                          message: "+0",
-                          duration: const Duration(seconds: 1),
-                          icon: const Icon(Icons.close),
-                        ).show(context);
-                        setState(() {
-                          _isSelected[0] = false;
-                          _isSelected[1] = false;
-                          _isSelected[2] = false;
-                          userInput = "E";
-                          index++;
+                        if (widget.listOfQuestions[index]['correct_answer'] ==
+                            userInput) {
+                          Flushbar(
+                            flushbarPosition: FlushbarPosition.TOP,
+                            flushbarStyle: FlushbarStyle.FLOATING,
+                            margin: const EdgeInsets.all(8),
+                            borderRadius: BorderRadius.circular(8),
+                            backgroundColor:
+                                const Color(0xff188300).withOpacity(0.5),
+                            boxShadows: const [
+                              BoxShadow(
+                                  color: Color(0xff1f261a),
+                                  offset: Offset(0.0, 2.0),
+                                  blurRadius: 3.0)
+                            ],
+                            backgroundGradient: const LinearGradient(colors: [
+                              Color(0xff188300),
+                              Color(0xff40ba0f),
+                            ]),
+                            title: "Correct",
+                            message:
+                                "+${widget.listOfQuestions[index]['point']}",
+                            duration: const Duration(seconds: 1),
+                            icon: const Icon(Icons.check),
+                          ).show(context);
+                          setState(() {
+                            totalPoints +=
+                                widget.listOfQuestions[index]['point'] as int;
+                            correctCount++;
+                          });
+                        } else {
+                          Flushbar(
+                            flushbarPosition: FlushbarPosition.TOP,
+                            flushbarStyle: FlushbarStyle.FLOATING,
+                            margin: const EdgeInsets.all(8),
+                            borderRadius: BorderRadius.circular(8),
+                            backgroundColor:
+                                const Color(0xffa40606).withOpacity(0.5),
+                            boxShadows: const [
+                              BoxShadow(
+                                  color: Color(0xff1f261a),
+                                  offset: Offset(0.0, 2.0),
+                                  blurRadius: 3.0)
+                            ],
+                            backgroundGradient: const LinearGradient(colors: [
+                              Color(0xffa40606),
+                              Color(0xffce0b0b),
+                            ]),
+                            title: "Wrong",
+                            message: "+0",
+                            duration: const Duration(seconds: 1),
+                            icon: const Icon(Icons.close),
+                          ).show(context);
+                        }
+                        isButtonPressed = true;
+                        Future.delayed(const Duration(seconds: 1), () {
+                          Navigator.of(context).pushReplacement(createRoute(
+                              totalPoints,
+                              correctCount,
+                              widget.listOfQuestions.length));
                         });
                       }
-                    } else {
-                      if (widget.listOfQuestions[index]['correct_answer'] ==
-                          userInput) {
-                        Flushbar(
-                          flushbarPosition: FlushbarPosition.TOP,
-                          flushbarStyle: FlushbarStyle.FLOATING,
-                          margin: const EdgeInsets.all(8),
-                          borderRadius: BorderRadius.circular(8),
-                          backgroundColor:
-                              const Color(0xff188300).withOpacity(0.5),
-                          boxShadows: const [
-                            BoxShadow(
-                                color: Color(0xff1f261a),
-                                offset: Offset(0.0, 2.0),
-                                blurRadius: 3.0)
-                          ],
-                          backgroundGradient: const LinearGradient(colors: [
-                            Color(0xff188300),
-                            Color(0xff40ba0f),
-                          ]),
-                          title: "Correct",
-                          message: "+${widget.listOfQuestions[index]['point']}",
-                          duration: const Duration(seconds: 1),
-                          icon: const Icon(Icons.check),
-                        ).show(context);
-                        setState(() {
-                          totalPoints +=
-                              widget.listOfQuestions[index]['point'] as int;
-                          correctCount++;
-                        });
-                      } else {
-                        Flushbar(
-                          flushbarPosition: FlushbarPosition.TOP,
-                          flushbarStyle: FlushbarStyle.FLOATING,
-                          margin: const EdgeInsets.all(8),
-                          borderRadius: BorderRadius.circular(8),
-                          backgroundColor:
-                              const Color(0xffa40606).withOpacity(0.5),
-                          boxShadows: const [
-                            BoxShadow(
-                                color: Color(0xff1f261a),
-                                offset: Offset(0.0, 2.0),
-                                blurRadius: 3.0)
-                          ],
-                          backgroundGradient: const LinearGradient(colors: [
-                            Color(0xffa40606),
-                            Color(0xffce0b0b),
-                          ]),
-                          title: "Wrong",
-                          message: "+0",
-                          duration: const Duration(seconds: 1),
-                          icon: const Icon(Icons.close),
-                        ).show(context);
-                      }
-                      Future.delayed(const Duration(seconds: 1), () {
-                        Navigator.of(context).pushReplacement(createRoute(
-                            totalPoints,
-                            correctCount,
-                            widget.listOfQuestions.length));
-                      });
                     }
                   },
                 ))),
