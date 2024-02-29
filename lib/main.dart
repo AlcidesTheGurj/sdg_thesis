@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttermoji/fluttermojiController.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:info_widget/info_widget.dart';
 import 'package:sdg_thesis/customization_page.dart';
 import 'package:sdg_thesis/home_page.dart';
 import 'package:sdg_thesis/leaderboard.dart';
@@ -146,16 +144,12 @@ class _HomeState extends State<Home> {
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             elevation: 0,
-            actions: [
+            actions: const [
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InfoWidget(
-                  infoText:
-                  "This application was created to raise awareness about the United Nations' 17 Sustainable Development Goals (SDGs). To learn more about sustainable development visit: sds.un.org",
-                  iconData: Icons.help,
-                  iconColor: Colors.grey,
-                  infoTextStyle: GoogleFonts.roboto(fontSize: 14, color: Colors.black),
-                ),
+                padding: EdgeInsets.all(8.0),
+                child: InkWell(
+                  child: Icon(Icons.lightbulb),
+                )
               ),
             ],
             backgroundColor: Colors.transparent,

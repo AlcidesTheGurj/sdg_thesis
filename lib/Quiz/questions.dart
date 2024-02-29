@@ -79,6 +79,12 @@ class _QuestionsState extends State<Questions> {
 
   bool isButtonPressed = false;
 
+  // Define a variable to track whether continue button is tapped
+  bool continueButtonTapped = false;
+
+// Variable to control whether to show the shadow during the delay
+  bool showShadow = false;
+
   Future<void> _loadAvatar(BuildContext context) async {
     if (context.mounted && user != null) {
       DatabaseReference ref =
@@ -124,6 +130,21 @@ class _QuestionsState extends State<Questions> {
     const Color(0xff342b42),
   ];
   Widget answersWidget({required int answerIndex}) {
+    bool isCorrectAnswer =
+        widget.listOfQuestions[index]['correct_answer'] == alphabetSelections[answerIndex];
+
+    Color containerColor = _isSelected[answerIndex]
+        ? const Color(0xff1c1c28)
+        : const Color(0xff1c1c28).withOpacity(0.7);
+
+    Color shadowColor = isCorrectAnswer
+    ? const Color(0xff00689d)
+    : const Color(0xffe5243b);
+
+    // Color checkmarkColor = isCorrectAnswer
+    //     ? const Color(0xff3f7e44)
+    //     : const Color(0xffe5243b);
+
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -137,27 +158,26 @@ class _QuestionsState extends State<Questions> {
           ),
           height: 85,
           decoration: BoxDecoration(
-            color: _isSelected[answerIndex]
-                ? const Color(0xff43287a)
-                : Colors.transparent,
+            color: containerColor,
             border: Border.all(
-              color: Colors.black,
+              color: Colors.transparent,
               width: 2.0,
             ),
-            boxShadow: const [
+            boxShadow: showShadow
+                ? [
               BoxShadow(
-                color: Color(0xff28283a), // You can choose the shadow color
-                offset: Offset(
-                    0.0, 2.0), // Set the offset to control the shadow direction
-                blurRadius:
-                    3.0, // Adjust the blur radius for the desired effect
+                color: shadowColor,
+                offset: const Offset(0.0, 0.0),
+                blurRadius: 15.0,
               ),
-            ],
+            ]
+                : const [],
             borderRadius: BorderRadius.circular(30),
           ),
           child: InkWell(
             splashFactory: NoSplash.splashFactory,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
                     width: 40,
@@ -171,6 +191,20 @@ class _QuestionsState extends State<Questions> {
                     widget.listOfQuestions[index]['answer'][answerIndex],
                     style: GoogleFonts.roboto(
                       fontSize: 18,
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: showShadow,
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Icon(
+                        isCorrectAnswer ? Icons.check : Icons.close,
+                        color: shadowColor,
+                        size: 30,
+                      ),
                     ),
                   ),
                 ),
@@ -188,7 +222,7 @@ class _QuestionsState extends State<Questions> {
           ),
         ),
         Positioned(
-          top: 0, // Adjust this value to position the arrow
+          top: 0,
           child: Visibility(
             visible: answerIndex == 0 ? true : false,
             child: const Icon(
@@ -201,6 +235,7 @@ class _QuestionsState extends State<Questions> {
       ],
     );
   }
+
 
   Widget questionsWidget() {
     return Column(
@@ -444,11 +479,11 @@ class _QuestionsState extends State<Questions> {
                   child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(
-                          color: Colors.black, // Set the color of the border
+                          color: Colors.transparent, // Set the color of the border
                           width: 2.0,
                         ),
                         borderRadius: BorderRadius.circular(8.0),
-                        color: const Color(0xff43287a)),
+                        color: const Color(0xff00689d)),
                     child: Center(
                       child: Text(
                         'Continue',
@@ -458,7 +493,7 @@ class _QuestionsState extends State<Questions> {
                     ),
                   ),
                   onTap: () {
-                    if (!isButtonPressed) {
+                    if (!continueButtonTapped) {
                       if (index < widget.listOfQuestions.length - 1) {
                         if (widget.listOfQuestions[index]['correct_answer'] ==
                             userInput) {
@@ -468,16 +503,16 @@ class _QuestionsState extends State<Questions> {
                             margin: const EdgeInsets.all(8),
                             borderRadius: BorderRadius.circular(8),
                             backgroundColor:
-                                const Color(0xff188300).withOpacity(0.5),
+                                const Color(0xff00689d).withOpacity(0.5),
                             boxShadows: const [
                               BoxShadow(
-                                  color: Color(0xff1f261a),
+                                  color: Colors.black,
                                   offset: Offset(0.0, 2.0),
                                   blurRadius: 3.0)
                             ],
                             backgroundGradient: const LinearGradient(colors: [
-                              Color(0xff188300),
-                              Color(0xff40ba0f),
+                              Color(0xff00689d),
+                              Color(0xff00689d),
                             ]),
                             title: "Correct",
                             message:
@@ -486,14 +521,21 @@ class _QuestionsState extends State<Questions> {
                             icon: const Icon(Icons.check),
                           ).show(context);
                           setState(() {
-                            totalPoints +=
-                                widget.listOfQuestions[index]['point'] as int;
-                            correctCount++;
-                            _isSelected[0] = false;
-                            _isSelected[1] = false;
-                            _isSelected[2] = false;
-                            userInput = "E";
-                            index++;
+                            showShadow = true;
+                          });
+                          Future.delayed(const Duration(seconds: 1, milliseconds: 700), ()
+                          {
+                            setState(() {
+                              showShadow = false;
+                              totalPoints +=
+                              widget.listOfQuestions[index]['point'] as int;
+                              correctCount++;
+                              _isSelected[0] = false;
+                              _isSelected[1] = false;
+                              _isSelected[2] = false;
+                              userInput = "E";
+                              index++;
+                            });
                           });
                         } else {
                           Flushbar(
@@ -505,7 +547,7 @@ class _QuestionsState extends State<Questions> {
                                 const Color(0xffa40606).withOpacity(0.5),
                             boxShadows: const [
                               BoxShadow(
-                                  color: Color(0xff1f261a),
+                                  color: Colors.black,
                                   offset: Offset(0.0, 2.0),
                                   blurRadius: 3.0)
                             ],
@@ -519,11 +561,17 @@ class _QuestionsState extends State<Questions> {
                             icon: const Icon(Icons.close),
                           ).show(context);
                           setState(() {
+                            showShadow = true;
+                          });
+                          Future.delayed(const Duration(seconds: 1, milliseconds: 700), () {
+                          setState(() {
+                            showShadow= false;
                             _isSelected[0] = false;
                             _isSelected[1] = false;
                             _isSelected[2] = false;
                             userInput = "E";
                             index++;
+                          });
                           });
                         }
                       } else {
@@ -581,8 +629,11 @@ class _QuestionsState extends State<Questions> {
                             icon: const Icon(Icons.close),
                           ).show(context);
                         }
-                        isButtonPressed = true;
-                        Future.delayed(const Duration(seconds: 1), () {
+                        continueButtonTapped = true;
+                        setState(() {
+                          showShadow = true;
+                        });
+                        Future.delayed(const Duration(seconds: 1, milliseconds: 700), () {
                           Navigator.of(context).pushReplacement(createRoute(
                               totalPoints,
                               correctCount,

@@ -40,13 +40,10 @@ dependencies:
   firebase_database: ^10.3.8
   google_nav_bar: ^5.0.6
   google_fonts: ^6.1.0
-  eva_icons_flutter: ^3.1.0
   firebase_auth: ^4.16.0
-  flutter_login: ^5.0.0
   fluttermoji: ^1.0.2
   get: ^4.6.5
   flutter_svg: ^2.0.5
-  animated_icon_button: ^1.0.2
   rflutter_alert: ^2.0.7
   animate_gradient: ^0.0.2+1
   fancy_password_field: ^2.0.2
@@ -55,8 +52,6 @@ dependencies:
   chat_bubbles: ^1.5.0
   firebase_storage: ^11.6.0
   cached_network_image: ^3.2.3
-  info_widget: ^1.0.0
-  transparent_image: ^2.0.1
   google_sign_in: ^6.2.1
   pdf: ^3.10.7
   syncfusion_flutter_pdf: ^24.2.6
@@ -64,7 +59,6 @@ dependencies:
   path_provider: ^2.1.2
   animated_text_kit: ^4.2.2
   font_awesome_flutter: ^10.7.0
-  awesome_snackbar_content: ^0.1.3
   another_flushbar: ^1.12.30
   url_launcher: ^6.2.5
 
