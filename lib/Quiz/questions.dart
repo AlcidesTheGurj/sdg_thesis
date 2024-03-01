@@ -64,7 +64,7 @@ class _QuestionsState extends State<Questions> {
   late int score = 0;
   bool submit = false;
 
-  final List<bool> _isSelected = [true, false, false];
+  final List<bool> _isSelected = [false, false, false];
   final List<String> alphabetSelections = ["A", "B", "C"];
   String userInput = "none";
 
@@ -137,8 +137,8 @@ class _QuestionsState extends State<Questions> {
         alphabetSelections[answerIndex];
 
     Color containerColor = _isSelected[answerIndex]
-        ? const Color(0xff1c1c28)
-        : const Color(0xff1c1c28).withOpacity(0.5);
+        ? const Color(0xff1c1c28).withOpacity(0.8)
+        : const Color(0xff1c1c28).withOpacity(0.8);
 
     Color shadowColor =
         isCorrectAnswer ? const Color(0xff00689d) : Colors.transparent;
@@ -192,20 +192,43 @@ class _QuestionsState extends State<Questions> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                    width: 40,
-                    child: Text(
-                      alphabetSelections[answerIndex],
-                      style: GoogleFonts.roboto(
-                          fontSize: 30, fontWeight: FontWeight.bold),
-                    )),
-                Flexible(
-                  child: Text(
-                    widget.listOfQuestions[index]['answer'][answerIndex],
+                  width: 40,
+                  child: _isSelected[answerIndex]? AnimatedTextKit(
+                    repeatForever: true,
+                    animatedTexts: [
+                      ScaleAnimatedText(
+                        alphabetSelections[answerIndex],
+                        textStyle: GoogleFonts.roboto(
+                            fontSize: 30, fontWeight: FontWeight.bold),
+                        duration: const Duration(seconds: 1)
+                      ),
+                    ],
+                  ) : Text(
+                    alphabetSelections[answerIndex],
                     style: GoogleFonts.roboto(
-                      fontSize: 18,
-                    ),
+                        fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ),
+                Flexible(
+                    child: _isSelected[answerIndex]
+                        ? AnimatedTextKit(
+                            key: ValueKey(answerIndex),
+                            animatedTexts: [
+                              TypewriterAnimatedText(
+                                widget.listOfQuestions[index]['answer']
+                                    [answerIndex],
+                                textStyle: GoogleFonts.roboto(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                            isRepeatingAnimation: true,
+                            repeatForever: true,
+                          )
+                        : Text(
+                            widget.listOfQuestions[index]['answer']
+                                [answerIndex],
+                            style: GoogleFonts.roboto(fontSize: 16),
+                          )),
                 Visibility(
                   visible: showShadow,
                   child: Align(
@@ -353,15 +376,18 @@ class _QuestionsState extends State<Questions> {
                     Alert(
                       context: context,
                       style: AlertStyle(
-                        backgroundColor: Colors.transparent,
+                        backgroundColor: Colors.black,
                         animationDuration: const Duration(milliseconds: 300),
                         animationType: AnimationType.fromTop,
                         descStyle: GoogleFonts.roboto(color: Colors.white),
                       ),
-                      image: const Icon(
-                        FontAwesomeIcons.exclamation,
-                        color: Colors.red,
-                        size: 80,
+                      image: const Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Icon(
+                          FontAwesomeIcons.exclamation,
+                          color: Colors.red,
+                          size: 80,
+                        ),
                       ),
                       desc:
                           "Return to Home page? Tracked progress will be lost!",
@@ -424,28 +450,29 @@ class _QuestionsState extends State<Questions> {
                         animationType: AnimationType.fromTop,
                         descStyle: GoogleFonts.roboto(color: Colors.white),
                       ),
-                      image: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: const Icon(
+                      image: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(
                           Icons.lightbulb_sharp,
                           color: Colors.yellow,
                           size: 90,
                         ),
                       ),
-                      desc:
-                          "You can find the answer to this question here: ",
+                      desc: "You can find the answer to this question",
                       content: InkWell(
                         onTap: () {
-                          launchUrl(Uri.parse(widget.listOfQuestions[index]['source']));
+                          launchUrl(Uri.parse(
+                              widget.listOfQuestions[index]['source']));
                         },
                         child: const Center(
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text(
-                              "https://sdgs.un.org/goals",
+                             "Here!",
                               style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 22, // You can use any color you prefer
+                                color: Colors.yellow,
+                                fontSize:
+                                    28, // You can use any color you prefer
                               ),
                             ),
                           ),
@@ -504,7 +531,7 @@ class _QuestionsState extends State<Questions> {
                     flex: 3,
                     child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                          backgroundColor: const Color(0xff1c1c28),
+                          backgroundColor: const Color(0xff00689d),
                           side: const BorderSide(
                               color:
                                   Colors.transparent), // Set your border color
@@ -512,7 +539,7 @@ class _QuestionsState extends State<Questions> {
                             borderRadius: BorderRadius.circular(
                                 20), // Set your border radius
                           ),
-                          padding: EdgeInsets.all(12), // Set padding as needed
+                          padding: const EdgeInsets.all(12), // Set padding as needed
                         ),
                         onPressed: continueButtonTapped
                             ? () {
@@ -531,8 +558,7 @@ class _QuestionsState extends State<Questions> {
                                 });
                               }
                             : () {
-                                if (userInput == 'none' ||
-                                    userInput == 'E') {
+                                if (userInput == 'none' || userInput == 'E') {
                                   Flushbar(
                                     flushbarPosition: FlushbarPosition.TOP,
                                     flushbarStyle: FlushbarStyle.FLOATING,
@@ -547,7 +573,7 @@ class _QuestionsState extends State<Questions> {
                                           blurRadius: 3.0)
                                     ],
                                     backgroundGradient:
-                                    const LinearGradient(colors: [
+                                        const LinearGradient(colors: [
                                       Color(0xffa40606),
                                       Color(0xffce0b0b),
                                     ]),
@@ -714,31 +740,75 @@ class _QuestionsState extends State<Questions> {
                   Expanded(
                       flex: 1,
                       child: OutlinedButton(
-                        onPressed: !continueButtonTapped
-                            ? () {
-                                print("object");
-                              }
-                            : null,
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(
-                              color:
-                                  Colors.transparent), // Set your border color
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                6), // Set your border radius
+                          onPressed: !continueButtonTapped
+                              ? () {
+                            Alert(
+                              context: context,
+                              style: AlertStyle(
+                                backgroundColor: Colors.black,
+                                animationDuration: const Duration(milliseconds: 300),
+                                animationType: AnimationType.fromTop,
+                                descStyle: GoogleFonts.roboto(color: Colors.white),
+                              ),
+                              image: const Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: Icon(
+                                  FontAwesomeIcons.eye,
+                                  color: Colors.red,
+                                  size: 80,
+                                ),
+                              ),
+                              desc:
+                              "Would you like to reveal the answer for half the points?",
+                              buttons: [
+                                DialogButton(
+                                  onPressed: () {
+                                    Navigator.pop(
+                                        context, false); // Passing false means "No"
+                                  },
+                                  width: 120,
+                                  color: Colors.red,
+                                  child: Text(
+                                    "No",
+                                    style: GoogleFonts.roboto(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                    ),
+                                  ),
+                                ),
+                                DialogButton(
+                                  onPressed: () {
+                                    Navigator.pop(
+                                        context, true); // Passing true means "Yes"
+                                  },
+                                  width: 120,
+                                  color: Colors.blue,
+                                  child: Text(
+                                    "Yes",
+                                    style: GoogleFonts.roboto(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ).show();
+                                }
+                              : null,
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(
+                                color: Colors
+                                    .transparent), // Set your border color
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  20), // Set your border radius
+                            ),
+                            padding: const EdgeInsets.all(
+                                12), // Set padding as needed
+                            backgroundColor: const Color(0xff1c1c28),
+                            foregroundColor: Colors.white,
                           ),
-                          padding: const EdgeInsets.all(9),
-                          backgroundColor: const Color(0xff00689d),
-                          foregroundColor: Colors.white,
-                        ),
-                        child: const Text(
-                          '>>',
-                          style: TextStyle(
-                            color: Colors.white, // Set your text color
-                            fontSize: 20, // Set your text font size
-                          ),
-                        ),
-                      )),
+                          child: Icon( !continueButtonTapped ? FontAwesomeIcons.eye : FontAwesomeIcons.eyeSlash))),
                 ],
               ),
             )),
