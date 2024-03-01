@@ -158,7 +158,7 @@ class _CompletedPageState extends State<CompletedPage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).popUntil((route) => route.isFirst);
                 },
                 child: const Text("Go back"),
               ),
