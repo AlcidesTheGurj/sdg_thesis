@@ -25,7 +25,7 @@ class _SelectPoolState extends State<SelectPool> {
     FontAwesomeIcons.dollarSign
   ];
   List<Color> poolColor = [
-    const Color(0xff56c02b),
+    const Color(0xff19486a),
     const Color(0xffdd1367),
     const Color(0xfffcc30b)
   ];

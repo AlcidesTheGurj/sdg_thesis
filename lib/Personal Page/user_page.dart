@@ -32,9 +32,9 @@ class _GuestPageState extends State<GuestPage> {
     FontAwesomeIcons.dollarSign
   ];
   List<Color> poolColor = [
-    const Color(0xff4c9f38),
     const Color(0xff19486a),
-    const Color(0xffbf8b2e)
+    const Color(0xffdd1367),
+    const Color(0xfffcc30b)
   ];
   Future<void> getUserScore() async {
     if (user != null) {

@@ -61,11 +61,19 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   another_flushbar: ^1.12.30
   url_launcher: ^6.2.5
-  flutter_animation_progress_bar: ^2.3.1
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  #  image_path: "images/logo.png"
+  image_path_android: "images/logo-app.png"
+  image_path_ios: "images/logo-app.png"
+  android: true
+  ios: true
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
