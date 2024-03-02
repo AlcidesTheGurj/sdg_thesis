@@ -87,7 +87,15 @@ class _QuestionsState extends State<Questions> {
 // Variable to control whether to show the shadow during the delay
   bool showShadow = false;
 
+  bool showEye = false;
+
   int streakCounter = 0;
+
+  int revealCounter = 0;
+
+  bool revealUsed = false;
+
+  IconData shadowIcon = FontAwesomeIcons.question;
 
   Future<void> _loadAvatar(BuildContext context) async {
     if (context.mounted && user != null) {
@@ -114,6 +122,15 @@ class _QuestionsState extends State<Questions> {
     // print(widget.listOfQuestions);
     // print(widget.listOfQuestions[index]['answer'].length);
     // print(widget.listOfQuestions[1]['answer'].length);
+    if (widget.gameMode > 5) {
+        revealCounter = 1;
+    }
+    else if (widget.gameMode > 2) {
+      revealCounter = 3;
+    }
+    else {
+      revealCounter = 3;
+    }
     super.initState();
     // firedatabase.Query dbRef =
     //     firedatabase.FirebaseDatabase.instance.ref().child('Gamemodes');
@@ -145,7 +162,8 @@ class _QuestionsState extends State<Questions> {
         isCorrectAnswer ? const Color(0xff00689d) : Colors.transparent;
 
     if (isCorrectAnswer) {
-      shadowColor = const Color(0xff00689d);
+      showEye ?shadowColor = Colors.grey : shadowColor = const Color(0xff00689d);
+      showEye ?shadowIcon = FontAwesomeIcons.eye : shadowIcon = Icons.check;
     } else if (userSubmission == alphabetSelections[answerIndex]) {
       shadowColor = const Color(0xffe5243b);
     }
@@ -237,7 +255,7 @@ class _QuestionsState extends State<Questions> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 10.0),
                       child: Icon(
-                        isCorrectAnswer ? Icons.check : Icons.close,
+                        isCorrectAnswer ? shadowIcon : Icons.close,
                         color: shadowColor,
                         size: 30,
                       ),
@@ -566,6 +584,7 @@ class _QuestionsState extends State<Questions> {
                                 setState(() {
                                   userSubmission = "E";
                                   showShadow = false;
+                                  showEye = false;
                                   if (index <
                                       widget.listOfQuestions.length - 1) {
                                     index++;
@@ -671,6 +690,7 @@ class _QuestionsState extends State<Questions> {
                                       setState(() {
                                         streakCounter++;
                                         showShadow = true;
+                                        showEye = false;
                                         if(streakCounter > 2 ){
                                           totalPoints +=
                                           widget.listOfQuestions[index]
@@ -714,6 +734,7 @@ class _QuestionsState extends State<Questions> {
                                       ).show(context);
                                       setState(() {
                                         showShadow = true;
+                                        showEye = false;
                                         _isSelected[0] = false;
                                         _isSelected[1] = false;
                                         _isSelected[2] = false;
@@ -791,6 +812,7 @@ class _QuestionsState extends State<Questions> {
                                     }
                                     setState(() {
                                       showShadow = true;
+                                      showEye = false;
                                     });
                                   }
                                 }
@@ -809,66 +831,72 @@ class _QuestionsState extends State<Questions> {
                   Expanded(
                       flex: 1,
                       child: OutlinedButton(
-                          onPressed: !continueButtonTapped
-                              ? () {
-                                  Alert(
-                                    context: context,
-                                    style: AlertStyle(
-                                      backgroundColor: Colors.black,
-                                      animationDuration:
-                                          const Duration(milliseconds: 300),
-                                      animationType: AnimationType.fromTop,
-                                      descStyle: GoogleFonts.roboto(
-                                          color: Colors.white),
+                          onPressed: (continueButtonTapped || revealCounter < 1)
+                              ? null
+                              : () {
+                            Alert(
+                              context: context,
+                              style: AlertStyle(
+                                backgroundColor: Colors.black,
+                                animationDuration:
+                                const Duration(milliseconds: 300),
+                                animationType: AnimationType.fromTop,
+                                descStyle: GoogleFonts.roboto(
+                                    color: Colors.white),
+                              ),
+                              image: const Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: Icon(
+                                  FontAwesomeIcons.eye,
+                                  color: Colors.blue,
+                                  size: 80,
+                                ),
+                              ),
+                              desc:
+                              "Would you like to reveal the answer?",
+                              content: Center(child: Text("${revealCounter} / ${widget.gameMode}",style: GoogleFonts.roboto(fontSize: 26,color:Colors.red))),
+                              buttons: [
+                                DialogButton(
+                                  onPressed: () {
+                                    Navigator.pop(context,
+                                        false); // Passing false means "No"
+                                  },
+                                  width: 120,
+                                  color: Colors.red,
+                                  child: Text(
+                                    "No",
+                                    style: GoogleFonts.roboto(
+                                      color: Colors.white,
+                                      fontSize: 22,
                                     ),
-                                    image: const Padding(
-                                      padding: EdgeInsets.all(10.0),
-                                      child: Icon(
-                                        FontAwesomeIcons.eye,
-                                        color: Colors.blue,
-                                        size: 80,
-                                      ),
+                                  ),
+                                ),
+                                DialogButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      if (revealCounter > 0){
+                                        showShadow = true;
+                                        showEye = true;
+                                        revealCounter--;
+                                      }
+                                    });
+                                    print(revealCounter);
+                                    Navigator.pop(context,
+                                        true); // Passing true means "Yes"
+                                  },
+                                  width: 120,
+                                  color: Colors.blue,
+                                  child: Text(
+                                    "Yes",
+                                    style: GoogleFonts.roboto(
+                                      color: Colors.white,
+                                      fontSize: 22,
                                     ),
-                                    desc:
-                                        "Would you like to reveal one of the wrong options for 1/2 points?",
-                                    buttons: [
-                                      DialogButton(
-                                        onPressed: () {
-                                          Navigator.pop(context,
-                                              false); // Passing false means "No"
-                                        },
-                                        width: 120,
-                                        color: Colors.red,
-                                        child: Text(
-                                          "No",
-                                          style: GoogleFonts.roboto(
-                                            color: Colors.white,
-                                            fontSize: 22,
-                                          ),
-                                        ),
-                                      ),
-                                      DialogButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            streakCounter++;
-                                          });
-                                          Navigator.pop(context,
-                                              true); // Passing true means "Yes"
-                                        },
-                                        width: 120,
-                                        color: Colors.blue,
-                                        child: Text(
-                                          "Yes",
-                                          style: GoogleFonts.roboto(
-                                            color: Colors.white,
-                                            fontSize: 22,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ).show();
-                                }
-                              : null,
+                                  ),
+                                ),
+                              ],
+                            ).show();
+                          },
                           style: OutlinedButton.styleFrom(
                             side: const BorderSide(
                                 color: Colors
@@ -882,9 +910,9 @@ class _QuestionsState extends State<Questions> {
                             backgroundColor: const Color(0xff1c1c28),
                             foregroundColor: Colors.white,
                           ),
-                          child: Icon(!continueButtonTapped
-                              ? FontAwesomeIcons.eye
-                              : FontAwesomeIcons.eyeSlash))),
+                          child: Icon(continueButtonTapped || revealCounter < 1
+                              ? FontAwesomeIcons.eyeSlash
+                              : FontAwesomeIcons.eye))),
                 ],
               ),
             )),
