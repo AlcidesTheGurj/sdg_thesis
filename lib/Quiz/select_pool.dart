@@ -155,20 +155,18 @@ class _SelectPoolState extends State<SelectPool> {
                 floating: false,
                 backgroundColor: Colors.transparent,
                 flexibleSpace: FlexibleSpaceBar(
-                  background: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: SizedBox(
+                  background:
+                    SizedBox(
                       width: 120,
                       height: 120,
                       child: CachedNetworkImage(
                         imageUrl:
-                            "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2FE_SDG_logo_without_UN_emblem_square_CMYK_Transparent.png?alt=media&token=83f19ed2-3a7c-458b-8698-7136559ab3af",
+                            "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2Flogo_transparent.png?alt=media&token=fb29f855-b79a-4952-9f33-c07d029c73ca",
                         placeholder: (context, url) =>
                             const Center(child: CircularProgressIndicator()),
                         errorWidget: (context, url, error) =>
                             const Icon(Icons.error),
                       ),
-                    ),
                   ),
                 ),
                 expandedHeight: 200,

@@ -669,12 +669,19 @@ class _QuestionsState extends State<Questions> {
                                         }
                                       });
                                       setState(() {
-                                        showShadow = true;
-                                        totalPoints +=
-                                            widget.listOfQuestions[index]
-                                                ['point'] as int;
-                                        correctCount++;
                                         streakCounter++;
+                                        showShadow = true;
+                                        if(streakCounter > 2 ){
+                                          totalPoints +=
+                                          widget.listOfQuestions[index]
+                                          ['point'] * streakCounter as int;
+                                        }
+                                        else {
+                                          totalPoints +=
+                                          widget.listOfQuestions[index]
+                                          ['point'] as int;
+                                        }
+                                        correctCount++;
                                         _isSelected[0] = false;
                                         _isSelected[1] = false;
                                         _isSelected[2] = false;
@@ -744,9 +751,16 @@ class _QuestionsState extends State<Questions> {
                                         icon: const Icon(Icons.check),
                                       ).show(context);
                                       setState(() {
-                                        totalPoints +=
-                                            widget.listOfQuestions[index]
-                                                ['point'] as int;
+                                        if(streakCounter > 2 ){
+                                          totalPoints +=
+                                              widget.listOfQuestions[index]
+                                              ['point'] * streakCounter as int;
+                                        }
+                                        else {
+                                          totalPoints +=
+                                          widget.listOfQuestions[index]
+                                          ['point'] as int;
+                                        }
                                         correctCount++;
                                         streakCounter++;
                                       });
@@ -811,12 +825,12 @@ class _QuestionsState extends State<Questions> {
                                       padding: EdgeInsets.all(10.0),
                                       child: Icon(
                                         FontAwesomeIcons.eye,
-                                        color: Colors.red,
+                                        color: Colors.blue,
                                         size: 80,
                                       ),
                                     ),
                                     desc:
-                                        "Would you like to reveal the answer for half the points?",
+                                        "Would you like to reveal one of the wrong options for 1/2 points?",
                                     buttons: [
                                       DialogButton(
                                         onPressed: () {
