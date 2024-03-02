@@ -25,9 +25,9 @@ class _SelectPoolState extends State<SelectPool> {
     FontAwesomeIcons.dollarSign
   ];
   List<Color> poolColor = [
-    const Color(0xff4c9f38),
-    const Color(0xff19486a),
-    const Color(0xffbf8b2e)
+    const Color(0xff56c02b),
+    const Color(0xffdd1367),
+    const Color(0xfffcc30b)
   ];
   //int poolIndex = 2; // Initializing with the last index
 
@@ -47,7 +47,7 @@ class _SelectPoolState extends State<SelectPool> {
         color:
             widget.poolText.length > 3 ? sdgColours[index] : poolColor[index],
         border: Border.all(
-          color: Colors.black, // Set the color of the border
+          color: Colors.transparent, // Set the color of the border
           width: 2.0,
         ),
         borderRadius: BorderRadius.circular(30),
