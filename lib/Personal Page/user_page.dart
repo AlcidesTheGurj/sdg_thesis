@@ -10,6 +10,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '../main.dart';
 import 'mobile.dart';
+import 'dart:io';
 
 import '../auth.dart';
 import '../customization_page.dart';
@@ -514,24 +515,23 @@ class _GuestPageState extends State<GuestPage> {
 }
 
 Future<void> _createPDF() async {
-  PdfDocument document = PdfDocument();
-  final page = document.pages.add();
+  final PdfDocument document =
+  PdfDocument(inputBytes: File('images/input.pdf').readAsBytesSync());
 
-  // Add title
-  page.graphics.drawString('Certificate of Achievement',
-      PdfStandardFont(PdfFontFamily.helvetica, 30),
-      bounds: const Rect.fromLTWH(50, 50, 500, 50));
+  //Get the existing PDF page.
+  final PdfPage page = document.pages[0];
 
   // Handle user display name
   final userName = user?.displayName ?? 'User';
 
   // Add text with user's display name
   page.graphics.drawString(
-      'This is to certify that $userName has successfully completed the quiz on SDGs.',
-      PdfStandardFont(PdfFontFamily.courier, 16),
+      '$userName',
+      PdfStandardFont(PdfFontFamily.courier, 30),
       bounds: const Rect.fromLTWH(50, 120, 500, 200));
 
   List<int> bytes = await document.save();
+
   document.dispose();
 
   saveAndLaunchFile(bytes, 'Certificate.pdf');
