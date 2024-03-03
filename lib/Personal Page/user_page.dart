@@ -6,12 +6,9 @@ import 'package:fluttermoji/fluttermojiFunctions.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:printing/printing.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:syncfusion_flutter_pdf/pdf.dart';
-import '../main.dart';
-import 'mobile.dart';
-import 'dart:io';
-
+import 'package:pdf/widgets.dart' as pw;
 import '../auth.dart';
 import '../customization_page.dart';
 
@@ -372,8 +369,7 @@ class _GuestPageState extends State<GuestPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Milestones",
-                      style: GoogleFonts.roboto(fontSize: 24.0)),
+                  Text("Milestones", style: GoogleFonts.roboto(fontSize: 24.0)),
                 ],
               ),
             ),
@@ -489,15 +485,58 @@ class _GuestPageState extends State<GuestPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 40,),
-
+            const SizedBox(
+              height: 40,
+            ),
             ElevatedButton(
               onPressed: () async {
-                _createPDF();
+                final pdf = pw.Document();
+
+                pdf.addPage(
+                  pw.Page(
+                    orientation: pw.PageOrientation.landscape,
+                    build: (context) {
+                      return // Replace with your desired color
+                       pw.Center(
+                         child: pw.Column(
+                           mainAxisAlignment: pw.MainAxisAlignment.start,
+                           children: [
+                             pw.Center(
+                               child: pw.Text(
+                                 'Certificate',
+                                 style: pw.TextStyle(font: pw.Font.courier(), fontSize: 36),
+                               ),
+                             ),
+                             pw.SizedBox(height: 10),
+                             pw.Text(
+                               'awarded to',
+                               style: pw.TextStyle(font: pw.Font.courier(), fontSize: 28),
+                             ),
+                             pw.SizedBox(height: 40),
+                             pw.Text(
+                               '${user?.displayName}',
+                               style: pw.TextStyle(font: pw.Font.courier(), fontSize: 32,),
+                             ),
+                             pw.SizedBox(height: 20),
+                             pw.Text(
+                               'successfully completed the Challenge mode of SDG Quest with a score over 75%',
+                               style: pw.TextStyle(font: pw.Font.courier(), fontSize: 22,),
+                             ),
+                           ],
+                         )
+                       );
+                    },
+                  ),
+                );
+
+                await Printing.layoutPdf(
+                    onLayout: (format) async => pdf.save());
               },
               child: const Text("Generate"),
             ),
-            const SizedBox(height: 80,),
+            const SizedBox(
+              height: 80,
+            ),
             Text(user?.email ?? 'user email',
                 style: GoogleFonts.roboto(fontSize: 16.0)),
             ElevatedButton(
@@ -514,28 +553,22 @@ class _GuestPageState extends State<GuestPage> {
   }
 }
 
-Future<void> _createPDF() async {
-  final PdfDocument document =
-  PdfDocument(inputBytes: File('images/input.pdf').readAsBytesSync());
-
-  //Get the existing PDF page.
-  final PdfPage page = document.pages[0];
-
-  // Handle user display name
-  final userName = user?.displayName ?? 'User';
-
-  // Add text with user's display name
-  page.graphics.drawString(
-      '$userName',
-      PdfStandardFont(PdfFontFamily.courier, 30),
-      bounds: const Rect.fromLTWH(50, 120, 500, 200));
-
-  List<int> bytes = await document.save();
-
-  document.dispose();
-
-  saveAndLaunchFile(bytes, 'Certificate.pdf');
-}
+// Future<void> _createPDF() async {
+//   //Load the existing PDF document.
+//   final PdfDocument document =
+//   PdfDocument(inputBytes: File('images/17.png').readAsBytesSync());
+// //Get the existing PDF page.
+//   final PdfPage page = document.pages[0];
+// //Draw text in the PDF page.
+//   page.graphics.drawString(
+//       'Hello World!', PdfStandardFont(PdfFontFamily.helvetica, 12),
+//       brush: PdfSolidBrush(PdfColor(0, 0, 0)),
+//       bounds: const Rect.fromLTWH(0, 0, 150, 20));
+// //Save the document.
+//   File('output.pdf').writeAsBytes(await document.save());
+// //Dispose the document.
+//   document.dispose();
+// }
 
 /*
 * SizedBox(
