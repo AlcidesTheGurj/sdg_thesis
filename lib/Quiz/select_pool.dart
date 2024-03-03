@@ -156,10 +156,7 @@ class _SelectPoolState extends State<SelectPool> {
                 backgroundColor: Colors.transparent,
                 flexibleSpace: FlexibleSpaceBar(
                   background:
-                    SizedBox(
-                      width: 120,
-                      height: 120,
-                      child: CachedNetworkImage(
+                     CachedNetworkImage(
                         imageUrl:
                             "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2Flogo_transparent.png?alt=media&token=fb29f855-b79a-4952-9f33-c07d029c73ca",
                         placeholder: (context, url) =>
@@ -167,7 +164,7 @@ class _SelectPoolState extends State<SelectPool> {
                         errorWidget: (context, url, error) =>
                             const Icon(Icons.error),
                       ),
-                  ),
+
                 ),
                 expandedHeight: 200,
               ),

@@ -7,6 +7,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sdg_thesis/customization_page.dart';
+import 'package:sdg_thesis/help_page.dart';
 import 'package:sdg_thesis/home_page.dart';
 import 'package:sdg_thesis/leaderboard.dart';
 import 'auth.dart';
@@ -144,11 +145,17 @@ class _HomeState extends State<Home> {
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             elevation: 0,
-            actions: const [
+            actions: [
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: InkWell(
-                  child: Icon(Icons.lightbulb),
+                  child: Icon(Icons.help),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => HelpPage(
+                      ),
+                    ),);
+                  },
                 )
               ),
             ],
