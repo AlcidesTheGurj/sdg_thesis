@@ -1,10 +1,12 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttermoji/fluttermojiFunctions.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pdf/pdf.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:printing/printing.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -492,39 +494,87 @@ class _GuestPageState extends State<GuestPage> {
               onPressed: () async {
                 final pdf = pw.Document();
 
+                final pageTheme = pw.PageTheme(
+                  buildBackground: (context) => pw.FullPage(
+                    ignoreMargins: true,
+                    child: pw.Container(color: PdfColors.white),
+                  ),
+                );
+
+                final img =
+                    await rootBundle.load('images/logo_transparent - Copy.jpg');
+                final imageBytes = img.buffer.asUint8List();
+                pw.Image image1 = pw.Image(pw.MemoryImage(imageBytes));
+
                 pdf.addPage(
                   pw.Page(
-                    orientation: pw.PageOrientation.landscape,
+                    pageTheme: pageTheme,
                     build: (context) {
                       return // Replace with your desired color
-                       pw.Center(
-                         child: pw.Column(
-                           mainAxisAlignment: pw.MainAxisAlignment.start,
-                           children: [
-                             pw.Center(
-                               child: pw.Text(
-                                 'Certificate',
-                                 style: pw.TextStyle(font: pw.Font.courier(), fontSize: 36),
-                               ),
-                             ),
-                             pw.SizedBox(height: 10),
-                             pw.Text(
-                               'awarded to',
-                               style: pw.TextStyle(font: pw.Font.courier(), fontSize: 28),
-                             ),
-                             pw.SizedBox(height: 40),
-                             pw.Text(
-                               '${user?.displayName}',
-                               style: pw.TextStyle(font: pw.Font.courier(), fontSize: 32,),
-                             ),
-                             pw.SizedBox(height: 20),
-                             pw.Text(
-                               'successfully completed the Challenge mode of SDG Quest with a score over 75%',
-                               style: pw.TextStyle(font: pw.Font.courier(), fontSize: 22,),
-                             ),
-                           ],
-                         )
-                       );
+                          pw.Column(
+                        mainAxisAlignment: pw.MainAxisAlignment.center,
+                        crossAxisAlignment: pw.CrossAxisAlignment.center,
+                        children: [
+                          pw.Row(children: [
+                            pw.Container(
+                              alignment: pw.Alignment.center,
+                              height: 225,
+                              child: image1,
+                            ),
+                            pw.Text(
+                              "SDG Quest",
+                              style: pw.TextStyle(
+                                  font: pw.Font.courier(),
+                                  fontSize: 40,
+                                  color: PdfColors.teal200
+                                  ),
+                            )
+                          ]),
+                          pw.Center(
+                            child: pw.Text(
+                              'Certificate',
+                              style: pw.TextStyle(
+                                font: pw.Font.courier(),
+                                fontSize: 36,
+                                  color: PdfColors.teal200
+                              ),
+                            ),
+                          ),
+                          pw.SizedBox(height: 10),
+                          pw.Text(
+                            'awarded to',
+                            style: pw.TextStyle(
+                              font: pw.Font.courier(),
+                              fontSize: 26,
+
+                            ),
+                          ),
+                          pw.SizedBox(height: 30),
+                          pw.Text(
+                            '${user?.displayName}',
+                            style: pw.TextStyle(
+                                font: pw.Font.courier(),
+                                fontSize: 36,
+                                color: PdfColors.teal200),
+                          ),
+                          pw.SizedBox(height: 20),
+                          pw.Text(
+                            'successfully completed the Challenge mode of SDG Quest with a score over 75%.',
+                            style: pw.TextStyle(
+                              font: pw.Font.courier(),
+                              fontSize: 18,
+                            ),
+                          ),
+                          pw.SizedBox(height: 20),
+                          pw.Text(
+                            "2024",
+                            style: pw.TextStyle(
+                                font: pw.Font.courier(),
+                                fontSize: 22,
+                                color: PdfColors.teal200),
+                          ),
+                        ],
+                      );
                     },
                   ),
                 );
@@ -552,243 +602,3 @@ class _GuestPageState extends State<GuestPage> {
     );
   }
 }
-
-// Future<void> _createPDF() async {
-//   //Load the existing PDF document.
-//   final PdfDocument document =
-//   PdfDocument(inputBytes: File('images/17.png').readAsBytesSync());
-// //Get the existing PDF page.
-//   final PdfPage page = document.pages[0];
-// //Draw text in the PDF page.
-//   page.graphics.drawString(
-//       'Hello World!', PdfStandardFont(PdfFontFamily.helvetica, 12),
-//       brush: PdfSolidBrush(PdfColor(0, 0, 0)),
-//       bounds: const Rect.fromLTWH(0, 0, 150, 20));
-// //Save the document.
-//   File('output.pdf').writeAsBytes(await document.save());
-// //Dispose the document.
-//   document.dispose();
-// }
-
-/*
-* SizedBox(
-              height: 125,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white.withOpacity(0.6)),
-                      ),
-                      width: 150,
-                      child: InkWell(
-                        onTap: () {
-                          Alert(
-                            context: context,
-                            style: AlertStyle(
-                                backgroundColor: Colors.black,
-                                animationDuration:
-                                    const Duration(milliseconds: 200),
-                                animationType: AnimationType.fromTop,
-                                descStyle: GoogleFonts.roboto(
-                                    color: Colors.white, fontSize: 22),
-                                titleStyle: GoogleFonts.roboto(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 24)),
-                            desc: 17 == 17
-                                ? "Answer all"
-                                : "Correctly answer all questions related to SDG 17+ 1}.",
-                            //title: "Badge no. ${index + 1}",
-                            image: Image.asset(
-                              "images/17.png",
-                              fit: BoxFit.fill,
-                            ),
-                            buttons: [ DialogButton(
-                              onPressed: () {
-                                setState(() {
-                                  lock = false;
-                                  Navigator.pop(context);
-                                });
-                              },
-                              width: 120,
-                              color: const Color(0xffe5243b),
-                              child: Text(
-                                "OK",
-                                style: GoogleFonts.roboto(
-                                    color: Colors.white, fontSize: 25),
-                              ),
-                            ),],
-                          ).show();
-                        },
-                        child: Stack(
-                          children: [
-                            Center(
-                              child: Image.asset(
-                                "images/1.png",
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            Visibility(
-                              visible: false,
-                              child: FractionallySizedBox(
-                                  widthFactor: 1.0,
-                                  heightFactor: 1.0,
-                                  alignment: Alignment.center,
-                                  child: DecoratedBox(
-                                      decoration: BoxDecoration(
-                                          color: Colors.black.withOpacity(0.9)),
-                                      child: const Icon(Icons.lock))),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white.withOpacity(0.6)),
-                      ),
-                      width: 150,
-                      child: InkWell(
-                        onTap: () {
-                          Alert(
-                            context: context,
-                            style: AlertStyle(
-                                backgroundColor: Colors.black,
-                                animationDuration:
-                                    const Duration(milliseconds: 200),
-                                animationType: AnimationType.fromTop,
-                                descStyle: GoogleFonts.roboto(
-                                    color: Colors.white, fontSize: 22),
-                                titleStyle: GoogleFonts.roboto(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 24)),
-                            desc: 17 == 17
-                                ? "Answer all"
-                                : "Correctly answer all questions related to SDG 17+ 1}.",
-                            //title: "Badge no. ${index + 1}",
-                            image: Image.asset(
-                              "images/17.png",
-                              fit: BoxFit.fill,
-                            ),
-                            buttons: [ DialogButton(
-                              onPressed: () {
-                                setState(() {
-                                  lock = false;
-                                  Navigator.pop(context);
-                                });
-                              },
-                              width: 120,
-                              color: const Color(0xffe5243b),
-                              child: Text(
-                                "OK",
-                                style: GoogleFonts.roboto(
-                                    color: Colors.white, fontSize: 25),
-                              ),
-                            ),],
-                          ).show();
-                        },
-                        child: Stack(
-                          children: [
-                            Center(
-                              child: Image.asset(
-                                "images/14.png",
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            Visibility(
-                              visible: false,
-                              child: FractionallySizedBox(
-                                  widthFactor: 1.0,
-                                  heightFactor: 1.0,
-                                  alignment: Alignment.center,
-                                  child: DecoratedBox(
-                                      decoration: BoxDecoration(
-                                          color: Colors.black.withOpacity(0.9)),
-                                      child: const Icon(Icons.lock))),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white.withOpacity(0.6)),
-                      ),
-                      width: 150,
-                      child: InkWell(
-                        onTap: () {
-                          Alert(
-                            context: context,
-                            style: AlertStyle(
-                                backgroundColor: Colors.black,
-                                animationDuration:
-                                    const Duration(milliseconds: 200),
-                                animationType: AnimationType.fromTop,
-                                descStyle: GoogleFonts.roboto(
-                                    color: Colors.white, fontSize: 22),
-                                titleStyle: GoogleFonts.roboto(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 24)),
-                            desc: 17 == 17
-                                ? "Answer all"
-                                : "Correctly answer all questions related to SDG 17+ 1}.",
-                            //title: "Badge no. ${index + 1}",
-                            image: Image.asset(
-                              "images/17.png",
-                              fit: BoxFit.fill,
-                            ),
-                            buttons: [ DialogButton(
-                              onPressed: () {
-                                setState(() {
-                                  lock = false;
-                                  Navigator.pop(context);
-                                });
-                              },
-                              width: 120,
-                              color: const Color(0xffe5243b),
-                              child: Text(
-                                "OK",
-                                style: GoogleFonts.roboto(
-                                    color: Colors.white, fontSize: 25),
-                              ),
-                            ),],
-                          ).show();
-                        },
-                        child: Stack(
-                          children: [
-                            Center(
-                              child: Image.asset(
-                                "images/17.png",
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            Visibility(
-                              visible: false,
-                              child: FractionallySizedBox(
-                                  widthFactor: 1.0,
-                                  heightFactor: 1.0,
-                                  alignment: Alignment.center,
-                                  child: DecoratedBox(
-                                      decoration: BoxDecoration(
-                                          color: Colors.black.withOpacity(0.9)),
-                                      child: const Icon(Icons.lock))),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),*/
