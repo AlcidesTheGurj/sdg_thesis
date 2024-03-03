@@ -13,6 +13,7 @@ class Auth {
   Future<void> signInWithEmailAndPassword({
     required String email,
     required String password,
+    required String name,
   }) async {
     await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
@@ -33,6 +34,7 @@ class Auth {
       DatabaseReference ref = FirebaseDatabase.instance.ref("Players/$userUuid");
       await ref.update({
         'email': email,
+        'displayName': name,
       });
     }
     user = Auth().currentUser;
@@ -41,6 +43,7 @@ class Auth {
   Future<void> createUserWithEmailAndPassword({
     required String email,
     required String password,
+    required String name,
   }) async {
     await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
@@ -51,6 +54,8 @@ class Auth {
       await ref.set({
         "email": email,
         "total_points": 0,
+        "displayName": name,
+        "order": 9999999999
       });
     }
   }
@@ -96,6 +101,16 @@ class Auth {
           'displayName': user!.displayName,
           'email': user!.email,
         });
+
+        DataSnapshot snapshot = await ref.get();
+        Map<Object?, Object?>? userData = snapshot.value as Map<Object?, Object?>?;
+
+        if (userData == null || !userData.containsKey('order')) {
+          // 'order' doesn't exist, set the value
+          await ref.update({
+            'order': 9999999999
+          });
+        }
       }
 
       return authResult;

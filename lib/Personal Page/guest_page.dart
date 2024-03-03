@@ -1,5 +1,6 @@
 import 'package:fancy_password_field/fancy_password_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../auth.dart';
@@ -20,11 +21,12 @@ class _UserPageState extends State<UserPage> {
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
   final TextEditingController _controllerConfirm = TextEditingController();
+  final TextEditingController _controllerName = TextEditingController();
 
   Future<void> signInWithEmailAndPassword() async {
     try {
       await Auth().signInWithEmailAndPassword(
-          email: _controllerEmail.text, password: _controllerPassword.text);
+          email: _controllerEmail.text, password: _controllerPassword.text,name:_controllerName.text);
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMsg = e.message!;
@@ -42,7 +44,7 @@ class _UserPageState extends State<UserPage> {
   Future<void> createUserWithEmailAndPassword() async {
     try {
       await Auth().createUserWithEmailAndPassword(
-          email: _controllerEmail.text, password: _controllerPassword.text);
+          email: _controllerEmail.text, password: _controllerPassword.text, name: _controllerName.text);
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMsg = e.message!;
@@ -220,6 +222,10 @@ class _UserPageState extends State<UserPage> {
               const SizedBox(height: 15.0),
 
               _entryField('email', _controllerEmail),
+              const SizedBox(
+                height: 15,
+              ),
+              Visibility(visible: !isLogin,child: _entryField('Display name', _controllerName)),
               const SizedBox(
                 height: 15,
               ),

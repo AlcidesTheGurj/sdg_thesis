@@ -210,6 +210,9 @@ class _GuestPageState extends State<GuestPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(
+              height: 10,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
