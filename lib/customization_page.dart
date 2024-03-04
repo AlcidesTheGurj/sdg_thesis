@@ -272,7 +272,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
             widthFactor: 1.0,
             heightFactor: 1.0,
             child: DecoratedBox(
-              decoration: BoxDecoration(color: Colors.black.withOpacity(0.9)),
+              decoration: BoxDecoration(color: Colors.black.withOpacity(0.8)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
