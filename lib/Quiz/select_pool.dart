@@ -35,6 +35,9 @@ class _SelectPoolState extends State<SelectPool> {
   void initState() {
     // poolSize = widget.poolText.length;
     // _isSelected = List.generate(poolSize, (index) => index == 2); // Initialize with the last item selected
+
+    widget.poolText.length == 1 ? poolColor[0] = Color(0xffe5243b):  poolColor[0] = Color(0xff19486a);
+    widget.poolText.length == 1 ? poolIcon[0] = FontAwesomeIcons.book :  FontAwesomeIcons.envira;
     super.initState();
   }
 

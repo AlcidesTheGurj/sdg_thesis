@@ -111,23 +111,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     }
   }
 
-  // Future<void> getUserChallenge() async {
-  //   final User? user = Auth().currentUser;
-  //   if (user != null) {
-  //     DatabaseReference ref =
-  //     FirebaseDatabase.instance.ref().child("Players/${user.uid}");
-  //     final snapshot = await ref.get();
-  //
-  //     final Object? existingPointsObj = snapshot.value;
-  //
-  //     setState(() {
-  //       if (existingPointsObj != null && existingPointsObj is Map) {
-  //         challenge = (existingPointsObj['challenge'] ?? false);
-  //       }
-  //     });
-  //   }
-  // }
-
   Widget myWidget({required Map gamemode}) {
     return Stack(children: [
       Container(
