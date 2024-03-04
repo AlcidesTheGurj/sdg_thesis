@@ -38,7 +38,7 @@ class _CompletedPageState extends State<CompletedPage> {
 
       await ref.update({
         "total_points": widget.totalPoints + existingPoints,
-        "order": 9999999999 - (widget.totalPoints)
+        "order": 9999999999 - (widget.totalPoints + existingPoints)
       });
 
     }
@@ -90,19 +90,43 @@ class _CompletedPageState extends State<CompletedPage> {
     }
   }
 
+  Future<void> updateUserCertificate() async {
+    if (user != null) {
+
+
+      bool certificateObj = true;
+
+      DatabaseReference ref2 =
+      FirebaseDatabase.instance.ref().child("Players/${user?.uid}");
+
+      await ref2.update({
+        "certificate_unlock": certificateObj,
+      });
+    }
+  }
+
   @override
   void initState() {
+    print(widget.gameMode);
+
     if (widget.correctCount == widget.questionCount) {
-      if (widget.gameMode > 5) {
+      if (widget.gameMode == 17) {
         updateUserBadges();
       }
     }
     if (widget.correctCount >
         widget.questionCount - (widget.questionCount * 0.6)) {
-      if (widget.gameMode > 2) {
+      if (widget.gameMode == 3) {
         updateUserMilestones();
       }
     }
+    if (widget.correctCount >
+        widget.questionCount - (widget.questionCount * 0.75)) {
+      if (widget.gameMode == 1) {
+        updateUserCertificate();
+      }
+    }
+
     updateUserScore();
     super.initState();
   }

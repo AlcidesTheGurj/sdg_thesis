@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +26,8 @@ class _GuestPageState extends State<GuestPage> {
   final User? user = Auth().currentUser;
 
   double playerPoints = 0;
+
+  bool certificateProgress = false;
 
   List<IconData> poolIcon = [
     FontAwesomeIcons.envira,
@@ -53,6 +56,28 @@ class _GuestPageState extends State<GuestPage> {
 
       setState(() {
         playerPoints = existingPoints;
+      });
+    }
+  }
+
+  Future<void> getUserCertificate() async {
+    if (user != null) {
+      DatabaseReference ref =
+          FirebaseDatabase.instance.ref().child("Players/${user?.uid}");
+      final snapshot = await ref.get();
+
+      final Object? certificateProgressObj = snapshot.value;
+
+      bool currentCertificate = false;
+
+      if (certificateProgressObj != null && certificateProgressObj is Map) {
+        // If 'total_points' exists in the snapshot, retrieve its value
+        currentCertificate =
+            (certificateProgressObj['certificate_unlock'] ?? false);
+      }
+
+      setState(() {
+        certificateProgress = currentCertificate;
       });
     }
   }
@@ -143,6 +168,7 @@ class _GuestPageState extends State<GuestPage> {
     getUserScore();
     getUserBadges();
     getUserMilestones();
+    getUserCertificate();
     //print(user);
     super.initState();
   }
@@ -177,12 +203,6 @@ class _GuestPageState extends State<GuestPage> {
           FirebaseDatabase.instance.ref('Players/${user?.uid}/avatar');
       var dataSnapshot = await ref.get();
       var userObject = dataSnapshot.value!;
-      //print(userObject);
-      //print(user?.uid as String);
-
-      //final value = FluttermojiFunctions().decodeFluttermojifromString(userObject as String);
-      //print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
-      //print(userObject as String);
 
       setState(() {
         avatarData = userObject as String;
@@ -200,6 +220,8 @@ class _GuestPageState extends State<GuestPage> {
   // false i unlocked
   List<bool> badgeProgress = List<bool>.filled(18, true);
   List<bool> milestoneProgress = List<bool>.filled(3, true);
+
+  bool certificate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -490,103 +512,139 @@ class _GuestPageState extends State<GuestPage> {
             const SizedBox(
               height: 40,
             ),
-            ElevatedButton(
-              onPressed: () async {
-                final pdf = pw.Document();
+            certificateProgress
+                ? ElevatedButton(
+                    onPressed: () async {
+                      final pdf = pw.Document();
 
-                final pageTheme = pw.PageTheme(
-                  buildBackground: (context) => pw.FullPage(
-                    ignoreMargins: true,
-                    child: pw.Container(color: PdfColors.white),
-                  ),
-                );
-
-                final img =
-                    await rootBundle.load('images/logo_transparent - Copy.jpg');
-                final imageBytes = img.buffer.asUint8List();
-                pw.Image image1 = pw.Image(pw.MemoryImage(imageBytes));
-
-                pdf.addPage(
-                  pw.Page(
-                    pageTheme: pageTheme,
-                    build: (context) {
-                      return // Replace with your desired color
-                          pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.center,
-                        crossAxisAlignment: pw.CrossAxisAlignment.center,
-                        children: [
-                          pw.Row(children: [
-                            pw.Container(
-                              alignment: pw.Alignment.center,
-                              height: 225,
-                              child: image1,
-                            ),
-                            pw.Text(
-                              "SDG Quest",
-                              style: pw.TextStyle(
-                                  font: pw.Font.courier(),
-                                  fontSize: 40,
-                                  color: PdfColors.teal200
-                                  ),
-                            )
-                          ]),
-                          pw.Center(
-                            child: pw.Text(
-                              'Certificate',
-                              style: pw.TextStyle(
-                                font: pw.Font.courier(),
-                                fontSize: 36,
-                                  color: PdfColors.teal200
-                              ),
-                            ),
-                          ),
-                          pw.SizedBox(height: 10),
-                          pw.Text(
-                            'awarded to',
-                            style: pw.TextStyle(
-                              font: pw.Font.courier(),
-                              fontSize: 26,
-
-                            ),
-                          ),
-                          pw.SizedBox(height: 30),
-                          pw.Text(
-                            '${user?.displayName}',
-                            style: pw.TextStyle(
-                                font: pw.Font.courier(),
-                                fontSize: 36,
-                                color: PdfColors.teal200),
-                          ),
-                          pw.SizedBox(height: 20),
-                          pw.Text(
-                            'successfully completed the Challenge mode of SDG Quest with a score over 75%.',
-                            style: pw.TextStyle(
-                              font: pw.Font.courier(),
-                              fontSize: 18,
-                            ),
-                          ),
-                          pw.SizedBox(height: 20),
-                          pw.Text(
-                            "2024",
-                            style: pw.TextStyle(
-                                font: pw.Font.courier(),
-                                fontSize: 22,
-                                color: PdfColors.teal200),
-                          ),
-                        ],
+                      final pageTheme = pw.PageTheme(
+                        buildBackground: (context) => pw.FullPage(
+                          ignoreMargins: true,
+                          child: pw.Container(color: PdfColors.white),
+                        ),
                       );
+
+                      final img = await rootBundle
+                          .load('images/logo_transparent - Copy.jpg');
+                      final imageBytes = img.buffer.asUint8List();
+                      pw.Image image1 = pw.Image(pw.MemoryImage(imageBytes));
+
+                      pdf.addPage(
+                        pw.Page(
+                          pageTheme: pageTheme,
+                          build: (context) {
+                            return // Replace with your desired color
+                                pw.Column(
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              children: [
+                                pw.Row(children: [
+                                  pw.Container(
+                                    alignment: pw.Alignment.center,
+                                    height: 225,
+                                    child: image1,
+                                  ),
+                                  pw.Text(
+                                    "SDG Quest",
+                                    style: pw.TextStyle(
+                                        font: pw.Font.courier(),
+                                        fontSize: 40,
+                                        color: PdfColors.teal200),
+                                  )
+                                ]),
+                                pw.Center(
+                                  child: pw.Text(
+                                    'Certificate',
+                                    style: pw.TextStyle(
+                                        font: pw.Font.courier(),
+                                        fontSize: 36,
+                                        color: PdfColors.teal200),
+                                  ),
+                                ),
+                                pw.SizedBox(height: 10),
+                                pw.Text(
+                                  'awarded to',
+                                  style: pw.TextStyle(
+                                    font: pw.Font.courier(),
+                                    fontSize: 26,
+                                  ),
+                                ),
+                                pw.SizedBox(height: 30),
+                                pw.Text(
+                                  '${user?.displayName}',
+                                  style: pw.TextStyle(
+                                      font: pw.Font.courier(),
+                                      fontSize: 36,
+                                      color: PdfColors.teal200),
+                                ),
+                                pw.SizedBox(height: 20),
+                                pw.Text(
+                                  'successfully completed the Challenge mode of SDG Quest with a score over 75%.',
+                                  style: pw.TextStyle(
+                                    font: pw.Font.courier(),
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                pw.SizedBox(height: 20),
+                                pw.Text(
+                                  "2024",
+                                  style: pw.TextStyle(
+                                      font: pw.Font.courier(),
+                                      fontSize: 22,
+                                      color: PdfColors.teal200),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      );
+
+                      await Printing.layoutPdf(
+                          onLayout: (format) async => pdf.save());
                     },
+                    child: Text("Generate",
+                        style: GoogleFonts.roboto(fontSize: 16.0)),
+                  )
+                : InkWell(
+              splashFactory: NoSplash.splashFactory,
+                    child: Container(
+                        height: 50,
+                        width: 120,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Icon(
+                          Icons.lock,
+                          size: 40,
+                        )),
+              onTap: (){
+                showDialog(
+                  context: context,
+                  builder: (context) => const AlertDialog(
+                    title: Center(
+                      child: Text(
+                        'Earn over 75% in Challenge Mode to unlock!',
+                      ),
+                    ),
                   ),
-
                 );
-
-                await Printing.layoutPdf(
-                    onLayout: (format) async => pdf.save());
               },
-              child: const Text("Generate"),
+                  ),
+            const SizedBox(
+              height: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("Account", style: GoogleFonts.roboto(fontSize: 24.0)),
+                ],
+              ),
             ),
             const SizedBox(
-              height: 80,
+              height: 40,
             ),
             Text(user?.email ?? 'user email',
                 style: GoogleFonts.roboto(fontSize: 16.0)),

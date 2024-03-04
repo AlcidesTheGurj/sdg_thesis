@@ -55,7 +55,8 @@ class Auth {
         "email": email,
         "total_points": 0,
         "displayName": name,
-        "order": 9999999999
+        "order": 9999999999,
+        "certificate_unlock": false
       });
     }
   }
@@ -109,6 +110,13 @@ class Auth {
           // 'order' doesn't exist, set the value
           await ref.update({
             'order': 9999999999
+          });
+        }
+
+        if (userData == null || !userData.containsKey('certificate_unlock')) {
+          // 'order' doesn't exist, set the value
+          await ref.update({
+            'certificate_unlock': false
           });
         }
       }
