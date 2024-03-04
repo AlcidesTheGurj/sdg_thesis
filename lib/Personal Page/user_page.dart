@@ -577,6 +577,7 @@ class _GuestPageState extends State<GuestPage> {
                       );
                     },
                   ),
+
                 );
 
                 await Printing.layoutPdf(
