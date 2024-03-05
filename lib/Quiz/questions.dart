@@ -95,6 +95,8 @@ class _QuestionsState extends State<Questions> {
 
   bool revealUsed = false;
 
+  int revealTotal = 0;
+
   IconData shadowIcon = FontAwesomeIcons.question;
 
   Future<void> _loadAvatar(BuildContext context) async {
@@ -124,12 +126,15 @@ class _QuestionsState extends State<Questions> {
     // print(widget.listOfQuestions[1]['answer'].length);
     if (widget.gameMode > 5) {
         revealCounter = 1;
+        revealTotal = 1;
     }
     else if (widget.gameMode > 2) {
       revealCounter = 3;
+      revealTotal = 3;
     }
     else {
       revealCounter = 3;
+      revealTotal = 3;
     }
     super.initState();
     // firedatabase.Query dbRef =
@@ -854,7 +859,7 @@ class _QuestionsState extends State<Questions> {
                               ),
                               desc:
                               "Would you like to reveal the answer?",
-                              content: Center(child: Text("${revealCounter} / ${widget.gameMode}",style: GoogleFonts.roboto(fontSize: 26,color:Colors.red))),
+                              content: Center(child: Text("${revealCounter} / ${revealTotal}",style: GoogleFonts.roboto(fontSize: 26,color:Colors.red))),
                               buttons: [
                                 DialogButton(
                                   onPressed: () {
