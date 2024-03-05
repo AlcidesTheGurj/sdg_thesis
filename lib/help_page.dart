@@ -13,6 +13,7 @@ class HelpPage extends StatelessWidget {
   
   ## Purpose:
   #### 1. SDG Quest is an Educational Game with a triple goal: 
+   * To raise awareness about the United Nations’ (UN) seventeen (17) Sustainable Development Goals (SDGs).
    * To help you gain new conceptual knowledge about social, environmental, and economic sustainability
    * To inspire you to reflect on your attitudes on social, environmental, and economic matters
    * To enable positive behavioural changes, contributing to a better world for all!
@@ -20,15 +21,12 @@ class HelpPage extends StatelessWidget {
    
   ## Game Mechanics:
   ### 1. Progression
-   * Experience refers to the points system in the game and both are used interchangeably
-  
-   * Points/experience can be gained  by playing any  Game-mode in the Home Page
-   
+   * “EXPERIENCE” and “POINTS” are used interchangeably to refer to the Rewards System of the SDG Quest game.
+   * Points/Experience can be gained by selecting  Game-mode in the Home Page and answering the Quiz Questions.
    * Answering correctly awards points allocated to that question
-   * Wrong answers receive +0 experience
+   * Wrong answers have no impact on Points/Experience
    * Every 100 experience a "LEVEL" is gained
-      * Lvl. and Level are used interchangeably
-      * All content can be unlocked by leveling up
+      * Eventually all content can be unlocked by leveling up
    
   ### 2. Quiz
   * Answering 3 questions correctly in a row enables "STREAK MODE"
