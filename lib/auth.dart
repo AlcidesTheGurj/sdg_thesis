@@ -46,7 +46,9 @@ class Auth {
     required String name,
   }) async {
     await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email, password: password);
+        email: email, password: password,);
+
+    await currentUser?.updateDisplayName(name);
 
     String? userUuid = _firebaseAuth.currentUser?.uid;
     if (userUuid != null){

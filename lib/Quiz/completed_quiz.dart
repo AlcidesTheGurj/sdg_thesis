@@ -39,6 +39,7 @@ class _CompletedPageState extends State<CompletedPage> {
       await ref.update({
         "total_points": widget.totalPoints + existingPoints,
         "order": 9999999999 - (widget.totalPoints + existingPoints)
+
       });
 
       DatabaseReference ref2 =
