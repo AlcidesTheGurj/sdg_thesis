@@ -13,7 +13,7 @@ class LeaderBoard extends StatefulWidget {
 
 class _LeaderBoardState extends State<LeaderBoard> {
   DatabaseReference _playersRef =
-  FirebaseDatabase.instance.ref().child('Players');
+  FirebaseDatabase.instance.ref().child('Leaderboard');
 
   @override void initState() {
     super.initState();

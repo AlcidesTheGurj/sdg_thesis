@@ -41,6 +41,16 @@ class _CompletedPageState extends State<CompletedPage> {
         "order": 9999999999 - (widget.totalPoints + existingPoints)
       });
 
+      DatabaseReference ref2 =
+      FirebaseDatabase.instance.ref().child("Leaderboard");
+      //final snapshot2 = await ref.get();
+
+      await ref2.child('/${user?.uid}').update({
+        "displayName": user?.displayName,
+        "total_points": widget.totalPoints + existingPoints,
+        "order": 9999999999 - (widget.totalPoints + existingPoints)
+      });
+
     }
   }
 
