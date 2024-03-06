@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -214,13 +213,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               padding: const EdgeInsets.all(12.0),
               child: SizedBox(
                 width: 180,
-                child: CachedNetworkImage(
-                  imageUrl:
-                      "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2FSDG%20Wheel_PRINT_Transparent.png?alt=media&token=f9775cca-96fe-4b1a-8427-3a52567ae8c2",
-                  placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                ),
+                child: Image.asset("images/SDG Wheel_PRINT_Transparent.png")
+                // CachedNetworkImage(
+                //   imageUrl:
+                //       "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2FSDG%20Wheel_PRINT_Transparent.png?alt=media&token=f9775cca-96fe-4b1a-8427-3a52567ae8c2",
+                //   placeholder: (context, url) =>
+                //       const Center(child: CircularProgressIndicator()),
+                //   errorWidget: (context, url, error) => const Icon(Icons.error),
+                // ),
               ),
             ),
           ),
