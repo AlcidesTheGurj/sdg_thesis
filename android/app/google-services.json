@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "150621159290",
+    "firebase_url": "https://sdg-thesis-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "sdg-thesis",
+    "storage_bucket": "sdg-thesis.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:150621159290:android:a1b4c2deb09b1d569960c3",
+        "android_client_info": {
+          "package_name": "com.example.sdg_thesis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPIQiGWOfczpSceWtkKlIfwPA-Qrt5YxM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
