@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.sdg_thesis">
+    package="uk.ac.uclan.iraklis.sdg_thesis">
    <application
         android:label="SDG Quest"
         android:name="${applicationName}"
