@@ -1,5 +1,6 @@
 import 'package:animate_gradient/animate_gradient.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttermoji/fluttermojiController.dart';
 import 'package:get/get.dart';
@@ -30,7 +31,9 @@ Future<void> main() async {
   );
 
   //firebase stores locally on the device
-  FirebaseDatabase.instance.setPersistenceEnabled(true);
+  if (!kIsWeb) {
+    FirebaseDatabase.instance.setPersistenceEnabled(true);
+  }
 
   runApp(const MyApp());
 }

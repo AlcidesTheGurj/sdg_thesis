@@ -1,5 +1,4 @@
 import 'package:animate_gradient/animate_gradient.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sdg_thesis/Quiz/questions.dart';
@@ -159,14 +158,15 @@ class _SelectPoolState extends State<SelectPool> {
                 backgroundColor: Colors.transparent,
                 flexibleSpace: FlexibleSpaceBar(
                   background:
-                     CachedNetworkImage(
-                        imageUrl:
-                            "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2Flogo_transparent.png?alt=media&token=fb29f855-b79a-4952-9f33-c07d029c73ca",
-                        placeholder: (context, url) =>
-                            const Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      ),
+                      Image.asset("images/SDG Wheel_PRINT_Transparent.png")
+                     // CachedNetworkImage(
+                     //    imageUrl:
+                     //        "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2Flogo_transparent.png?alt=media&token=fb29f855-b79a-4952-9f33-c07d029c73ca",
+                     //    placeholder: (context, url) =>
+                     //        const Center(child: CircularProgressIndicator()),
+                     //    errorWidget: (context, url, error) =>
+                     //        const Icon(Icons.error),
+                     //  ),
 
                 ),
                 expandedHeight: 200,
