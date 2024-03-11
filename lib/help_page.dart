@@ -15,33 +15,39 @@ class HelpPage extends StatelessWidget {
   #### 1. SDG Quest is an Educational Game with a triple goal: 
    * To raise awareness about the United Nations’ (UN) seventeen (17) Sustainable Development Goals (SDGs).
    * To help you gain new conceptual knowledge about social, environmental, and economic sustainability
-   * To inspire you to reflect on your attitudes on social, environmental, and economic matters
-   * To enable positive behavioural changes, contributing to a better world for all!
-   * Therefore, it is important to make use of the "Hints" to explore the official United Nations (UN) resources to acquire key knowledge, attitudes, and skills!
+   * Inspire reflections on the attitudes towards social, environmental, and economic matters.
+   * Enable positive behavioural changes, contributing to a better world for all!
+   
+  ### Therefore, it is important to make use of the "Hints" to explore the official United Nations (UN) resources to acquire key knowledge, attitudes, and skills!
    
   ## Game Mechanics:
   ### 1. Progression
    * “EXPERIENCE” and “POINTS” are used interchangeably to refer to the Rewards System of the SDG Quest game.
    * Points/Experience can be gained by selecting  Game-mode in the Home Page and answering the Quiz Questions.
-   * Answering correctly awards points allocated to that question
+   * Correct answers are rewarded with the Points allocated to that question. 
    * Wrong answers have no impact on Points/Experience
    * Every 100 experience a "LEVEL" is gained
       * Eventually all content can be unlocked by leveling up
    
   ### 2. Quiz
   * Answering 3 questions correctly in a row enables "STREAK MODE"
-  * Streak counter refers to the number of correct answers in a row
-  * Questions answered under "STREAK MODE" provide the original point value MULTIPLIED by the streak counter
-  * Answering incorrectly sets the streak counter to 0
-      * Reveal Answer
-      * The number of reveals depends on the size of the Quiz selected
-      * Revealing an answer DOES NOT reset streak counter
-      * Points gained for the revealed answer are NOT multiplied by streak counter
+    * Streak counter refers to the number of correct answers in a row
+    * The Points for Questions answered under "STREAK MODE" are MULTIPLIED by the Streak Counter.
+    * Answering incorrectly sets the streak counter to 0
+  * “REVEAL ANSWER” option 
+    * The number of reveals depends on the size of the Quiz selected
+      * "STANDARD": 3 reveals
+      * "INDIVIDUAL": 1 reveal
+      * "CHALLENGE": 0 reveals
+    * Revealing an answer DOES NOT reset streak counter
+    * Points gained for the revealed answer are NOT multiplied by streak counter
   ### 3. Certificate
-  * The certificate of completion can ONLY be gained though Challenge mode
-  * Challenge mode is unlocked at "LEVEL 10"
+  * The certificate of completion can ONLY be gained through "CHALLENGE" mode
+  * Challenge mode is unlocked at "LEVEL 10" of the SDG Quest.
   * During challenge mode the "Reveal Answer" feature is disabled
-  * During challenge mode the "Hint" feature is disabled
+  * If at least 80% of the questions are correctly answered, a personalized CERTIFICATE is issued.  
+  
+  ### Get ready to join an adventurous journey through the SDG Quest! 
  
 """;
 

@@ -79,7 +79,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
       setState(() {
         if (existingPointsObj != null && existingPointsObj is Map) {
           totalPoints = (existingPointsObj['total_points'] ?? 0);
-          if (totalPoints >= 500) {
+          if (totalPoints >= 200) {
             // Use a new variable for modification and trigger a rebuild
             Map<String, dynamic> updatedData = {
               ...existingPointsObj,
@@ -304,7 +304,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
                           size: 75,
                         ),
                         desc:
-                            "You need to reach level 5 to unlock this feature",
+                            "You need to reach level 2 to unlock this feature",
                         buttons: [
                           DialogButton(
                             onPressed: () => Navigator.pop(context),

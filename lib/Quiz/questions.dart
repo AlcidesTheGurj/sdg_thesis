@@ -133,8 +133,8 @@ class _QuestionsState extends State<Questions> {
       revealTotal = 3;
     }
     else {
-      revealCounter = 3;
-      revealTotal = 3;
+      revealCounter = 0;
+      revealTotal = 0;
     }
     super.initState();
     // firedatabase.Query dbRef =
