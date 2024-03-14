@@ -32,20 +32,91 @@ class Questions extends StatefulWidget {
 
 class _QuestionsState extends State<Questions> {
   Widget circleAvatarWidget() {
-    return CircleAvatar(
-      radius: 80,
-      // backgroundColor: const Color(0xff7c1c43).withOpacity(0.65),
-      backgroundColor: Colors.transparent,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(
-            90,
+    return InkWell(
+      customBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(100),
+      ),
+      splashFactory: NoSplash.splashFactory,
+      splashColor: Colors.transparent,
+      onTap: () {
+        Alert(
+          context: context,
+          style: AlertStyle(
+            backgroundColor: Colors.black,
+            animationDuration: const Duration(milliseconds: 300),
+            animationType: AnimationType.fromTop,
+            descStyle: GoogleFonts.roboto(color: Colors.white),
           ),
-        ),
-        child: SvgPicture.string(
-          FluttermojiFunctions().decodeFluttermojifromString(avatarData),
-          height: 140,
-          width: 100,
+          image: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.lightbulb_sharp,
+              color: Colors.yellow,
+              size: 90,
+            ),
+          ),
+          desc: "You can find the answer to this question",
+          content: InkWell(
+            onTap: () {
+              launchUrl(Uri.parse(
+                  widget.listOfQuestions[index]['source']));
+            },
+            child: const Center(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text(
+                      "--> Here! <--",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize:
+                        30, // You can use any color you prefer
+                      ),
+                    ),
+                    Text(
+                      "You will be redirected to an external page",
+                      style: TextStyle(
+                        fontSize:
+                        14, // You can use any color you prefer
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          buttons: [
+            DialogButton(
+              onPressed: () => Navigator.pop(context),
+              width: 120,
+              color: const Color(0xff00689d),
+              child: Text(
+                "OK",
+                style: GoogleFonts.roboto(
+                  color: Colors.white,
+                  fontSize: 22,
+                ),
+              ),
+            ),
+          ],
+        ).show();
+      },
+      child: CircleAvatar(
+        radius: 80,
+        // backgroundColor: const Color(0xff7c1c43).withOpacity(0.65),
+        backgroundColor: Colors.transparent,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(
+              90,
+            ),
+          ),
+          child: SvgPicture.string(
+            FluttermojiFunctions().decodeFluttermojifromString(avatarData),
+            height: 140,
+            width: 100,
+          ),
         ),
       ),
     );
@@ -181,9 +252,7 @@ class _QuestionsState extends State<Questions> {
     //     ? const Color(0xff3f7e44)
     //     : const Color(0xffe5243b);
 
-    return Stack(
-      alignment: Alignment.topCenter,
-      children: [
+    return
         Container(
           margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
           padding: const EdgeInsets.fromLTRB(
@@ -281,20 +350,8 @@ class _QuestionsState extends State<Questions> {
               });
             },
           ),
-        ),
-        Positioned(
-          top: 0,
-          child: Visibility(
-            visible: answerIndex == 0 ? true : false,
-            child: const Icon(
-              Icons.keyboard_arrow_up,
-              color: Colors.white,
-              size: 25,
-            ),
-          ),
-        ),
-      ],
-    );
+        );
+
   }
 
   Widget questionsWidget() {
@@ -313,9 +370,9 @@ class _QuestionsState extends State<Questions> {
               )
             : AvatarGlow(
                 startDelay: const Duration(milliseconds: 500),
-                glowColor: const Color(0xffa21942),
+                glowColor: Colors.green,
                 glowShape: BoxShape.circle,
-                glowRadiusFactor: 0.5,
+                glowRadiusFactor: 0.6,
                 curve: Curves.slowMiddle,
                 child: circleAvatarWidget(),
               ),
@@ -421,7 +478,8 @@ class _QuestionsState extends State<Questions> {
                         ),
                       ),
                       desc:
-                          "Return to Home page? Tracked progress will be lost!",
+                          "Return to Home page?",
+                      content: Center(child: Text("Tracked progress will be lost!",style: GoogleFonts.roboto(fontSize: 18),)),
                       buttons: [
                         DialogButton(
                           onPressed: () {
@@ -441,7 +499,7 @@ class _QuestionsState extends State<Questions> {
                         DialogButton(
                           onPressed: () {
                             Navigator.pop(
-                                context, true); // Passing true means "Yes"
+                                context, true);
                           },
                           width: 120,
                           color: Colors.blue,
@@ -469,15 +527,15 @@ class _QuestionsState extends State<Questions> {
                     backgroundColor: Colors.grey,
                     progressColor: streakCounter < 3
                         ? const Color(0xff00689d)
-                        : const Color(0xffa21942), // const Color(0xffa21942)
+                        : Colors.green, // const Color(0xffa21942)
                     animation: true,
-                    center: Text(
-                      "${(((index + 1) / widget.listOfQuestions.length) * 100).truncate()}%",
-                      style: GoogleFonts.roboto(
-                          fontSize: 14,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
+                    // center: Text(
+                    //   "${(((index + 1) / widget.listOfQuestions.length) * 100).truncate()}%",
+                    //   style: GoogleFonts.roboto(
+                    //       fontSize: 14,
+                    //       color: Colors.white,
+                    //       fontWeight: FontWeight.bold),
+                    // ),
                   ),
                 ),
                 IconButton(
@@ -507,13 +565,24 @@ class _QuestionsState extends State<Questions> {
                         child: const Center(
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              "Here!",
-                              style: TextStyle(
-                                color: Colors.yellow,
-                                fontSize:
-                                    28, // You can use any color you prefer
-                              ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Here!",
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize:
+                                        28, // You can use any color you prefer
+                                  ),
+                                ),
+                                Text(
+                                  "You will be redirected to an external page",
+                                  style: TextStyle(
+                                    fontSize:
+                                    14, // You can use any color you prefer
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -534,32 +603,25 @@ class _QuestionsState extends State<Questions> {
                       ],
                     ).show();
                   },
-                  icon: const Icon(Icons.lightbulb),
+                  icon: const Icon(Icons.lightbulb,color: Colors.yellow,),
                 ),
               ],
             ),
-            body: CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  automaticallyImplyLeading: false,
-                  floating: false,
-                  backgroundColor: Colors.transparent,
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: questionsWidget(),
-                    ),
-                  ),
-                  expandedHeight: MediaQuery.sizeOf(context).height / 2 + 20,
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, listIndex) =>
-                        answersWidget(answerIndex: listIndex),
-                    childCount: 3,
-                  ),
-                ),
-              ],
+            body: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+               child: Column(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 crossAxisAlignment: CrossAxisAlignment.center,
+                 children: [
+                   SizedBox(height: 30,),
+                   Center(child: questionsWidget()),
+                   SizedBox(height: 20,),
+                   answersWidget(answerIndex: 0),
+                   answersWidget(answerIndex: 1),
+                   answersWidget(answerIndex: 2),
+                 ],
+               ),
+
             ),
             bottomNavigationBar: BottomAppBar(
               color: Colors.transparent,
@@ -572,8 +634,8 @@ class _QuestionsState extends State<Questions> {
                     child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
                           backgroundColor: streakCounter < 3
-                              ? const Color(0xff00689d)
-                              : const Color(0xffa21942),
+                              ? ( !continueButtonTapped ? const Color(0xff00689d) : Colors.grey)
+                              : ( !continueButtonTapped ? Colors.green : Colors.grey),
                           side: const BorderSide(
                               color:
                                   Colors.transparent), // Set your border color

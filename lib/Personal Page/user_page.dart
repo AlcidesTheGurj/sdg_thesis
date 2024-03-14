@@ -524,7 +524,7 @@ class _GuestPageState extends State<GuestPage> {
                       );
 
                       final img = await rootBundle
-                          .load('images/logo_transparent - Copy.jpg');
+                          .load('images/SDG Quest Wheel.jpg');
                       final imageBytes = img.buffer.asUint8List();
                       pw.Image image1 = pw.Image(pw.MemoryImage(imageBytes));
 
@@ -548,7 +548,7 @@ class _GuestPageState extends State<GuestPage> {
                                     style: pw.TextStyle(
                                         font: pw.Font.courier(),
                                         fontSize: 40,
-                                        color: PdfColors.teal200),
+                                        color: PdfColors.purple),
                                   )
                                 ]),
                                 pw.Center(
@@ -557,7 +557,7 @@ class _GuestPageState extends State<GuestPage> {
                                     style: pw.TextStyle(
                                         font: pw.Font.courier(),
                                         fontSize: 36,
-                                        color: PdfColors.teal200),
+                                        color: PdfColors.purple),
                                   ),
                                 ),
                                 pw.SizedBox(height: 10),
@@ -574,7 +574,7 @@ class _GuestPageState extends State<GuestPage> {
                                   style: pw.TextStyle(
                                       font: pw.Font.courier(),
                                       fontSize: 36,
-                                      color: PdfColors.teal200),
+                                      color: PdfColors.purple),
                                 ),
                                 pw.SizedBox(height: 20),
                                 pw.Text(
@@ -590,7 +590,7 @@ class _GuestPageState extends State<GuestPage> {
                                   style: pw.TextStyle(
                                       font: pw.Font.courier(),
                                       fontSize: 22,
-                                      color: PdfColors.teal200),
+                                      color: PdfColors.purple),
                                 ),
                               ],
                             );

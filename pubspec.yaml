@@ -67,9 +67,9 @@ dev_dependencies:
     sdk: flutter
 
 flutter_launcher_icons:
-  #  image_path: "images/logo.png"
-  image_path_android: "images/logo-app.png"
-  image_path_ios: "images/logo-app.png"
+  #  image_path: "images/SDG Quest App"
+  image_path_android: "images/SDG Quest App.png"
+  image_path_ios: "images/SDG Quest App.png"
   android: true
   ios: true
 

@@ -210,10 +210,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           backgroundColor: Colors.transparent,
           flexibleSpace: FlexibleSpaceBar(
             background: Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(2.0),
               child: SizedBox(
-                width: 180,
-                child: Image.asset("images/SDG Wheel_PRINT_Transparent.png")
+                child: Image.asset("images/SDG Quest Wheel.png")
                 // CachedNetworkImage(
                 //   imageUrl:
                 //       "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2FSDG%20Wheel_PRINT_Transparent.png?alt=media&token=f9775cca-96fe-4b1a-8427-3a52567ae8c2",
@@ -224,7 +223,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               ),
             ),
           ),
-          expandedHeight: 220,
+          expandedHeight: 300,
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(

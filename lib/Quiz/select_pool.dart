@@ -158,7 +158,7 @@ class _SelectPoolState extends State<SelectPool> {
                 backgroundColor: Colors.transparent,
                 flexibleSpace: FlexibleSpaceBar(
                   background:
-                      Image.asset("images/SDG Wheel_PRINT_Transparent.png")
+                      Image.asset("images/SDG Quest Wheel.png")
                      // CachedNetworkImage(
                      //    imageUrl:
                      //        "https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2Flogo_transparent.png?alt=media&token=fb29f855-b79a-4952-9f33-c07d029c73ca",
@@ -169,7 +169,7 @@ class _SelectPoolState extends State<SelectPool> {
                      //  ),
 
                 ),
-                expandedHeight: 200,
+                expandedHeight: 300,
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
