@@ -58,8 +58,7 @@ class _QuestionsState extends State<Questions> {
           desc: "You can find the answer to this question",
           content: InkWell(
             onTap: () {
-              launchUrl(Uri.parse(
-                  widget.listOfQuestions[index]['source']));
+              launchUrl(Uri.parse(widget.listOfQuestions[index]['source']));
             },
             child: const Center(
               child: Padding(
@@ -70,15 +69,13 @@ class _QuestionsState extends State<Questions> {
                       "--> Here! <--",
                       style: TextStyle(
                         color: Colors.blue,
-                        fontSize:
-                        30, // You can use any color you prefer
+                        fontSize: 30, // You can use any color you prefer
                       ),
                     ),
                     Text(
                       "You will be redirected to an external page",
                       style: TextStyle(
-                        fontSize:
-                        14, // You can use any color you prefer
+                        fontSize: 14, // You can use any color you prefer
                       ),
                     ),
                   ],
@@ -196,14 +193,12 @@ class _QuestionsState extends State<Questions> {
     // print(widget.listOfQuestions[index]['answer'].length);
     // print(widget.listOfQuestions[1]['answer'].length);
     if (widget.gameMode > 5) {
-        revealCounter = 1;
-        revealTotal = 1;
-    }
-    else if (widget.gameMode > 2) {
+      revealCounter = 1;
+      revealTotal = 1;
+    } else if (widget.gameMode > 2) {
       revealCounter = 3;
       revealTotal = 3;
-    }
-    else {
+    } else {
       revealCounter = 0;
       revealTotal = 0;
     }
@@ -238,8 +233,10 @@ class _QuestionsState extends State<Questions> {
         isCorrectAnswer ? const Color(0xff00689d) : Colors.transparent;
 
     if (isCorrectAnswer) {
-      showEye ?shadowColor = Colors.grey : shadowColor = const Color(0xff00689d);
-      showEye ?shadowIcon = FontAwesomeIcons.eye : shadowIcon = Icons.check;
+      showEye
+          ? shadowColor = Colors.grey
+          : shadowColor = const Color(0xff00689d);
+      showEye ? shadowIcon = FontAwesomeIcons.eye : shadowIcon = Icons.check;
     } else if (userSubmission == alphabetSelections[answerIndex]) {
       shadowColor = const Color(0xffe5243b);
     }
@@ -252,106 +249,103 @@ class _QuestionsState extends State<Questions> {
     //     ? const Color(0xff3f7e44)
     //     : const Color(0xffe5243b);
 
-    return
-        Container(
-          margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-          padding: const EdgeInsets.fromLTRB(
-            10,
-            0,
-            0,
-            0,
-          ),
-          height: 85,
-          decoration: BoxDecoration(
-            color: containerColor,
-            border: Border.all(
-              color: Colors.transparent,
-              width: 2.0,
-            ),
-            boxShadow: showShadow
-                ? [
-                    BoxShadow(
-                      color: shadowColor,
-                      offset: const Offset(0.0, 0.0),
-                      blurRadius: 15.0,
-                    ),
-                  ]
-                : const [],
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: InkWell(
-            splashFactory: NoSplash.splashFactory,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 40,
-                  child: _isSelected[answerIndex]
-                      ? AnimatedTextKit(
-                          repeatForever: true,
-                          animatedTexts: [
-                            ScaleAnimatedText(alphabetSelections[answerIndex],
-                                textStyle: GoogleFonts.roboto(
-                                    fontSize: 30, fontWeight: FontWeight.bold),
-                                duration: const Duration(seconds: 1)),
-                          ],
-                        )
-                      : Text(
-                          alphabetSelections[answerIndex],
-                          style: GoogleFonts.roboto(
-                              fontSize: 30, fontWeight: FontWeight.bold),
-                        ),
+    return Container(
+      margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+      padding: const EdgeInsets.fromLTRB(
+        10,
+        0,
+        0,
+        0,
+      ),
+      height: 85,
+      decoration: BoxDecoration(
+        color: containerColor,
+        border: Border.all(
+          color: Colors.transparent,
+          width: 2.0,
+        ),
+        boxShadow: showShadow
+            ? [
+                BoxShadow(
+                  color: shadowColor,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 15.0,
                 ),
-                Flexible(
-                    child: _isSelected[answerIndex]
-                        ? AnimatedTextKit(
-                            key: ValueKey(answerIndex),
-                            animatedTexts: [
-                              TypewriterAnimatedText(
-                                widget.listOfQuestions[index]['answer']
-                                    [answerIndex],
-                                textStyle: GoogleFonts.roboto(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                            isRepeatingAnimation: true,
-                            repeatForever: true,
-                          )
-                        : Text(
+              ]
+            : const [],
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: InkWell(
+        splashFactory: NoSplash.splashFactory,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: 40,
+              child: _isSelected[answerIndex]
+                  ? AnimatedTextKit(
+                      repeatForever: true,
+                      animatedTexts: [
+                        ScaleAnimatedText(alphabetSelections[answerIndex],
+                            textStyle: GoogleFonts.roboto(
+                                fontSize: 30, fontWeight: FontWeight.bold),
+                            duration: const Duration(seconds: 1)),
+                      ],
+                    )
+                  : Text(
+                      alphabetSelections[answerIndex],
+                      style: GoogleFonts.roboto(
+                          fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
+            ),
+            Flexible(
+                child: _isSelected[answerIndex]
+                    ? AnimatedTextKit(
+                        key: ValueKey(answerIndex),
+                        animatedTexts: [
+                          TypewriterAnimatedText(
                             widget.listOfQuestions[index]['answer']
                                 [answerIndex],
-                            style: GoogleFonts.roboto(fontSize: 16),
-                          )),
-                Visibility(
-                  visible: showShadow,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Icon(
-                        isCorrectAnswer ? shadowIcon : Icons.close,
-                        color: shadowColor,
-                        size: 30,
-                      ),
-                    ),
+                            textStyle: GoogleFonts.roboto(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                        isRepeatingAnimation: true,
+                        repeatForever: true,
+                      )
+                    : Text(
+                        widget.listOfQuestions[index]['answer'][answerIndex],
+                        style: GoogleFonts.roboto(fontSize: 16),
+                      )),
+            Visibility(
+              visible: showShadow,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: Icon(
+                    isCorrectAnswer ? shadowIcon : Icons.close,
+                    color: shadowColor,
+                    size: 30,
                   ),
                 ),
-              ],
+              ),
             ),
-            onTap: () {
-              setState(() {
-                _isSelected[0] = false;
-                _isSelected[1] = false;
-                _isSelected[2] = false;
-                if (!continueButtonTapped) {
-                  _isSelected[answerIndex] = true;
-                }
-                userInput = alphabetSelections[answerIndex];
-              });
-            },
-          ),
-        );
-
+          ],
+        ),
+        onTap: () {
+          setState(() {
+            _isSelected[0] = false;
+            _isSelected[1] = false;
+            _isSelected[2] = false;
+            if (!continueButtonTapped) {
+              _isSelected[answerIndex] = true;
+            }
+            userInput = alphabetSelections[answerIndex];
+          });
+        },
+      ),
+    );
   }
 
   Widget questionsWidget() {
@@ -477,9 +471,12 @@ class _QuestionsState extends State<Questions> {
                           size: 80,
                         ),
                       ),
-                      desc:
-                          "Return to Home page?",
-                      content: Center(child: Text("Tracked progress will be lost!",style: GoogleFonts.roboto(fontSize: 18),)),
+                      desc: "Return to Home page?",
+                      content: Center(
+                          child: Text(
+                        "Tracked progress will be lost!",
+                        style: GoogleFonts.roboto(fontSize: 18),
+                      )),
                       buttons: [
                         DialogButton(
                           onPressed: () {
@@ -498,8 +495,7 @@ class _QuestionsState extends State<Questions> {
                         ),
                         DialogButton(
                           onPressed: () {
-                            Navigator.pop(
-                                context, true);
+                            Navigator.pop(context, true);
                           },
                           width: 120,
                           color: Colors.blue,
@@ -579,7 +575,7 @@ class _QuestionsState extends State<Questions> {
                                   "You will be redirected to an external page",
                                   style: TextStyle(
                                     fontSize:
-                                    14, // You can use any color you prefer
+                                        14, // You can use any color you prefer
                                   ),
                                 ),
                               ],
@@ -603,25 +599,31 @@ class _QuestionsState extends State<Questions> {
                       ],
                     ).show();
                   },
-                  icon: const Icon(Icons.lightbulb,color: Colors.yellow,),
+                  icon: const Icon(
+                    Icons.lightbulb,
+                    color: Colors.yellow,
+                  ),
                 ),
               ],
             ),
             body: SingleChildScrollView(
               scrollDirection: Axis.vertical,
-               child: Column(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 crossAxisAlignment: CrossAxisAlignment.center,
-                 children: [
-                   SizedBox(height: 30,),
-                   Center(child: questionsWidget()),
-                   SizedBox(height: 20,),
-                   answersWidget(answerIndex: 0),
-                   answersWidget(answerIndex: 1),
-                   answersWidget(answerIndex: 2),
-                 ],
-               ),
-
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Center(child: questionsWidget()),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  answersWidget(answerIndex: 0),
+                  answersWidget(answerIndex: 1),
+                  answersWidget(answerIndex: 2),
+                ],
+              ),
             ),
             bottomNavigationBar: BottomAppBar(
               color: Colors.transparent,
@@ -634,8 +636,12 @@ class _QuestionsState extends State<Questions> {
                     child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
                           backgroundColor: streakCounter < 3
-                              ? ( !continueButtonTapped ? const Color(0xff00689d) : Colors.grey)
-                              : ( !continueButtonTapped ? Colors.green : Colors.grey),
+                              ? (!continueButtonTapped
+                                  ? const Color(0xff00689d)
+                                  : Colors.grey)
+                              : (!continueButtonTapped
+                                  ? Colors.green
+                                  : Colors.grey),
                           side: const BorderSide(
                               color:
                                   Colors.transparent), // Set your border color
@@ -717,8 +723,9 @@ class _QuestionsState extends State<Questions> {
                                           Color(0xff00689d),
                                         ]),
                                         title: "Correct",
-                                        message:
-                                            "+${widget.listOfQuestions[index]['point']}",
+                                        message: streakCounter > 1
+                                            ? "+${widget.listOfQuestions[index]['point'] * (streakCounter + 1)}"
+                                            : "+${widget.listOfQuestions[index]['point']}",
                                         duration: const Duration(seconds: 1),
                                         icon: const Icon(Icons.check),
                                       ).show(context).then((result) {
@@ -742,8 +749,8 @@ class _QuestionsState extends State<Questions> {
                                             ],
                                             backgroundGradient:
                                                 const LinearGradient(colors: [
-                                              Color(0xffa21942),
-                                              Color(0xffb92653),
+                                              Colors.green,
+                                              Colors.lightGreen,
                                             ]),
                                             title: "Streak! x$streakCounter",
                                             message: "Keep going!",
@@ -758,15 +765,15 @@ class _QuestionsState extends State<Questions> {
                                         streakCounter++;
                                         showShadow = true;
                                         showEye = false;
-                                        if(streakCounter > 2 ){
+                                        if (streakCounter > 2) {
                                           totalPoints +=
-                                          widget.listOfQuestions[index]
-                                          ['point'] * streakCounter as int;
-                                        }
-                                        else {
+                                              widget.listOfQuestions[index]
+                                                      ['point'] *
+                                                  streakCounter as int;
+                                        } else {
                                           totalPoints +=
-                                          widget.listOfQuestions[index]
-                                          ['point'] as int;
+                                              widget.listOfQuestions[index]
+                                                  ['point'] as int;
                                         }
                                         correctCount++;
                                         _isSelected[0] = false;
@@ -833,21 +840,22 @@ class _QuestionsState extends State<Questions> {
                                           Color(0xff00689d),
                                         ]),
                                         title: "Correct",
-                                        message:
-                                            "+${widget.listOfQuestions[index]['point']}",
+                                        message: streakCounter > 1
+                                            ? "+${widget.listOfQuestions[index]['point'] * (streakCounter + 1)}"
+                                            : "+${widget.listOfQuestions[index]['point']}",
                                         duration: const Duration(seconds: 1),
                                         icon: const Icon(Icons.check),
                                       ).show(context);
                                       setState(() {
-                                        if(streakCounter > 2 ){
+                                        if (streakCounter > 2) {
                                           totalPoints +=
                                               widget.listOfQuestions[index]
-                                              ['point'] * streakCounter as int;
-                                        }
-                                        else {
+                                                      ['point'] *
+                                                  streakCounter as int;
+                                        } else {
                                           totalPoints +=
-                                          widget.listOfQuestions[index]
-                                          ['point'] as int;
+                                              widget.listOfQuestions[index]
+                                                  ['point'] as int;
                                         }
                                         correctCount++;
                                         streakCounter++;
@@ -901,69 +909,84 @@ class _QuestionsState extends State<Questions> {
                           onPressed: (continueButtonTapped || revealCounter < 1)
                               ? null
                               : () {
-                            Alert(
-                              context: context,
-                              style: AlertStyle(
-                                backgroundColor: Colors.black,
-                                animationDuration:
-                                const Duration(milliseconds: 300),
-                                animationType: AnimationType.fromTop,
-                                descStyle: GoogleFonts.roboto(
-                                    color: Colors.white),
-                              ),
-                              image: const Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Icon(
-                                  FontAwesomeIcons.eye,
-                                  color: Colors.blue,
-                                  size: 80,
-                                ),
-                              ),
-                              desc:
-                              "Would you like to reveal the answer?",
-                              content: Center(child: Text("${revealCounter} / ${revealTotal}",style: GoogleFonts.roboto(fontSize: 26,color:Colors.red))),
-                              buttons: [
-                                DialogButton(
-                                  onPressed: () {
-                                    Navigator.pop(context,
-                                        false); // Passing false means "No"
-                                  },
-                                  width: 120,
-                                  color: Colors.red,
-                                  child: Text(
-                                    "No",
-                                    style: GoogleFonts.roboto(
-                                      color: Colors.white,
-                                      fontSize: 22,
+                                  Alert(
+                                    context: context,
+                                    style: AlertStyle(
+                                      backgroundColor: Colors.black,
+                                      animationDuration:
+                                          const Duration(milliseconds: 300),
+                                      animationType: AnimationType.fromTop,
+                                      descStyle: GoogleFonts.roboto(
+                                          color: Colors.white),
                                     ),
-                                  ),
-                                ),
-                                DialogButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      if (revealCounter > 0){
-                                        showShadow = true;
-                                        showEye = true;
-                                        revealCounter--;
-                                      }
-                                    });
-                                    print(revealCounter);
-                                    Navigator.pop(context,
-                                        true); // Passing true means "Yes"
-                                  },
-                                  width: 120,
-                                  color: Colors.blue,
-                                  child: Text(
-                                    "Yes",
-                                    style: GoogleFonts.roboto(
-                                      color: Colors.white,
-                                      fontSize: 22,
+                                    image: const Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Icon(
+                                        FontAwesomeIcons.eye,
+                                        color: Colors.blue,
+                                        size: 80,
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ],
-                            ).show();
-                          },
+                                    desc:
+                                        "Would you like to reveal the answer?",
+                                    content:
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                                "Reveals:  ",
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 22,
+                                                )),
+                                            Text(
+                                                "${revealCounter}",
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 22,
+                                                    color: Colors.red)),
+                                          ],
+                                        ),
+                                    buttons: [
+                                      DialogButton(
+                                        onPressed: () {
+                                          Navigator.pop(context,
+                                              false); // Passing false means "No"
+                                        },
+                                        width: 120,
+                                        color: Colors.red,
+                                        child: Text(
+                                          "No",
+                                          style: GoogleFonts.roboto(
+                                            color: Colors.white,
+                                            fontSize: 22,
+                                          ),
+                                        ),
+                                      ),
+                                      DialogButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            if (revealCounter > 0) {
+                                              showShadow = true;
+                                              showEye = true;
+                                              revealCounter--;
+                                            }
+                                          });
+                                          print(revealCounter);
+                                          Navigator.pop(context,
+                                              true); // Passing true means "Yes"
+                                        },
+                                        width: 120,
+                                        color: Colors.blue,
+                                        child: Text(
+                                          "Yes",
+                                          style: GoogleFonts.roboto(
+                                            color: Colors.white,
+                                            fontSize: 22,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ).show();
+                                },
                           style: OutlinedButton.styleFrom(
                             side: const BorderSide(
                                 color: Colors

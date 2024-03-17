@@ -7,7 +7,7 @@ class HelpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String _markdownData = """
-  ![](https://firebasestorage.googleapis.com/v0/b/sdg-thesis.appspot.com/o/images%2Flogo_transparent.png?alt=media&token=fb29f855-b79a-4952-9f33-c07d029c73ca)
+  ![](resource:images/logo_transparent.png)
   
   ### This page outlines all important information needed to enjoy SDG Quest.
   
